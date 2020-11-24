@@ -47,6 +47,47 @@ export default defineConfig({
           name: 'tokenReceive',
           path: '/system/tokenReceive',
           component: './tokenReceive/',
+          routes: [
+            {
+              path: '/system/tokenReceive',
+              redirect: '/system/tokenReceive/searchToken',
+            },
+            {
+              path: '/system/tokenReceive/searchToken',
+              component: './tokenReceive/searchToken',
+              name: 'searchToken',
+            },
+            {
+              path: '/system/tokenReceive/showToken/:tokenId',
+              component: './tokenReceive/showToken',
+              name: 'showToken',
+            },
+            {
+              path: '/system/tokenReceive/myApplication',
+              component: './tokenReceive/myApplication',
+              name: 'myApplication',
+            },
+            {
+              path: '/system/tokenReceive/myToken',
+              component: './tokenReceive/myToken',
+              name: 'myToken',
+            },
+            {
+              path: '/system/tokenReceive/rejectedToken',
+              component: './tokenReceive/rejectedToken',
+              name: 'rejectedToken',
+            },
+            {
+              path: '/system/tokenReceive/applyToken/:tokenId',
+              component: './tokenReceive/applyToken',
+              name: 'applyToken',
+            },
+            {
+              path: '/system/tokenReceive/changeApplication/:tokenId',
+              component: './tokenReceive/changeApplication',
+              name: 'changeApplication',
+            },
+          ],
         },
         {
           component: './404',
