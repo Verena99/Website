@@ -31,6 +31,42 @@ export default defineConfig({
       ],
     },
     {
+      path: '/admin',
+      component: '../layouts/AdminLayout',
+      routes: [
+        {
+          name: 'allUser',
+          path: '/admin/allUser',
+          component: './Admin/allUser',
+        },
+        {
+          name: 'allToken',
+          path: '/admin/allToken',
+          component: './Admin/allToken',
+        },
+        {
+          name: 'allApplication',
+          path: '/admin/allApplication',
+          component: './Admin/allApplication',
+        },
+        {
+          name: 'incomeInfo',
+          path: '/admin/incomeInfo',
+          component: './Admin/incomeInfo',
+        },
+        {
+          name: 'userInfo',
+          path: '/admin/userInfo/:userId',
+          component: './Admin/userInfo',
+        },
+        {
+          name: 'tokenInfo',
+          path: '/admin/tokenInfo/:tokenId',
+          component: './Admin/tokenInfo',
+        },
+      ],
+    },
+    {
       path: '/system',
       component: '../layouts/BasicLayout',
       routes: [
