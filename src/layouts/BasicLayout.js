@@ -6,10 +6,9 @@ const menuData = [
   { route: '/system/tokenHolder', name: '我是令主' },
   { route: '/system/tokenReceive', name: '我要接令' },
 ];
-
 const BasicLayout = props => {
   const {
-    location: { pathname },
+    location: { pathname, query },
     children,
   } = props;
 
@@ -25,7 +24,9 @@ const BasicLayout = props => {
         >
           {menuData.map(menu => (
             <Menu.Item key={`${menu.route}`}>
-              <Link to={menu.route}>{menu.name}</Link>
+              <Link to={menu.route + `?userId=${query.userId}`}>
+                {menu.name}
+              </Link>
             </Menu.Item>
           ))}
         </Menu>

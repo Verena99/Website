@@ -49,10 +49,6 @@ export default defineConfig({
           component: './tokenReceive/',
           routes: [
             {
-              path: '/system/tokenReceive',
-              redirect: '/system/tokenReceive/searchToken',
-            },
-            {
               path: '/system/tokenReceive/searchToken',
               component: './tokenReceive/searchToken',
               name: 'searchToken',

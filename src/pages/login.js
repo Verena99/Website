@@ -11,7 +11,7 @@ const LogIn = props => {
     form
       .validateFields(['username', 'password'])
       .then(() => {
-        history.push('/system');
+        history.push('/system/tokenHolder?userId=cyn');
       })
       .catch(error => {});
   };

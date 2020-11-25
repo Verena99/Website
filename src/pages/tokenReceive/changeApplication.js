@@ -1,93 +1,97 @@
-import React from 'react';
-import { Link } from 'react-router-dom';
+import React, { useEffect, useState } from 'react';
 import { Input, Descriptions, Button } from 'antd';
 import style1 from '@/css/showToken.css';
 import { history } from 'umi';
 const { TextArea } = Input;
 
-const onChange = e => {
-  console.log(e);
-};
-
-const data = [
-  {
-    key: '1',
-    firstName: 'John',
-    lastName: 'Brown',
-    age: 32,
-    address: 'New York No. 1 Lake Park',
-    tags: ['nice', 'developer'],
-    tokenId: '1',
-  },
-  {
-    key: '2',
-    firstName: 'Jim',
-    lastName: 'Green',
-    age: 42,
-    address: 'London No. 1 Lake Park',
-    tags: ['loser'],
-    tokenId: '2',
-  },
-  {
-    key: '3',
-    firstName: 'Joe',
-    lastName: 'Black',
-    age: 32,
-    address: 'Sidney No. 1 Lake Park',
-    tags: ['cool', 'teacher'],
-    tokenId: '3',
-  },
-];
-
 const changeApplication = props => {
+  const { match } = props;
+  const tokenId = match.params.tokenId;
+  const [applyInfo, setApply] = useState('');
+  const [tokenInfo, setTokenInfo] = useState({
+    name: 'xxx',
+    class: '公益志愿者',
+    owner: 'cyn',
+    people: 10,
+    startTime: '2020/9/1',
+    endTime: '2020/10/1',
+    state: '待处理',
+    picture: '../../assets/ZJL.png',
+    description: 'bala bala',
+  });
+
+  useEffect(() => {
+    //fetch请求tokenInfo和applyInfo
+    let temp = {
+      name: '国图志愿',
+      class: '公益志愿者',
+      owner: 'cyy',
+      people: 10,
+      startTime: '2020/9/1',
+      endTime: '2020/10/1',
+      state: '待处理',
+      picture: '../../assets/ZJL.png',
+      description: 'bala bala baba',
+    };
+    let temp2 = 'change';
+    setApply(temp2);
+    setTokenInfo(temp);
+  }, []);
+
+  const onChange = e => {
+    setApply(e.target.value);
+  };
+  const saveApplication = () => {
+    //fetch 发送接令申请
+    console.log(tokenId, applyInfo);
+    history.goBack();
+  };
+
   return (
     <>
       <Descriptions title="召集令信息" className={style1.info} bordered>
-        <Descriptions.Item label="名称">Cloud Database</Descriptions.Item>
-        <Descriptions.Item label="类型">Prepaid</Descriptions.Item>
-        <Descriptions.Item label="所属令主">YES</Descriptions.Item>
+        <Descriptions.Item label="名称">{tokenInfo.name}</Descriptions.Item>
+        <Descriptions.Item label="类型">{tokenInfo.class}</Descriptions.Item>
+        <Descriptions.Item label="所属令主">
+          {tokenInfo.owner}
+        </Descriptions.Item>
         <Descriptions.Item label="召集人数">
-          2018-04-24 18:00:00
+          {tokenInfo.people}
         </Descriptions.Item>
         <Descriptions.Item label="创建时间">
-          2018-04-24 18:00:00
+          {tokenInfo.startTime}
         </Descriptions.Item>
         <Descriptions.Item label="结束日期">
-          2018-04-24 18:00:00
+          {tokenInfo.endTime}
         </Descriptions.Item>
         <Descriptions.Item label="当前状态">
-          2018-04-24 18:00:00
+          {tokenInfo.state}
         </Descriptions.Item>
         <Descriptions.Item label="介绍照片">
           <img alt="logo" src={require('../../assets/ZJL.png')} />
         </Descriptions.Item>
         <Descriptions.Item label="具体描述" span={3}>
-          Data disk type: MongoDB
-          <br />
-          Database version: 3.4
-          <br />
-          Package: dds.mongo.mid
-          <br />
-          Storage space: 10 GB
-          <br />
-          Replication factor: 3
-          <br />
-          Region: East China 1<br />
+          {tokenInfo.description}
         </Descriptions.Item>
       </Descriptions>
+
       <TextArea
-        defaultValue="xxxxxxx"
+        value={applyInfo}
         className={style1.applicationInfo}
         allowClear
         onChange={onChange}
       />
+      <Button className={style1.save_button} onClick={saveApplication}>
+        保存
+      </Button>
+
       <Button
         className={style1.return_button}
         onClick={() => {
           history.goBack();
         }}
       >
-        return
+        返回
       </Button>
     </>
   );

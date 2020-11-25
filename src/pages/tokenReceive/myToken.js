@@ -1,60 +1,37 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { Input, Select, Table, Space, Popconfirm, message } from 'antd';
-import styles from '@/css/applicationList.css';
+import style1 from '@/css/applicationList.css';
 
-const { Search } = Input;
-const { Option } = Select;
 const { Column } = Table;
 
-const onSearch = value => console.log(value);
-
-function handleChange(value) {
-  console.log(`selected ${value}`);
-}
-function confirm(e) {
-  message.success('已删除该请求' + e);
-}
-
-const data = [
-  {
-    key: '1',
-    firstName: 'John',
-    lastName: 'Brown',
-    age: 32,
-    address: 'New York No. 1 Lake Park',
-    tags: ['nice', 'developer'],
-    tokenId: '1',
-  },
-  {
-    key: '2',
-    firstName: 'Jim',
-    lastName: 'Green',
-    age: 42,
-    address: 'London No. 1 Lake Park',
-    tags: ['loser'],
-    tokenId: '2',
-  },
-  {
-    key: '3',
-    firstName: 'Joe',
-    lastName: 'Black',
-    age: 32,
-    address: 'Sidney No. 1 Lake Park',
-    tags: ['cool', 'teacher'],
-    tokenId: '3',
-  },
-];
-
 const myToken = props => {
+  const [tokenList, setTokenList] = useState();
+  const {
+    location: { query },
+  } = props;
+  useEffect(() => {
+    //fetch请求 我已接令的tokenInfo
+    //fetch请求 我已接令的token的申请info
+    let temp = new Array(12).fill({
+      name: '国图志愿',
+      class: '公益志愿者',
+      tokenId: '123',
+      endTime: '2020/10/1',
+      state: '待处理',
+      description: 'my apply',
+      applicationTime: '2020/9/21',
+    });
+    setTokenList(temp);
+  }, []);
   return (
     <>
-      <Table className={styles.applicationList} dataSource={data}>
+      <Table className={style1.applicationList} dataSource={tokenList}>
         <Column title="名称" dataIndex="name" key="name" />
         <Column title="类别" dataIndex="class" key="class" />
         <Column title="结束时间" dataIndex="endTime" key="endTime" />
         <Column title="状态" dataIndex="state" key="state" />
-        <Column title="请求描述" dataIndex="application" key="application" />
+        <Column title="请求描述" dataIndex="description" key="description" />
         <Column
           title="请求时间"
           dataIndex="applicationTime"

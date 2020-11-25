@@ -1,5 +1,4 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
 import { Layout, Menu } from 'antd';
 import {
   UserOutlined,
@@ -9,7 +8,8 @@ import {
 
 const { Content, Sider } = Layout;
 const TokenReceive = props => {
-  const { children, history } = props;
+  const { history, children, location } = props;
+
   return (
     <Layout style={{ height: '81vh' }}>
       <Sider style={{ height: '81vh', width: '160px' }}>
@@ -22,7 +22,9 @@ const TokenReceive = props => {
             icon={<UserOutlined />}
             key="1"
             onClick={() => {
-              history.push('/system/tokenReceive/searchToken');
+              history.push(
+                `/system/tokenReceive/searchToken?userId=${location.query.userId}`,
+              );
             }}
           >
             请求接令
@@ -31,7 +33,9 @@ const TokenReceive = props => {
             icon={<LaptopOutlined />}
             key="2"
             onClick={() => {
-              history.push('/system/tokenReceive/myApplication');
+              history.push(
+                `/system/tokenReceive/myApplication?userId=${location.query.userId}`,
+              );
             }}
           >
             待批准的申请
@@ -40,16 +44,21 @@ const TokenReceive = props => {
             icon={<NotificationOutlined />}
             key="3"
             onClick={() => {
-              history.push('/system/tokenReceive/myToken');
+              history.push(
+                `/system/tokenReceive/myToken?userId=${location.query.userId}`,
+              );
             }}
           >
             已批准的申请
           </Menu.Item>
+
           <Menu.Item
             icon={<NotificationOutlined />}
             key="4"
             onClick={() => {
-              history.push('/system/tokenReceive/rejectedToken');
+              history.push(
+                `/system/tokenReceive/rejectedToken?userId=${location.query.userId}`,
+              );
             }}
           >
             被拒绝的申请
