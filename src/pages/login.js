@@ -11,7 +11,8 @@ const LogIn = props => {
     form
       .validateFields(['username', 'password'])
       .then(() => {
-        history.push('/system/tokenHolder?userId=cyn');
+        let userId = document.getElementById('userId').value;
+        history.push(`/system/tokenHolder?userId=${userId}`);
       })
       .catch(error => {});
   };
@@ -28,6 +29,7 @@ const LogIn = props => {
           rules={[{ required: true, message: '请输入用户名' }]}
         >
           <Input
+            id="userId"
             className={styles.login}
             placeholder="用户名"
             prefix={<UserOutlined />}
