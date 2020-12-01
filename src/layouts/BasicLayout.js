@@ -1,6 +1,7 @@
 import styles from './index.less';
 import { Layout, Menu } from 'antd';
 import { Link } from 'umi';
+import RightContent from '@/components/GlobalHEader/RightContent';
 const { Header, Content, Footer } = Layout;
 const menuData = [
   { route: '/system/tokenHolder', name: '我是令主' },
@@ -13,14 +14,15 @@ const BasicLayout = props => {
   } = props;
 
   return (
-    <Layout style={{ height: '100%', width: '100%', position: 'absolute' }}>
+    <Layout className={styles.layoutHeader}>
       <Header>
         <div className={styles.logo2}>召集令</div>
+        <RightContent style={{ float: 'right' }} />
         <Menu
           theme="dark"
           mode="horizontal"
           defaultSelectedKeys={[pathname]}
-          style={{ lineHeight: '64px' }}
+          style={{ lineHeight: '48px' }}
         >
           {menuData.map(menu => (
             <Menu.Item key={`${menu.route}`}>
