@@ -1,16 +1,21 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Input, Form, Button, message } from 'antd';
 import { UserOutlined, LockOutlined } from '@ant-design/icons';
 import styles from './index.less';
-import { history } from 'umi';
+import { history, connect } from 'umi';
 
 const LogIn = props => {
+  const { dispatch } = props;
   const [form] = Form.useForm();
 
   const validateForm = () => {
     form
       .validateFields(['username', 'password'])
       .then(() => {
+        dispatch({
+          type: 'user/fetchCurrent',
+          payload: { name: form.getFieldValue('username') },
+        });
         let userId = document.getElementById('userId').value;
         if (userId === 'admin') {
           history.push(`/admin/allUser?userId=${userId}`);
@@ -24,6 +29,8 @@ const LogIn = props => {
   const goToRegister = () => {
     history.push('/register');
   };
+
+  useEffect(() => {}, []);
 
   return (
     <div type="flex" align="middle">
@@ -65,4 +72,6 @@ const LogIn = props => {
   );
 };
 
-export default LogIn;
+export default connect(({ user }) => ({
+  user,
+}))(LogIn);

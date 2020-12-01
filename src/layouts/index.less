@@ -10,10 +10,10 @@
 
 .logo2 {
   color: white;
-  margin: 16px 20px 16px 0;
+  margin: 10px 20px 10px 0;
   float: left;
   font-size: 18px;
-  line-height: 30px;
+  line-height: 20px;
 }
 
 .logo3 {
@@ -75,4 +75,15 @@
   margin-bottom: 40px;
   color: @text-color-secondary;
   font-size: @font-size-base;
+}
+
+.layoutHeader {
+  height: 100%;
+  width: 100%;
+  position: absolute;
+  :global {
+    .ant-layout-header {
+      height: 48px;
+    }
+  }
 }
