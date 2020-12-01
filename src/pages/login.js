@@ -17,7 +17,11 @@ const LogIn = props => {
           payload: { name: form.getFieldValue('username') },
         });
         let userId = document.getElementById('userId').value;
-        history.push(`/system/tokenHolder?userId=${userId}`);
+        if (userId === 'admin') {
+          history.push(`/admin/allUser?userId=${userId}`);
+        } else {
+          history.push(`/system/tokenHolder?userId=${userId}`);
+        }
       })
       .catch(error => {});
   };
