@@ -110,12 +110,12 @@ export default defineConfig({
               name: 'rejectedToken',
             },
             {
-              path: '/system/tokenReceive/applyToken/:tokenId',
+              path: '/system/tokenReceive/applyToken',
               component: './tokenReceive/applyToken',
               name: 'applyToken',
             },
             {
-              path: '/system/tokenReceive/changeApplication/:tokenId',
+              path: '/system/tokenReceive/changeApplication',
               component: './tokenReceive/changeApplication',
               name: 'changeApplication',
             },
