@@ -96,11 +96,7 @@ const Appliers = props => {
 
   return (
     <>
-      <Table
-        columns={column}
-        dataSource={data}
-        style={{ margin: '15px' }}
-      ></Table>
+      <Table columns={column} dataSource={data} style={{ margin: '15px' }} />
       <Modal
         centered
         maskClosable={false}
