@@ -8,6 +8,8 @@ const Appliers = props => {
   const [pageSize] = useState('10');
   const [current, setCurrent] = useState('1');
   const [applierList, setApplierList] = useState();
+  const [totalPage, setTotalPage] = useState();
+  const [applierInfo, setApplierInfo] = useState();
   const accept = 1;
   const reject = 2;
   const column = [
@@ -18,7 +20,7 @@ const Appliers = props => {
       render: (text, record) => (
         <a
           onClick={() => {
-            showApplier();
+            showApplier(record.callee_id);
           }}
         >
           {text}
@@ -102,12 +104,21 @@ const Appliers = props => {
     }).then(res => {
       if (res) {
         setApplierList(res.application_list);
+        setTotalPage(res.total);
       }
     });
   }, []);
 
-  const showApplier = () => {
+  const showApplier = id => {
     setApplierVisible(true);
+    dispatch({
+      type: 'user/fetchUser',
+      payload: { page_size: 1, page: 1, user_id: id },
+    }).then(res => {
+      if (res) {
+        setApplierInfo(res.user_list);
+      }
+    });
   };
 
   // 处理申请 接受：1 拒绝：2
@@ -126,7 +137,16 @@ const Appliers = props => {
 
   return (
     <>
-      <Table columns={column} dataSource={data} style={{ margin: '15px' }} />
+      <Table
+        columns={column}
+        dataSource={data}
+        style={{ margin: '15px' }}
+        pagination={{
+          current: current,
+          pageSize: pageSize,
+          total: totalPage,
+        }}
+      />
       {/* <Table columns={column} dataSource={applierList} style={{ margin: '15px' }} /> */}
       <Modal
         centered
