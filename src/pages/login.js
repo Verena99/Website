@@ -22,10 +22,12 @@ const LogIn = props => {
         //       type: 'user/saveCurrentUser',
         //       payload: { name:form.getFieldValue('username'), user_id: res.user_id}
         //     })
-        //     if(res.admin_type===0)
+        //     if(res.admin_type===2)
         //       history.push(`/admin/allUser?userId=${res.user_id}`);
-        //     else
+        //     else if(res.admin_type===1)
         //       history.push(`/system/tokenHolder?userId=${res.user_id}`);
+        //     else
+        //       message.error('用户名或密码错误');
         //   }
         // })
         console.log(md5(form.getFieldValue('password')));

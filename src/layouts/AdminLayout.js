@@ -15,7 +15,7 @@ const BasicLayout = props => {
   } = props;
 
   return (
-    <Layout style={{ height: '100%', width: '100%', position: 'absolute' }}>
+    <Layout style={{ background: '#fff' }}>
       <Header>
         <div className={styles.logo2}>召集令</div>
         <Menu
@@ -33,10 +33,9 @@ const BasicLayout = props => {
           ))}
         </Menu>
       </Header>
-      <Content style={{ padding: '20px 30px' }}>
+      <Content style={{ padding: '5px 10px' }}>
         <div style={{ background: '#fff', height: '100%' }}>{children}</div>
       </Content>
-      <Footer style={{ textAlign: 'center' }}>Created by LYF、XF、CYN</Footer>
     </Layout>
   );
 };
