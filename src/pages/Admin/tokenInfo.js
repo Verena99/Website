@@ -27,33 +27,21 @@ const tokenInfo = props => {
   });
 
   useEffect(() => {
-    /*axios({
+    axios({
       method: 'get',
       url: '/api/v1/callup',
       params: {
         page: 1,
         page_size: 1,
         callup_id,
-      }
+      },
     })
-      .then((response) => {
+      .then(response => {
         setTokenInfo(response.data.callup_list[0]);
       })
-      .catch((error) => {
-        console.log(error)
-      })*/
-    let temp = {
-      name: 'xxx',
-      type: 0, //类型
-      caller_id: 123,
-      success_num: 10,
-      end_time: 123323456,
-      status: 0,
-      desc: 'bala bala',
-      city: 0,
-      photo_url: '../../assets/ZJL.png',
-    };
-    setTokenInfo(temp);
+      .catch(error => {
+        console.log(error);
+      });
   }, []);
   return (
     <>
