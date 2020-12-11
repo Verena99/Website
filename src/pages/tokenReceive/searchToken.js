@@ -28,42 +28,29 @@ const searchToken = props => {
   const [searchClass, setSearchClass] = useState();
   const [searchName, setSearchName] = useState();
   const [currentPage, setCurrentPage] = useState(1);
-  const [total, setTotal] = useState(1);
+  const [total, setTotal] = useState(12);
   const {
     location: { query },
   } = props;
   useEffect(() => {
-    /*axios({
+    axios({
       method: 'get',
       url: '/api/v1/callup',
       params: {
         page: currentPage,
         page_size,
-        status:1
-      }
+        status: 1,
+      },
     })
-      .then((response) => {
-        if(response.status===200){
-            setTokenList(response.data.callup_list);
-            setTotal(response.data.total)
-        }
-        else
-          throw Error('error status:',response.status);
+      .then(response => {
+        if (response.status === 200) {
+          setTokenList(response.data.callup_list);
+          setTotal(response.data.total);
+        } else throw Error('error status:', response.status);
       })
-      .catch((error) => {
-        console.log(error)
-      })*/
-    let temp = new Array(12).fill({
-      name: '国图志愿',
-      type: 0,
-      desc: 'balabala',
-      city: 0,
-      end_time: '2020/10/1',
-      status: 0,
-      quota: 10,
-      success_num: 3,
-    });
-    setTokenList(temp);
+      .catch(error => {
+        console.log(error);
+      });
   }, []);
 
   const searchByName = value => {

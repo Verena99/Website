@@ -45,6 +45,7 @@ const myApplication = props => {
     setAppList(temp);
   }, []);
   async function confirm(id) {
+    console.log(id);
     /*await axios({
       method: 'delete',
       url: '/api/v1/application',
@@ -59,7 +60,6 @@ const myApplication = props => {
       .catch((error) => {
         console.log(error)
       });
-
     await axios({
       method: 'get',
       url: '/api/v1/application',
