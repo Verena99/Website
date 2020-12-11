@@ -3,6 +3,8 @@ import {
   deleteToken,
   createToken,
   updateToken,
+  dealApply,
+  getApplications,
 } from '@/services/token';
 const TokenModel = {
   namespace: 'token',
@@ -25,6 +27,16 @@ const TokenModel = {
 
     *updateToken({ payload }, { call }) {
       const response = yield call(updateToken, payload);
+      return response;
+    },
+
+    *dealApply({ payload }, { call }) {
+      const response = yield call(dealApply, payload);
+      return response;
+    },
+
+    *fetchApplications({ payload }, { call }) {
+      const response = yield call(getApplications, payload);
       return response;
     },
   },

@@ -1,8 +1,15 @@
 import React, { useState, useEffect } from 'react';
-import { Table, Button, Modal, Descriptions } from 'antd';
+import { Table, Button, Modal, Descriptions, message } from 'antd';
+import { connect } from 'umi';
 
 const Appliers = props => {
+  const { dispatch, caller_id, tokenId } = props;
   const [applierVisible, setApplierVisible] = useState(false);
+  const [pageSize] = useState('10');
+  const [current, setCurrent] = useState('1');
+  const [applierList, setApplierList] = useState();
+  const accept = 1;
+  const reject = 2;
   const column = [
     {
       title: '申请者',
@@ -34,10 +41,18 @@ const Appliers = props => {
       key: 'action',
       render: (text, record) => (
         <>
-          <Button type="text" style={{ color: '#1890ff' }}>
+          <Button
+            type="text"
+            style={{ color: '#1890ff' }}
+            onClick={() => dealApply(record.id, accept)}
+          >
             同意
           </Button>
-          <Button type="text" style={{ color: '#1890ff' }}>
+          <Button
+            type="text"
+            style={{ color: '#1890ff' }}
+            onClick={() => rejectApply(record.id, reject)}
+          >
             拒绝
           </Button>
         </>
@@ -80,23 +95,39 @@ const Appliers = props => {
     applyTime: '2020-09-06 16:56:00',
   };
 
-  useEffect(() => {}, []);
+  useEffect(() => {
+    dispatch({
+      type: 'token/fetchApplications',
+      payload: { page_size: pageSize, page: current, callup_id: tokenId },
+    }).then(res => {
+      if (res) {
+        setApplierList(res.application_list);
+      }
+    });
+  }, []);
 
   const showApplier = () => {
     setApplierVisible(true);
   };
 
-  // 接受申请
-  const acceptApply = () => {
-    setApplierVisible(false);
+  // 处理申请 接受：1 拒绝：2
+  const dealApply = (id, action) => {
+    dispatch({
+      type: 'token/dealApply',
+      payload: { action_type: action, application_id: id, caller_id },
+    }).then(res => {
+      if (!res) {
+        message.success('处理成功');
+      } else {
+        message.error(res.message);
+      }
+    });
   };
-
-  // 拒绝申请
-  const rejectApply = () => {};
 
   return (
     <>
       <Table columns={column} dataSource={data} style={{ margin: '15px' }} />
+      {/* <Table columns={column} dataSource={applierList} style={{ margin: '15px' }} /> */}
       <Modal
         centered
         maskClosable={false}
@@ -104,7 +135,7 @@ const Appliers = props => {
         width="600px"
         visible={applierVisible}
         footer={
-          <Button type="primary" onClick={() => acceptApply()}>
+          <Button type="primary" onClick={() => setApplierVisible(false)}>
             确认
           </Button>
         }
@@ -129,4 +160,7 @@ const Appliers = props => {
   );
 };
 
-export default Appliers;
+export default connect(({ token, user }) => ({
+  token,
+  caller_id: user.currentUser.caller_id,
+}))(Appliers);

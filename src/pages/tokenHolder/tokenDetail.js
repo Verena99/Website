@@ -53,7 +53,7 @@ const TokenDetail = props => {
       </Sider>
       <Content style={{ backgroundColor: '#ffffff' }}>
         {menuKey === '1' && <TokenInfo tokenId={tokenId} />}
-        {menuKey === '2' && <Appliers />}
+        {menuKey === '2' && <Appliers tokenId={tokenId} />}
       </Content>
     </Layout>
   );
