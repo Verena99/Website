@@ -69,31 +69,27 @@ const applyToken = props => {
     setApply(e.target.value);
   };
   const saveApplication = () => {
-    /*发送接令申请
+    //发送接令申请
     axios({
       method: 'post',
       url: '/api/v1/application',
       data: {
         callee_id,
         callup_id,
-        desc:applyInfo
+        desc: applyInfo,
       },
-      headers:{
-        'Content-Type': 'application/json'
-      }
+      headers: {
+        'Content-Type': 'application/json',
+      },
     })
-      .then((res) => {
+      .then(res => {
         if (res.status === 200) {
-          console.log("请求成功");
-        }
-        else
-          throw Error('error status:', response.status);
+          console.log('请求成功');
+        } else throw Error('error status:', response.status);
       })
-      .catch((error) => {
-        console.log(error)
-      })*/
-    console.log(callup_id, applyInfo, callee_id);
-    history.goBack();
+      .catch(error => {
+        console.log(error);
+      });
   };
 
   return (

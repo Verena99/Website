@@ -34,20 +34,6 @@ const incomeInfo = props => {
   const [startTime, setStartTime] = useState();
   const [endTime, setEndTime] = useState();
   const [searchClass, setSearchClass] = useState();
-  const [monthMap, setMonthMap] = useState({
-    additionalProp1: {
-      income: 1,
-      record_num: 1,
-    },
-    additionalProp2: {
-      income: 5,
-      record_num: 3,
-    },
-    additionalProp3: {
-      income: 3,
-      record_num: 2,
-    },
-  });
   const [recordList, setRecordList] = useState();
   const [monthList, setMonthList] = useState();
   const [incomeList, setIncomeList] = useState();
@@ -125,43 +111,42 @@ const incomeInfo = props => {
   }
 
   function getDetails() {
-    setFlag(true);
-    /*axios({
+    axios({
       method: 'GET',
       url: '/api/v1/income',
       params: {
         begin_time: startTime,
         callup_type: searchClass,
-        city:province,
-        end_time:endTime
+        city: province,
+        end_time: endTime,
       },
     })
-      .then((response) => {
+      .then(response => {
+        setFlag(true);
         setRecordList(response.data.record_list);
-        setMonthMap(response.data.month_map);
+        let tempstart = new Date(startTime * 1000);
+        let arry = [];
+        while (tempstart.getTime() <= endTime * 1000) {
+          arry.push(
+            String(tempstart.getFullYear()) +
+              '/' +
+              String(tempstart.getMonth() + 1),
+          );
+          tempstart.setMonth(tempstart.getMonth() + 1);
+        }
+        setMonthList(arry);
+        let income = [];
+        let record_num = [];
+        for (let key in response.data.month_map) {
+          income.push(response.data.month_map[key].income);
+          record_num.push(response.data.month_map[key].record_num);
+        }
+        setIncomeList(income);
+        setRecordNumList(record_num);
       })
-      .catch((error) => {
-        console.log(error)
-      })*/
-    let tempstart = new Date(startTime * 1000);
-    let arry = [];
-    while (tempstart.getTime() <= endTime * 1000) {
-      arry.push(
-        String(tempstart.getFullYear()) +
-          '/' +
-          String(tempstart.getMonth() + 1),
-      );
-      tempstart.setMonth(tempstart.getMonth() + 1);
-    }
-    setMonthList(arry);
-    let income = [];
-    let record_num = [];
-    for (let key in monthMap) {
-      income.push(monthMap[key].income);
-      record_num.push(monthMap[key].record_num);
-    }
-    setIncomeList(income);
-    setRecordNumList(record_num);
+      .catch(error => {
+        console.log(error);
+      });
   }
   return (
     <div className={style1.container}>

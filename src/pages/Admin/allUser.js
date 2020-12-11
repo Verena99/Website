@@ -15,41 +15,39 @@ const allUser = props => {
     location: { query },
   } = props;
   useEffect(() => {
-    /*axios({
+    axios({
       method: 'get',
       url: '/api/v1/user',
-        page: currentPage,
-        page_size,
+      page: currentPage,
+      page_size,
     })
-      .then((response) => {
-        if(response.status===200){
-            setUserList(response.data.user_list);
-            setTotal(response.data.total)
-        }
-        else
-          throw Error('error status:',response.status);
+      .then(response => {
+        if (response.status === 200) {
+          setUserList(response.data.user_list);
+          setTotal(response.data.total);
+        } else throw Error('error status:', response.status);
       })
-      .catch((error) => {
-        console.log(error)
-      })*/
-    let temp = new Array(12).fill({
-      name: 'ccy',
-      admin_type: 0,
-      city: 0,
-      level: 0,
-      desc: 'balabalabbbbb',
-      id: 0,
-    });
-    setUserList(temp);
+      .catch(error => {
+        console.log(error);
+      });
   }, []);
-  function confirm(tokenId) {
-    message.success('已删除该请求' + tokenId);
-    //fetch 发送请求：删除申请
-    console.log(query.userId, tokenId);
-    //fetch 发送请求重新获取我的待审批的申请
-  }
   function handleChangePage(page) {
-    setCurrentPage(page);
+    axios({
+      method: 'get',
+      url: '/api/v1/user',
+      page: page,
+      page_size,
+    })
+      .then(response => {
+        if (response.status === 200) {
+          setUserList(response.data.user_list);
+          setTotal(response.data.total);
+          setCurrentPage(page);
+        } else throw Error('error status:', response.status);
+      })
+      .catch(error => {
+        console.log(error);
+      });
   }
   return (
     <>

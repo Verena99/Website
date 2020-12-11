@@ -56,80 +56,72 @@ const searchToken = props => {
   const searchByName = value => {
     setSearchName(value);
     setSearchClass(null);
-    /*axios({
+    axios({
       method: 'get',
       url: '/api/v1/callup',
       params: {
         page: currentPage,
         page_size,
-        fuzzy_name:value
-      }
+        fuzzy_name: value,
+      },
     })
-      .then((response) => {
-        if(response.status===200){
-            setTokenList(response.data.callup_list);
-            setTotal(response.data.total)
-        }
-        else
-          throw Error('error status:',response.status);
+      .then(response => {
+        if (response.status === 200) {
+          setTokenList(response.data.callup_list);
+          setTotal(response.data.total);
+        } else throw Error('error status:', response.status);
       })
-      .catch((error) => {
-        console.log(error)
-      })*/
-    let temp = new Array(12).fill({
-      name: `${value}`,
-      type: 0,
-      desc: 'balabala',
-      city: 0,
-      end_time: '2020/10/1',
-      status: 0,
-      quota: 10,
-      success_num: 3,
-    });
-    setTokenList(temp);
+      .catch(error => {
+        console.log(error);
+      });
   };
 
   function searchByClass(value) {
     setSearchClass(value);
     setSearchName(null);
     console.log(value);
-    /*axios({
+    axios({
       method: 'get',
       url: '/api/v1/callup',
       params: {
         page: currentPage,
         page_size,
-        type:value
-      }
+        type: value,
+      },
     })
-      .then((response) => {
-        if(response.status===200){
-            setTokenList(response.data.callup_list);
-            setTotal(response.data.total)
-        }
-        else
-          throw Error('error status:',response.status);
+      .then(response => {
+        if (response.status === 200) {
+          setTokenList(response.data.callup_list);
+          setTotal(response.data.total);
+        } else throw Error('error status:', response.status);
       })
-      .catch((error) => {
-        console.log(error)
-      })*/
-    let temp = new Array(12).fill({
-      name: '国图志愿',
-      type: `${value}`,
-      desc: 'balabala',
-      city: 0,
-      end_time: '2020/10/1',
-      status: 0,
-      quota: 10,
-      success_num: 3,
-    });
-    setTokenList(temp);
+      .catch(error => {
+        console.log(error);
+      });
   }
   function handleChange(e) {
     setSearchName(e.target.value);
   }
   function handleChangePage(page) {
-    setCurrentPage(page);
+    axios({
+      method: 'get',
+      url: '/api/v1/callup',
+      params: {
+        page: page,
+        page_size,
+        status: 1,
+      },
+    })
+      .then(response => {
+        if (response.status === 200) {
+          setTokenList(response.data.callup_list);
+          setTotal(response.data.total);
+          setCurrentPage(page);
+        } else throw Error('error status:', response.status);
+      })
+      .catch(error => {
+        console.log(error);
+      });
   }
   return (
     <>
@@ -174,7 +166,15 @@ const searchToken = props => {
         <Column title="地点" dataIndex="city" key="city" />
         <Column title="目标人数" dataIndex="quota" key="quota" />
         <Column title="已召集人数" dataIndex="success_num" key="success_num" />
-        <Column title="结束时间" dataIndex="end_time" key="end_time" />
+        <Column
+          title="结束时间"
+          key="end_time"
+          render={(text, record) => (
+            <Space size="middle">
+              {new Date(record.end_time).toLocaleString()}
+            </Space>
+          )}
+        />
         <Column
           title="状态"
           key="status"

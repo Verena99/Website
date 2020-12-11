@@ -31,7 +31,7 @@ const changeApplication = props => {
   });
 
   useEffect(() => {
-    /*请求tokenInfo和applyInfo
+    //请求tokenInfo和applyInfo
     axios({
       method: 'get',
       url: '/api/v1/callup',
@@ -39,9 +39,9 @@ const changeApplication = props => {
         page: 1,
         page_size: 1,
         callup_id,
-      }
+      },
     })
-      .then((response) => {
+      .then(response => {
         if (response.status === 200) {
           axios({
             method: 'get',
@@ -50,65 +50,45 @@ const changeApplication = props => {
               page: 1,
               page_size: 1,
               application_id,
-            }
+            },
           })
-            .then((res) => {
+            .then(res => {
               if (res.status === 200) {
                 setTokenInfo(response.data.callup_list[0]);
                 setApply(res.data.application_list[0].desc);
-               console.log('yes');
-              }
-              else
-                throw Error('error status:', response.status);
+              } else throw Error('error status:', response.status);
             })
-            .catch((error) => {
-              console.log(error)
-            })
-        }
-        else
-          throw Error('error status:', response.status);
+            .catch(error => {
+              console.log(error);
+            });
+        } else throw Error('error status:', response.status);
       })
-      .catch((error) => {
-        console.log(error)
-      })*/
-    let temp = {
-      name: 'xxx',
-      type: 0, //类型
-      caller_id: 123,
-      success_num: 10,
-      end_time: 123323456,
-      status: 0,
-      desc: 'bala bala',
-      city: 0,
-      photo_url: '../../assets/ZJL.png',
-    };
-    let temp2 = 'change';
-    setApply(temp2);
-    setTokenInfo(temp);
+      .catch(error => {
+        console.log(error);
+      });
   }, []);
 
   const onChange = e => {
     setApply(e.target.value);
   };
   const saveApplication = () => {
-    /*更新申请
+    //更新申请
     axios({
       method: 'patch',
       url: `/api/v1/application/${application_id}`,
       data: {
         desc: applyInfo,
-        is_canceled: 0
-      }
+        is_canceled: 0,
+      },
     })
-      .then((res) => {
+      .then(res => {
         if (res.status == 200) {
-          console.log("已更新请求");
+          console.log('已更新请求');
         }
       })
-      .catch((error) => {
-        console.log(error)
-      })*/
-    history.goBack();
+      .catch(error => {
+        console.log(error);
+      });
   };
 
   return (

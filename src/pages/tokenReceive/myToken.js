@@ -14,38 +14,48 @@ const myToken = props => {
     location: { query },
   } = props;
   useEffect(() => {
-    /*请求我的待审批的tokenInfo
+    //请求我的待审批的tokenInfo
     axios({
       method: 'get',
       url: '/api/v1/application',
       params: {
         page: currentPage,
         page_size,
-        callee_id:query.userId,
-        status:1
-      }
+        callee_id: query.userId,
+        status: 1,
+      },
     })
-      .then((response) => {
-        if(response.status===200){
-            setTokenList(response.data.application_list);
-            setTotal(response.data.total)
-        }
-        else
-          throw Error('error status:',response.status);
+      .then(response => {
+        if (response.status === 200) {
+          setTokenList(response.data.application_list);
+          setTotal(response.data.total);
+        } else throw Error('error status:', response.status);
       })
-      .catch((error) => {
-        console.log(error)
-      })*/
-    let temp = new Array(12).fill({
-      callup_id: 2,
-      id: 3,
-      desc: '我立志做一名公益志愿者，balabalabbbbbbbbbbbbbbbbb',
-      status: 1,
-    });
-    setTokenList(temp);
+      .catch(error => {
+        console.log(error);
+      });
   }, []);
   function handleChangePage(page) {
-    setCurrentPage(page);
+    axios({
+      method: 'get',
+      url: '/api/v1/application',
+      params: {
+        page: page,
+        page_size,
+        callee_id: query.userId,
+        status: 1,
+      },
+    })
+      .then(response => {
+        if (response.status === 200) {
+          setTokenList(response.data.application_list);
+          setTotal(response.data.total);
+          setCurrentPage(page);
+        } else throw Error('error status:', response.status);
+      })
+      .catch(error => {
+        console.log(error);
+      });
   }
   return (
     <>

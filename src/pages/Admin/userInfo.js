@@ -25,36 +25,21 @@ const userInfo = props => {
   });
 
   useEffect(() => {
-    /*axios({
+    axios({
       method: 'get',
       url: '/api/v1/user',
-        page: 1,
-        page_size:1,
-        user_id:userId
+      page: 1,
+      page_size: 1,
+      user_id: userId,
     })
-      .then((response) => {
-        if(response.status===200){
-            setUserInfo(response.data.user_list[0]);
-        }
-        else
-          throw Error('error status:',response.status);
+      .then(response => {
+        if (response.status === 200) {
+          setUserInfo(response.data.user_list[0]);
+        } else throw Error('error status:', response.status);
       })
-      .catch((error) => {
-        console.log(error)
-      })*/
-    let temp = {
-      name: '李明',
-      admin_type: 0,
-      city: 0,
-      level: 0,
-      desc: 'balabalabbbbb',
-      id: userId,
-      credential_number: '511002199806127632',
-      phone: '18810224693',
-      sso_name: 'ccy',
-      desc: 'balabalabala',
-    };
-    setUserInfo(temp);
+      .catch(error => {
+        console.log(error);
+      });
   }, []);
   return (
     <>
