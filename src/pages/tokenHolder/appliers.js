@@ -86,9 +86,13 @@ const Appliers = props => {
     setApplierVisible(true);
   };
 
+  // 接受申请
   const acceptApply = () => {
     setApplierVisible(false);
   };
+
+  // 拒绝申请
+  const rejectApply = () => {};
 
   return (
     <>

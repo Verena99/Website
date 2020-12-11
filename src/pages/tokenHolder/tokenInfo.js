@@ -15,14 +15,14 @@ const TokenInfo = props => {
     desc: 'bala bala',
   });
 
-  useEffect(() => {
-    dispatch({
-      type: 'token/tokenList',
-      payload: { page: 1, page_size: 1, callup_id: tokenId },
-    }).then(res => {
-      setTokenInfo(res.callup_list);
-    });
-  }, []);
+  // useEffect(() => {
+  //   dispatch({
+  //     type: 'token/tokenList',
+  //     payload: { page: 1, page_size: 1, callup_id: tokenId },
+  //   }).then(res => {
+  //     setTokenInfo(res.callup_list);
+  //   });
+  // }, []);
 
   return (
     <>

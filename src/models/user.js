@@ -32,6 +32,20 @@ const UserModel = {
         payload: payload,
       });
     },
+
+    *login({ payload }, { call, put }) {
+      const response = yield call(login, payload);
+      if (response) {
+        const current = {};
+        current.name = payload.sso_name;
+        current.caller_id = response.caller_id;
+        yield put({
+          type: 'saveCurrentUser',
+          payload: payload,
+        });
+      }
+      return response;
+    },
   },
   reducers: {
     saveCurrentUser(state, action) {
