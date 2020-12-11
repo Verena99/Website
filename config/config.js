@@ -1,7 +1,9 @@
 import { defineConfig } from 'umi';
 
 export default defineConfig({
-  dva: {},
+  dva: {
+    hmr: true,
+  },
   antd: {},
   routes: [
     {
@@ -29,6 +31,11 @@ export default defineConfig({
           component: 'Register',
         },
       ],
+    },
+    {
+      path: '/userCenter',
+      name: 'userCenter',
+      component: './userCenter/personInfo',
     },
     {
       path: '/admin',

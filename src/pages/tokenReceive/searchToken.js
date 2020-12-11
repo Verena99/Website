@@ -31,7 +31,8 @@ const searchToken = props => {
       url: '/api/v1/callup',
       params: {
         page: currentPage,
-        page_size
+        page_size,
+        status:1
       }
     })
       .then((response) => {

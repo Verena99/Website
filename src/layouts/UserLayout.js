@@ -7,31 +7,9 @@ import logo from '../assets/ZJL.png';
 import styles from './index.less';
 
 const UserLayout = props => {
-  const {
-    route = {
-      routes: [],
-    },
-  } = props;
-  const { routes = [] } = route;
-  const {
-    children,
-    // location = {
-    //   pathname: '',
-    // },
-  } = props;
-  // const { breadcrumb } = getMenuData(routes);
-  // const title = getPageTitle({
-  //   pathname: location.pathname,
-  //   breadcrumb,
-  //   ...props,
-  // });
+  const { children } = props;
   return (
     <HelmetProvider>
-      {/* <Helmet>
-        <title>{title}</title>
-        <meta name="description" content={title} />
-      </Helmet> */}
-
       <div className={styles.container}>
         <div className={styles.content}>
           <div className={styles.top}>
