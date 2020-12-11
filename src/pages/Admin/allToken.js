@@ -8,13 +8,20 @@ const { Search } = Input;
 const { Option } = Select;
 const { Column } = Table;
 const page_size = 10;
-const statusList = { 0: '已完成', 1: '待响应', 2: '已取消', 3: '到期未达成' };
+const statusList = {
+  0: '未知',
+  1: '待响应',
+  2: '已完成',
+  3: '取消',
+  4: '到期未达成',
+};
 const typleList = {
-  0: '技术交流',
-  1: '学业探讨',
-  2: '社会实践',
-  3: '公益志愿者',
-  4: '游玩',
+  0: '未知',
+  1: '技术交流',
+  2: '学业探讨',
+  3: '社会实践',
+  4: '公益志愿者',
+  5: '游玩',
 };
 const allToken = props => {
   const [tokenList, setTokenList] = useState();

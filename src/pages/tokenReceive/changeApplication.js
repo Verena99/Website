@@ -4,7 +4,13 @@ import axios from 'axios';
 import style1 from '@/css/showToken.css';
 import { history } from 'umi';
 const { TextArea } = Input;
-const statusList = { 0: '已完成', 1: '待响应', 2: '已取消', 3: '到期未达成' };
+const statusList = {
+  0: '未知',
+  1: '待响应',
+  2: '已完成',
+  3: '取消',
+  4: '到期未达成',
+};
 const changeApplication = props => {
   const {
     location: { query },

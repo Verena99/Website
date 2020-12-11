@@ -5,8 +5,8 @@ import style1 from '@/css/applicationList.css';
 import axios from 'axios';
 const { Column } = Table;
 const page_size = 10;
-const userType = { 0: '系统管理员', 1: '普通用户' };
-const userLevel = { 0: '钻石级', 1: '重要', 2: '一般' };
+const userType = { 0: '未知', 1: '普通用户', 2: '系统管理员' };
+const userLevel = { 0: '未知', 1: '一般', 2: '重要', 3: '钻石级' };
 const allUser = props => {
   const [userList, setUserList] = useState();
   const [currentPage, setCurrentPage] = useState(1);

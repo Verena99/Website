@@ -8,3 +8,9 @@ export async function queryCurrent() {
 export async function queryNotices() {
   return request('/api/notices');
 }
+export async function login(params) {
+  return request('/api/v1/user/login', {
+    method: `POST`,
+    data: params,
+  });
+}
