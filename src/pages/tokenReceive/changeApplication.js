@@ -56,6 +56,7 @@ const changeApplication = props => {
               if (res.status === 200) {
                 setTokenInfo(response.data.callup_list[0]);
                 setApply(res.data.application_list[0].desc);
+               console.log('yes');
               }
               else
                 throw Error('error status:', response.status);
