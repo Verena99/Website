@@ -2,9 +2,10 @@ import React, { useState } from 'react';
 import { Input, Form, Button, message, Select } from 'antd';
 import { EyeInvisibleOutlined, EyeTwoTone } from '@ant-design/icons';
 import styles from './index.less';
-import { history } from 'umi';
+import { history, connect } from 'umi';
 
 const Register = props => {
+  const { dispatch } = props;
   const [form] = Form.useForm();
   const layout = {
     labelCol: { span: 10 },
@@ -23,7 +24,16 @@ const Register = props => {
         'password',
       ])
       .then(() => {
-        history.push('/login');
+        const userInfo = form.getFieldsValue();
+        let { idType, ...params } = userInfo;
+        dispatch({
+          type: 'user/register',
+          payload: { params },
+        }).then(res => {
+          if ('id' in res) {
+            history.push('/login');
+          } else message('注册失败');
+        });
       })
       .catch(error => {});
   };
@@ -34,7 +44,6 @@ const Register = props => {
         <Form.Item
           label="姓名"
           name="name"
-          // className={styles.itemWidth}
           rules={[{ required: true, message: '请输入姓名' }]}
         >
           <Input className={styles.login} />
@@ -42,7 +51,6 @@ const Register = props => {
         <Form.Item
           label="手机号"
           name="phone"
-          // className={styles.itemWidth}
           rules={[{ required: true, message: '请输入手机号' }]}
         >
           <Input className={styles.login} />
@@ -50,7 +58,6 @@ const Register = props => {
         <Form.Item
           label="证件类型"
           name="idType"
-          // className={styles.itemWidth}
           rules={[{ required: true, message: '请选择证件类型' }]}
         >
           <Select style={{ width: '260px' }}>
@@ -62,7 +69,7 @@ const Register = props => {
         </Form.Item>
         <Form.Item
           label="证件编号"
-          name="idNumber"
+          name="credential_number"
           rules={[{ required: true, message: '请输入证件编号' }]}
         >
           <Input className={styles.login} />
@@ -77,7 +84,7 @@ const Register = props => {
         <Form.Item
           id="userId"
           label="用户名"
-          name="username"
+          name="sso_name"
           rules={[{ required: true, message: '请输入用户名' }]}
         >
           <Input className={styles.login} />
@@ -107,4 +114,6 @@ const Register = props => {
   );
 };
 
-export default Register;
+export default connect(({ user }) => ({
+  user,
+}))(Register);

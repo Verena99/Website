@@ -21,3 +21,11 @@ export async function login(params) {
     params: params,
   });
 }
+
+// 注册
+export async function register(params) {
+  return request(`/api/v1/user`, {
+    method: `POST`,
+    data: params,
+  });
+}
