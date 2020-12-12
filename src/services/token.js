@@ -1,5 +1,4 @@
 import request from '@/utils/request';
-import { stringfy } from '@/utils/utils';
 
 const tokenUrl = '/api/v1/callup';
 const dealApplyUrl = '/api/v1/caller/action';
