@@ -9,8 +9,9 @@ const Register = props => {
   const [form] = Form.useForm();
   const layout = {
     labelCol: { span: 10 },
-    wrapperCol: { span: 6 },
+    wrapperCol: { span: 7 },
   };
+  const { TextArea } = Input;
 
   const validateForm = () => {
     form
@@ -19,20 +20,24 @@ const Register = props => {
         'phone',
         'idType',
         'idNumber',
+        'credential_number',
         'city',
         'username',
         'password',
+        'desc',
+        'sso_name',
       ])
       .then(() => {
         const userInfo = form.getFieldsValue();
+        userInfo.city = Number(userInfo.city);
         let { idType, ...params } = userInfo;
         dispatch({
           type: 'user/register',
-          payload: { params },
+          payload: params,
         }).then(res => {
           if ('id' in res) {
             history.push('/login');
-          } else message('注册失败');
+          } else message.error('注册失败');
         });
       })
       .catch(error => {});
@@ -101,6 +106,13 @@ const Register = props => {
               visible ? <EyeTwoTone /> : <EyeInvisibleOutlined />
             }
           />
+        </Form.Item>
+        <Form.Item
+          label="简介"
+          name="desc"
+          rules={[{ required: true, message: '请输入简介!' }]}
+        >
+          <TextArea className={styles.login} />
         </Form.Item>
       </Form>
       <Button
