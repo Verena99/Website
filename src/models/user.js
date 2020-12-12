@@ -1,4 +1,10 @@
-import { query, queryCurrent, login, register } from '@/services/user';
+import {
+  query,
+  queryCurrent,
+  login,
+  register,
+  changeUserInfo,
+} from '@/services/user';
 const UserModel = {
   namespace: 'user',
   state: {
@@ -10,10 +16,10 @@ const UserModel = {
       name: 'LYF',
       phone: '18888888888',
       idType: '1',
-      idNumber: '123456789',
-      city: 'ShenYang',
-      username: 'BALABALA',
-      password: '888888',
+      credential_number: '123456789',
+      city: 2,
+      sso_name: 'BALABALA',
+      password: 888888,
     },
   },
   effects: {
@@ -22,12 +28,9 @@ const UserModel = {
       return response;
     },
 
-    *fetchCurrent({ payload }, { call, put }) {
-      // const response = yield call(queryCurrent);
-      yield put({
-        type: 'saveCurrentUser',
-        payload: payload,
-      });
+    *fetchCurrent({ payload }, { call }) {
+      const response = yield call(queryCurrent, payload);
+      return response;
     },
 
     *login({ payload }, { call, put }) {
@@ -55,6 +58,11 @@ const UserModel = {
           payload: payload,
         });
       }
+      return response;
+    },
+
+    *changeUserInfo({ payload }, { call }) {
+      const response = yield call(changeUserInfo, payload);
       return response;
     },
   },

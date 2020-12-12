@@ -90,6 +90,7 @@ const tempdata = [
 const Token = props => {
   const { caller_id, dispatch } = props;
   const [createToken, setCreateToken] = useState(false);
+  const [update, setUpdate] = useState();
   const [tokenName, setTokenName] = useState();
   const [showDetail, setShowDetail] = useState(false);
   const [page, setPage] = useState(1);
@@ -141,6 +142,12 @@ const Token = props => {
               }}
             >
               详情
+            </a>
+            <a
+              style={{ marginLeft: '10px' }}
+              onClick={() => changeToken(record.id)}
+            >
+              修改
             </a>
             <a
               style={{ marginLeft: '10px' }}
@@ -202,6 +209,12 @@ const Token = props => {
     });
   };
 
+  const changeToken = id => {
+    setTokenId(id);
+    setUpdate(true);
+    setCreateToken(true);
+  };
+
   return (
     <>
       {!showDetail && (
@@ -209,7 +222,13 @@ const Token = props => {
           title="召集令列表"
           style={{ height: '100%' }}
           extra={
-            <Button type="primary" onClick={() => setCreateToken(true)}>
+            <Button
+              type="primary"
+              onClick={() => {
+                setUpdate(false);
+                setCreateToken(true);
+              }}
+            >
               新建召集令
             </Button>
           }
@@ -234,6 +253,8 @@ const Token = props => {
         setCreateToken={setCreateToken}
         setRefresh={setRefresh}
         refresh={refresh}
+        update={update}
+        tokenId={tokenId}
       />
       {showDetail && (
         <TokenDetail
