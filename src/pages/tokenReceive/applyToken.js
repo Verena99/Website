@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Input, Descriptions, Button } from 'antd';
+import { Input, Descriptions, Button, message } from 'antd';
 import style1 from '@/css/showToken.css';
 import { history } from 'umi';
 import axios from 'axios';
@@ -70,7 +70,13 @@ const applyToken = props => {
     })
       .then(res => {
         if (res.status === 200) {
-          console.log('请求成功');
+          console.log(res);
+          if (res.data.hasOwnProperty('code')) {
+            message.error(res.data.message);
+          } else {
+            message.success('请求成功');
+            history.goBack();
+          }
         } else throw Error('error status:', response.status);
       })
       .catch(error => {

@@ -84,6 +84,7 @@ const changeApplication = props => {
       .then(res => {
         if (res.status == 200) {
           console.log('已更新请求');
+          history.goBack();
         }
       })
       .catch(error => {
