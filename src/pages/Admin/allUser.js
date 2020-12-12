@@ -2,52 +2,87 @@ import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { Input, Select, Table, Space, Popconfirm, message } from 'antd';
 import style1 from '@/css/applicationList.css';
-
+import axios from 'axios';
 const { Column } = Table;
-
+const page_size = 10;
+const userType = { 0: '未知', 1: '普通用户', 2: '系统管理员' };
+const userLevel = { 0: '未知', 1: '一般', 2: '重要', 3: '钻石级' };
 const allUser = props => {
-  const [tokenList, setTokenList] = useState();
+  const [userList, setUserList] = useState();
+  const [currentPage, setCurrentPage] = useState(1);
+  const [total, setTotal] = useState(1);
   const {
     location: { query },
   } = props;
   useEffect(() => {
-    //fetch请求我的待审批的tokenInfo
-    let temp = new Array(12).fill({
-      name: 'ccy',
-      class: '普通用户',
-      userId: '1234',
-      level: '钻石',
-      registrationTime: '2019/8/21',
-    });
-    setTokenList(temp);
+    axios({
+      method: 'get',
+      url: '/api/v1/user',
+      page: currentPage,
+      page_size,
+    })
+      .then(response => {
+        if (response.status === 200) {
+          setUserList(response.data.user_list);
+          setTotal(response.data.total);
+        } else throw Error('error status:', response.status);
+      })
+      .catch(error => {
+        console.log(error);
+      });
   }, []);
-  function confirm(tokenId) {
-    message.success('已删除该请求' + tokenId);
-    //fetch 发送请求：删除申请
-    console.log(query.userId, tokenId);
-    //fetch 发送请求重新获取我的待审批的申请
+  function handleChangePage(page) {
+    axios({
+      method: 'get',
+      url: '/api/v1/user',
+      page: page,
+      page_size,
+    })
+      .then(response => {
+        if (response.status === 200) {
+          setUserList(response.data.user_list);
+          setTotal(response.data.total);
+          setCurrentPage(page);
+        } else throw Error('error status:', response.status);
+      })
+      .catch(error => {
+        console.log(error);
+      });
   }
   return (
     <>
       <Table
         className={style1.applicationList}
-        dataSource={tokenList}
-        pagination={{ pageSize: 12 }}
+        dataSource={userList}
+        pagination={{
+          pageSize: 10,
+          current: currentPage,
+          onChange: handleChangePage,
+          total: total,
+        }}
       >
         <Column title="用户名" dataIndex="name" key="name" />
-        <Column title="用户类型" dataIndex="class" key="class" />
-        <Column title="用户级别" dataIndex="level" key="level" />
         <Column
-          title="注册时间"
-          dataIndex="registrationTime"
-          key="registrationTime"
+          title="用户类型"
+          key="admin_type"
+          render={(text, record) => (
+            <Space size="middle">{userType[record.admin_type]}</Space>
+          )}
         />
+        <Column
+          title="用户级别"
+          key="level"
+          render={(text, record) => (
+            <Space size="middle">{userLevel[record.level]}</Space>
+          )}
+        />
+        <Column title="用户简介" dataIndex="desc" key="desc" />
         <Column
           title="操作"
           key="action"
           render={(text, record) => (
             <Space size="middle">
-              <Link to={`/admin/userInfo/${record.userId}`}>查看</Link>
+              <Link to={`/admin/userInfo/${record.id}`}>查看</Link>
             </Space>
           )}
         />

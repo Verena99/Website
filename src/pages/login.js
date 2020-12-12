@@ -38,20 +38,6 @@ const LogIn = props => {
             }
           }
         });
-        // console.log(md5(form.getFieldValue('password')));
-        // dispatch({
-        //   type: 'user/saveCurrentUser',
-        //   payload: {
-        //     name: form.getFieldValue('username'),
-        //     caller_id: form.getFieldValue('username'),
-        //   },
-        // });
-        // let userId = document.getElementById('userId').value;
-        // if (userId === 'admin') {
-        //   history.push(`/admin/allUser?userId=${userId}`);
-        // } else {
-        //   history.push(`/system/tokenHolder?userId=${userId}`);
-        // }
       })
       .catch(error => {});
   };
