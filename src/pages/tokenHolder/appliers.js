@@ -20,7 +20,7 @@ const Appliers = props => {
       render: (text, record) => (
         <a
           onClick={() => {
-            showApplier(record.callee_id);
+            showApplier(record.callee_id, text);
           }}
         >
           {text}
@@ -97,6 +97,7 @@ const Appliers = props => {
     applyTime: '2020-09-06 16:56:00',
   };
 
+  // 获取申请人列表
   useEffect(() => {
     dispatch({
       type: 'token/fetchApplications',
@@ -109,13 +110,15 @@ const Appliers = props => {
     });
   }, []);
 
-  const showApplier = id => {
+  // 获取申请人信息
+  const showApplier = (id, text) => {
     setApplierVisible(true);
     dispatch({
       type: 'user/fetchUser',
       payload: { page_size: 1, page: 1, user_id: id },
     }).then(res => {
       if (res) {
+        res.user_list.applierName = text;
         setApplierInfo(res.user_list);
       }
     });
@@ -145,6 +148,7 @@ const Appliers = props => {
           current: current,
           pageSize: pageSize,
           total: totalPage,
+          onChange: page => setCurrent(page),
         }}
       />
       {/* <Table columns={column} dataSource={applierList} style={{ margin: '15px' }} /> */}
@@ -162,18 +166,18 @@ const Appliers = props => {
       >
         <Descriptions title="申请人信息" bordered>
           <Descriptions.Item label="申请人" span={2}>
-            {sample.applyName}
+            {applierInfo.applierName}
           </Descriptions.Item>
-          <Descriptions.Item label="所在城市">{sample.city}</Descriptions.Item>
+          <Descriptions.Item label="所在城市">
+            {applierInfo.city}
+          </Descriptions.Item>
           <Descriptions.Item label="电话号码" span={3}>
-            {sample.phone}
+            {applierInfo.phone}
           </Descriptions.Item>
-          <Descriptions.Item label="申请时间" span={3}>
-            {sample.applyTime}
-          </Descriptions.Item>
-          <Descriptions.Item label="简介">
-            {sample.descriptor}
-          </Descriptions.Item>
+          {/* <Descriptions.Item label="申请时间" span={3}>
+            {applierInfo.applyTime}
+          </Descriptions.Item> */}
+          <Descriptions.Item label="简介">{applierInfo.desc}</Descriptions.Item>
         </Descriptions>
       </Modal>
     </>

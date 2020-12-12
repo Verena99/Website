@@ -216,6 +216,7 @@ const Token = props => {
       {showDetail && (
         <TokenDetail
           tokenName={tokenName}
+          data={data}
           tokenId={tokenId}
           setShowDetail={setShowDetail}
           refresh={refresh}
