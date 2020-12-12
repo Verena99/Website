@@ -32,7 +32,10 @@ const LogIn = props => {
               history.push(`/admin/allUser?userId=${res.user_id}`);
             else if (res.admin_type === 1)
               history.push(`/system/tokenHolder?userId=${res.user_id}`);
-            else message.error('用户名或密码错误');
+            else {
+              history.push(`/system/tokenHolder?userId=${res.user_id}`);
+              message.error('用户名或密码错误');
+            }
           }
         });
         // console.log(md5(form.getFieldValue('password')));
