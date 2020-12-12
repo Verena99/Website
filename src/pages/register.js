@@ -3,6 +3,7 @@ import { Input, Form, Button, message, Select } from 'antd';
 import { EyeInvisibleOutlined, EyeTwoTone } from '@ant-design/icons';
 import styles from './index.less';
 import { history, connect } from 'umi';
+import md5 from 'js-md5';
 
 const Register = props => {
   const { dispatch } = props;
@@ -30,6 +31,7 @@ const Register = props => {
       .then(() => {
         const userInfo = form.getFieldsValue();
         userInfo.city = Number(userInfo.city);
+        userInfo.password = md5(userInfo.password);
         let { idType, ...params } = userInfo;
         dispatch({
           type: 'user/register',
