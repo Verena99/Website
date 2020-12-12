@@ -17,7 +17,7 @@ export async function queryNotices() {
 // 登陆
 export async function login(params) {
   return request(`/api/v1/user/login`, {
-    method: `POST`,
+    method: `GET`,
     params: params,
   });
 }
