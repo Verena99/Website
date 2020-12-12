@@ -5,9 +5,9 @@ import { connect } from 'umi';
 const Appliers = props => {
   const { dispatch, caller_id, tokenId } = props;
   const [applierVisible, setApplierVisible] = useState(false);
-  const [pageSize] = useState('10');
-  const [current, setCurrent] = useState('1');
-  const [applierList, setApplierList] = useState();
+  const [pageSize] = useState(10);
+  const [current, setCurrent] = useState(1);
+  const [applierList, setApplierList] = useState(data);
   const [totalPage, setTotalPage] = useState();
   const [applierInfo, setApplierInfo] = useState();
   const accept = 1;
@@ -142,7 +142,7 @@ const Appliers = props => {
     <>
       <Table
         columns={column}
-        dataSource={data}
+        dataSource={applierList}
         style={{ margin: '15px' }}
         pagination={{
           current: current,
@@ -151,7 +151,6 @@ const Appliers = props => {
           onChange: page => setCurrent(page),
         }}
       />
-      {/* <Table columns={column} dataSource={applierList} style={{ margin: '15px' }} /> */}
       <Modal
         centered
         maskClosable={false}

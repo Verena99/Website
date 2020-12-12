@@ -38,6 +38,7 @@ const Register = props => {
           payload: params,
         }).then(res => {
           if ('id' in res) {
+            message.success('注册成功！');
             history.push('/login');
           } else message.error('注册失败');
         });
