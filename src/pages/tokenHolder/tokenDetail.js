@@ -12,7 +12,7 @@ import Appliers from './appliers';
 const { Content, Sider } = Layout;
 
 const TokenDetail = props => {
-  const { setShowDetail, tokenName, tokenId } = props;
+  const { setShowDetail, tokenName, tokenId, data } = props;
   const [menuKey, setMenuKey] = useState('1');
 
   return (
@@ -52,8 +52,8 @@ const TokenDetail = props => {
         </Menu>
       </Sider>
       <Content style={{ backgroundColor: '#ffffff' }}>
-        {menuKey === '1' && <TokenInfo tokenId={tokenId} />}
-        {menuKey === '2' && <Appliers />}
+        {menuKey === '1' && <TokenInfo tokenInfo={data} tokenId={tokenId} />}
+        {menuKey === '2' && <Appliers tokenId={tokenId} />}
       </Content>
     </Layout>
   );

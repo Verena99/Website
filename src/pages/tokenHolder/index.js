@@ -159,17 +159,17 @@ const Token = props => {
     },
   ];
 
-  // useEffect(()=>{
-  //   dispatch({
-  //     type: 'token/tokenList',
-  //     payload: { page, pageSize, caller_id },
-  //   }).then((res)=>{
-  //     if(res && res.data) {
-  //       setData(res.callup_list);
-  //       setTotalPage(res.total);
-  //     }
-  //   })
-  // },[page, refresh])
+  useEffect(() => {
+    dispatch({
+      type: 'token/tokenList',
+      payload: { page, pageSize, caller_id },
+    }).then(res => {
+      if (res && res.data) {
+        setData(res.callup_list);
+        setTotalPage(res.total);
+      }
+    });
+  }, [page, refresh]);
 
   const clickDetail = (name, id) => {
     setTokenName(name);
@@ -216,6 +216,7 @@ const Token = props => {
       {showDetail && (
         <TokenDetail
           tokenName={tokenName}
+          data={data}
           tokenId={tokenId}
           setShowDetail={setShowDetail}
           refresh={refresh}

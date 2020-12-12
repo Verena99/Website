@@ -1,8 +1,17 @@
 import React, { useState, useEffect } from 'react';
-import { Table, Button, Modal, Descriptions } from 'antd';
+import { Table, Button, Modal, Descriptions, message } from 'antd';
+import { connect } from 'umi';
 
 const Appliers = props => {
+  const { dispatch, caller_id, tokenId } = props;
   const [applierVisible, setApplierVisible] = useState(false);
+  const [pageSize] = useState('10');
+  const [current, setCurrent] = useState('1');
+  const [applierList, setApplierList] = useState();
+  const [totalPage, setTotalPage] = useState();
+  const [applierInfo, setApplierInfo] = useState();
+  const accept = 1;
+  const reject = 2;
   const column = [
     {
       title: '申请者',
@@ -11,7 +20,7 @@ const Appliers = props => {
       render: (text, record) => (
         <a
           onClick={() => {
-            showApplier();
+            showApplier(record.callee_id, text);
           }}
         >
           {text}
@@ -34,10 +43,18 @@ const Appliers = props => {
       key: 'action',
       render: (text, record) => (
         <>
-          <Button type="text" style={{ color: '#1890ff' }}>
+          <Button
+            type="text"
+            style={{ color: '#1890ff' }}
+            onClick={() => dealApply(record.id, accept)}
+          >
             同意
           </Button>
-          <Button type="text" style={{ color: '#1890ff' }}>
+          <Button
+            type="text"
+            style={{ color: '#1890ff' }}
+            onClick={() => rejectApply(record.id, reject)}
+          >
             拒绝
           </Button>
         </>
@@ -80,23 +97,61 @@ const Appliers = props => {
     applyTime: '2020-09-06 16:56:00',
   };
 
-  useEffect(() => {}, []);
+  // 获取申请人列表
+  useEffect(() => {
+    dispatch({
+      type: 'token/fetchApplications',
+      payload: { page_size: pageSize, page: current, callup_id: tokenId },
+    }).then(res => {
+      if (res) {
+        setApplierList(res.application_list);
+        setTotalPage(res.total);
+      }
+    });
+  }, []);
 
-  const showApplier = () => {
+  // 获取申请人信息
+  const showApplier = (id, text) => {
     setApplierVisible(true);
+    dispatch({
+      type: 'user/fetchUser',
+      payload: { page_size: 1, page: 1, user_id: id },
+    }).then(res => {
+      if (res) {
+        res.user_list.applierName = text;
+        setApplierInfo(res.user_list);
+      }
+    });
   };
 
-  // 接受申请
-  const acceptApply = () => {
-    setApplierVisible(false);
+  // 处理申请 接受：1 拒绝：2
+  const dealApply = (id, action) => {
+    dispatch({
+      type: 'token/dealApply',
+      payload: { action_type: action, application_id: id, caller_id },
+    }).then(res => {
+      if (!res) {
+        message.success('处理成功');
+      } else {
+        message.error(res.message);
+      }
+    });
   };
-
-  // 拒绝申请
-  const rejectApply = () => {};
 
   return (
     <>
-      <Table columns={column} dataSource={data} style={{ margin: '15px' }} />
+      <Table
+        columns={column}
+        dataSource={data}
+        style={{ margin: '15px' }}
+        pagination={{
+          current: current,
+          pageSize: pageSize,
+          total: totalPage,
+          onChange: page => setCurrent(page),
+        }}
+      />
+      {/* <Table columns={column} dataSource={applierList} style={{ margin: '15px' }} /> */}
       <Modal
         centered
         maskClosable={false}
@@ -104,29 +159,32 @@ const Appliers = props => {
         width="600px"
         visible={applierVisible}
         footer={
-          <Button type="primary" onClick={() => acceptApply()}>
+          <Button type="primary" onClick={() => setApplierVisible(false)}>
             确认
           </Button>
         }
       >
         <Descriptions title="申请人信息" bordered>
           <Descriptions.Item label="申请人" span={2}>
-            {sample.applyName}
+            {applierInfo.applierName}
           </Descriptions.Item>
-          <Descriptions.Item label="所在城市">{sample.city}</Descriptions.Item>
+          <Descriptions.Item label="所在城市">
+            {applierInfo.city}
+          </Descriptions.Item>
           <Descriptions.Item label="电话号码" span={3}>
-            {sample.phone}
+            {applierInfo.phone}
           </Descriptions.Item>
-          <Descriptions.Item label="申请时间" span={3}>
-            {sample.applyTime}
-          </Descriptions.Item>
-          <Descriptions.Item label="简介">
-            {sample.descriptor}
-          </Descriptions.Item>
+          {/* <Descriptions.Item label="申请时间" span={3}>
+            {applierInfo.applyTime}
+          </Descriptions.Item> */}
+          <Descriptions.Item label="简介">{applierInfo.desc}</Descriptions.Item>
         </Descriptions>
       </Modal>
     </>
   );
 };
 
-export default Appliers;
+export default connect(({ token, user }) => ({
+  token,
+  caller_id: user.currentUser.caller_id,
+}))(Appliers);
