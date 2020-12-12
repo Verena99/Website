@@ -162,7 +162,7 @@ const Token = props => {
   useEffect(() => {
     dispatch({
       type: 'token/tokenList',
-      payload: { page, pageSize, caller_id },
+      payload: { page, page_size: pageSize, caller_id },
     }).then(res => {
       if (res && res.data) {
         setData(res.callup_list);
