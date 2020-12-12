@@ -54,6 +54,7 @@ const allToken = props => {
 
   const searchByName = value => {
     setSearchName(value);
+    console.log(value);
     setSearchClass(null);
     axios({
       method: 'get',
@@ -163,13 +164,24 @@ const allToken = props => {
         />
         <Column title="地点" dataIndex="city" key="city" />
         <Column title="目标人数" dataIndex="quota" key="quota" />
+        <Column
+          title="令主id"
+          key="caller_id"
+          render={(text, record) => (
+            <Space size="middle">
+              <Link to={`/admin/userInfo/${record.caller_id}`}>
+                {record.caller_id}
+              </Link>
+            </Space>
+          )}
+        />
         <Column title="已召集人数" dataIndex="success_num" key="success_num" />
         <Column
           title="结束时间"
           key="end_time"
           render={(text, record) => (
             <Space size="middle">
-              {new Date(record.end_time).toLocaleString()}
+              {new Date(record.end_time * 1000).toLocaleString()}
             </Space>
           )}
         />

@@ -93,8 +93,9 @@ const Token = props => {
   const [tokenName, setTokenName] = useState();
   const [showDetail, setShowDetail] = useState(false);
   const [page, setPage] = useState(1);
-  const [pageSize, setPageSize] = useState(6);
-  const [data, setData] = useState(tempdata);
+  const [pageSize, setPageSize] = useState(10);
+  const [data, setData] = useState();
+  const [tokenInfo, setTokenInfo] = useState();
   const [totalPage, setTotalPage] = useState(12);
   const [refresh, setRefresh] = useState(false);
   const [tokenId, setTokenId] = useState();
@@ -124,6 +125,7 @@ const Token = props => {
       title: '截止时间',
       dataIndex: 'end_time',
       key: 'end_time',
+      render: text => <>{new Date(text * 1000).toLocaleString()}</>,
     },
     {
       title: '操作',
@@ -134,15 +136,15 @@ const Token = props => {
           <div>
             <a
               onClick={() => {
-                setTokenName(record.name);
-                setShowDetail(true);
+                setTokenInfo(record);
+                clickDetail(record.name, record.id);
               }}
             >
               详情
             </a>
             <a
               style={{ marginLeft: '10px' }}
-              onClick={() => deleteToken(record.callup_id)}
+              onClick={() => deleteToken(record.id)}
             >
               删除
             </a>
@@ -150,6 +152,7 @@ const Token = props => {
         ) : (
           <a
             onClick={() => {
+              setTokenInfo(record);
               clickDetail(record.name, record.id);
             }}
           >
@@ -164,7 +167,19 @@ const Token = props => {
       type: 'token/tokenList',
       payload: { page, page_size: pageSize, caller_id },
     }).then(res => {
-      if (res && res.data) {
+      if (res) {
+        setData(res.callup_list);
+        setTotalPage(res.total);
+      }
+    });
+  }, []);
+
+  useEffect(() => {
+    dispatch({
+      type: 'token/tokenList',
+      payload: { page, page_size: pageSize, caller_id },
+    }).then(res => {
+      if (res) {
         setData(res.callup_list);
         setTotalPage(res.total);
       }
@@ -188,10 +203,11 @@ const Token = props => {
   };
 
   return (
-    <div>
+    <>
       {!showDetail && (
         <Card
           title="召集令列表"
+          style={{ height: '100%' }}
           extra={
             <Button type="primary" onClick={() => setCreateToken(true)}>
               新建召集令
@@ -202,31 +218,37 @@ const Token = props => {
             dataSource={data}
             columns={columns}
             pagination={{
-              defaultCurrent: page,
+              current: page,
               total: totalPage,
               pageSize: pageSize,
-              onchange: page => {
+              onChange: page => {
+                console.log(page);
                 setPage(page);
               },
             }}
           />
         </Card>
       )}
-      <NewToken createToken={createToken} setCreateToken={setCreateToken} />
+      <NewToken
+        createToken={createToken}
+        setCreateToken={setCreateToken}
+        setRefresh={setRefresh}
+        refresh={refresh}
+      />
       {showDetail && (
         <TokenDetail
           tokenName={tokenName}
-          data={data}
+          data={tokenInfo}
           tokenId={tokenId}
           setShowDetail={setShowDetail}
           refresh={refresh}
           setRefresh={setRefresh}
         />
       )}
-    </div>
+    </>
   );
 };
 
 export default connect(({ user }) => ({
-  caller_id: user.currentUser.caller_id,
+  caller_id: user.currentUser.user_id,
 }))(Token);

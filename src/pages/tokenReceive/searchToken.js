@@ -171,7 +171,7 @@ const searchToken = props => {
           key="end_time"
           render={(text, record) => (
             <Space size="middle">
-              {new Date(record.end_time).toLocaleString()}
+              {new Date(record.end_time * 1000).toLocaleString()}
             </Space>
           )}
         />

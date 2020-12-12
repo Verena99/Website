@@ -28,8 +28,8 @@ const myToken = props => {
       params: {
         page: currentPage,
         page_size,
-        callee_id: query.userId,
-        status: 1,
+        callee_id: Number(query.userId),
+        status: 2,
       },
     })
       .then(response => {
@@ -49,8 +49,8 @@ const myToken = props => {
       params: {
         page: page,
         page_size,
-        callee_id: query.userId,
-        status: 1,
+        callee_id: Number(query.userId),
+        status: 2,
       },
     })
       .then(response => {

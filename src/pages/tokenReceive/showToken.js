@@ -13,7 +13,8 @@ const statusList = {
 };
 const showToken = props => {
   const { match } = props;
-  const callup_id = match.params.callup_id;
+  const callup_id = match.params.tokenId;
+  console.log(callup_id);
   const [tokenInfo, setTokenInfo] = useState({
     name: 'xxx',
     type: 0, //类型
@@ -33,7 +34,7 @@ const showToken = props => {
       params: {
         page: 1,
         page_size: 1,
-        callup_id,
+        callup_id: Number(callup_id),
       },
     })
       .then(response => {
@@ -55,7 +56,7 @@ const showToken = props => {
           {tokenInfo.success_num}
         </Descriptions.Item>
         <Descriptions.Item label="结束日期">
-          {new Date(tokenInfo.end_time).toLocaleString()}
+          {new Date(tokenInfo.end_time * 1000).toLocaleString()}
         </Descriptions.Item>
         <Descriptions.Item label="当前状态">
           {statusList[tokenInfo.status]}

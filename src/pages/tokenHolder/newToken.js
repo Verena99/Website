@@ -13,8 +13,10 @@ import {
 } from 'antd';
 import { PlusOutlined } from '@ant-design/icons';
 import { connect } from 'umi';
+import { provinceData } from '@/utils/utils';
 
 const { TextArea } = Input;
+const { Option } = Select;
 
 const NewToken = props => {
   const {
@@ -71,20 +73,23 @@ const NewToken = props => {
         'tokenNum',
         'tokenPicture',
         'deadline',
+        'city',
       ])
       .then(() => {
         const params = {};
         params.caller_id = caller_id;
         params.desc = form.getFieldValue('tokenDes');
-        params.end_time = form.getFieldValue('deadline');
+        const time = new Date(form.getFieldValue('deadline'));
+        params.end_time = parseInt(time.getTime() / 1000);
         params.name = form.getFieldValue('tokenName');
         params.quota = form.getFieldValue('tokenNum');
         params.type = form.getFieldValue('tokenType');
+        params.type = Number(form.getFieldValue('city'));
         dispatch({
           type: 'token/createToken',
-          payload: { caller_id },
+          payload: params,
         }).then(res => {
-          if (res && res.code === 0) {
+          if ('callup_id' in res) {
             setRefresh(!refresh);
             setCreateToken(false);
           } else {
@@ -123,12 +128,12 @@ const NewToken = props => {
               name="tokenType"
               rules={[{ required: true, message: '请选择召集令类别' }]}
             >
-              <Select defaultValue="技术交流">
-                <Select.Option value="技术交流">技术交流</Select.Option>
-                <Select.Option value="学业讨论">学业讨论</Select.Option>
-                <Select.Option value="社会实践">社会实践</Select.Option>
-                <Select.Option value="公益志愿者">公益志愿者</Select.Option>
-                <Select.Option value="游玩">游玩</Select.Option>
+              <Select>
+                <Select.Option value={1}>技术交流</Select.Option>
+                <Select.Option value={2}>学业讨论</Select.Option>
+                <Select.Option value={3}>社会实践</Select.Option>
+                <Select.Option value={4}>公益志愿者</Select.Option>
+                <Select.Option value={5}>游玩</Select.Option>
               </Select>
             </Form.Item>
           </Col>
@@ -160,6 +165,19 @@ const NewToken = props => {
             </Form.Item>
           </Col>
         </Row>
+        <Form.Item
+          label="召集的城市"
+          name="city"
+          rules={[{ required: true, message: '请输入截止日期' }]}
+        >
+          <Select>
+            {Object.keys(provinceData).map(province => (
+              <Option key={province} value={province}>
+                {provinceData[province]}
+              </Option>
+            ))}
+          </Select>
+        </Form.Item>
         <Form.Item label="召集令介绍照片" name="tokenPicture">
           <div style={{ border: '1px' }}>
             <Upload
@@ -181,5 +199,5 @@ const NewToken = props => {
 
 export default connect(({ token, user }) => ({
   token,
-  caller_id: user.currentUser.caller_id,
+  caller_id: user.currentUser.user_id,
 }))(NewToken);
