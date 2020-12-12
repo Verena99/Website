@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import {
   Modal,
   Form,
@@ -29,11 +29,11 @@ const NewToken = props => {
     caller_id,
     tokenId,
     update,
+    tokenInfo,
   } = props;
   const [form] = Form.useForm();
   const [previewImage, setPreviewImage] = useState();
   const [picture, setPicture] = useState();
-  const [tokenInfo, setTokenInfo] = useState();
 
   const getBase64 = file => {
     return new Promise((resolve, reject) => {
@@ -76,7 +76,7 @@ const NewToken = props => {
         'tokenDes',
         'tokenNum',
         'tokenPicture',
-        'deadline',
+        'end_time',
         'city',
       ])
       .then(() => {
@@ -87,9 +87,7 @@ const NewToken = props => {
           const time = new Date(form.getFieldValue('deadline'));
           token.end_time = parseInt(time.getTime() / 1000);
           token.quota = form.getFieldValue('tokenNum');
-          token.desc = form.getFieldValue('tokenDes')
-            ? form.getFieldValue('tokenDes')
-            : tokenInfo.desc;
+          token.desc = form.getFieldValue('tokenDes');
           params.data = token;
           dispatch({
             type: 'token/createToken',
@@ -111,7 +109,7 @@ const NewToken = props => {
           params.name = form.getFieldValue('tokenName');
           params.quota = form.getFieldValue('tokenNum');
           params.type = form.getFieldValue('tokenType');
-          params.type = Number(form.getFieldValue('city'));
+          params.city = Number(form.getFieldValue('city'));
           dispatch({
             type: 'token/createToken',
             payload: params,
@@ -129,17 +127,17 @@ const NewToken = props => {
   };
 
   useEffect(() => {
-    if (update) {
-      dispatch({
-        type: 'token/tokenList',
-        payload: { page: 1, page_size: 1, callup_id: tokenId },
-      }).then(res => {
-        if ('callup_list' in res) {
-          setTokenInfo(res.callup_list);
-        }
+    if (update && createToken) {
+      console.log('here');
+      form.setFieldsValue({
+        name: tokenInfo.name,
+        tokenType: tokenInfo.tokenType,
+        tokenDes: tokenInfo.tokenDes,
+        tokenNum: tokenInfo.tokenNum,
+        city: provinceData[tokenInfo.city],
       });
     }
-  }, []);
+  }, [createToken]);
 
   return (
     <Modal
@@ -159,10 +157,10 @@ const NewToken = props => {
             <Form.Item
               label="召集令名称"
               name="tokenName"
-              rules={[{ required: true, message: '请输入召集令名称称' }]}
+              rules={[{ required: true, message: '请输入召集令名称' }]}
             >
               <Input
-                placeholder={update ? tokenInfo.name : '请输入召集令名称'}
+                // placeholder={update ? tokenInfo.name : '请输入召集令名称'}
                 disabled={update}
               />
             </Form.Item>
@@ -174,7 +172,7 @@ const NewToken = props => {
               rules={[{ required: true, message: '请选择召集令类别' }]}
             >
               <Select
-                defaultValue={update ? tokenInfo.type : undefined}
+                // defaultValue={update ? tokenInfo.type : undefined}
                 disabled={update}
               >
                 <Select.Option value={1}>技术交流</Select.Option>
@@ -193,7 +191,7 @@ const NewToken = props => {
         >
           <TextArea
             rows={5}
-            placeholder={update ? tokenInfo.desc : '描述信息'}
+            // placeholder={update ? tokenInfo.desc : '描述信息'}
           />
         </Form.Item>
         <Row gutter={32}>
@@ -204,14 +202,14 @@ const NewToken = props => {
               rules={[{ required: true, message: '请输入召集人数' }]}
             >
               <InputNumber
-                placeholder={update ? tokenInfo.quota : '请输入召集人数'}
+              // placeholder={update ? tokenInfo.quota : '请输入召集人数'}
               />
             </Form.Item>
           </Col>
           <Col span={12}>
             <Form.Item
               label="截止日期"
-              name="deadline"
+              name="end_time"
               rules={[{ required: true, message: '请输入截止日期' }]}
             >
               <DatePicker />
@@ -224,7 +222,7 @@ const NewToken = props => {
           rules={[{ required: true, message: '请输入城市' }]}
         >
           <Select
-            defaultValue={update ? tokenInfo.city : undefined}
+            // defaultValue={update ? tokenInfo.city : undefined}
             disabled={update}
           >
             {Object.keys(provinceData).map(province => (

@@ -4,89 +4,6 @@ import NewToken from './newToken';
 import TokenDetail from './tokenDetail';
 import { connect } from 'umi';
 
-const tempdata = [
-  {
-    key: '1',
-    name: '秋游',
-    type: '游玩',
-    success_num: 2,
-    quota: 10,
-    end_time: '2020/11/22 11:23:02',
-  },
-  {
-    key: '2',
-    name: '冬奥会志愿者',
-    type: '公益志愿者',
-    success_num: 3,
-    quota: 9,
-    end_time: '2020/11/02 9:00:00',
-  },
-  {
-    key: '3',
-    name: '人工智能学术交流大会',
-    type: '学业探讨',
-    success_num: 1,
-    quota: 10,
-    end_time: '2020/9/5 08:10:40',
-  },
-  {
-    key: '4',
-    name: '人工智能学术交流大会',
-    type: '学业探讨',
-    success_num: 0,
-    quota: 10,
-    end_time: '2020/9/5 08:10:40',
-  },
-  {
-    key: '5',
-    name: '人工智能学术交流大会',
-    type: '学业探讨',
-    success_num: '1',
-    quota: 10,
-    end_time: '2020/9/5 08:10:40',
-  },
-  {
-    key: '6',
-    name: '人工智能学术交流大会',
-    type: '学业探讨',
-    success_num: '1',
-    quota: 10,
-    end_time: '2020/9/5 08:10:40',
-  },
-  {
-    key: '7',
-    name: '人工智能学术交流大会',
-    type: '学业探讨',
-    success_num: '1',
-    quota: 10,
-    end_time: '2020/9/5 08:10:40',
-  },
-  {
-    key: '8',
-    name: '人工智能学术交流大会',
-    type: '学业探讨',
-    success_num: '1',
-    quota: 10,
-    end_time: '2020/9/5 08:10:40',
-  },
-  {
-    key: '9',
-    name: '人工智能学术交流大会',
-    type: '学业探讨',
-    success_num: '1',
-    quota: 10,
-    end_time: '2020/9/5 08:10:40',
-  },
-  {
-    key: '10',
-    name: '人工智能学术交流大会',
-    type: '学业探讨',
-    success_num: '1',
-    quota: 10,
-    end_time: '2020/9/5 08:10:40',
-  },
-];
-
 const Token = props => {
   const { caller_id, dispatch } = props;
   const [createToken, setCreateToken] = useState(false);
@@ -145,7 +62,7 @@ const Token = props => {
             </a>
             <a
               style={{ marginLeft: '10px' }}
-              onClick={() => changeToken(record.id)}
+              onClick={() => changeToken(record.id, record)}
             >
               修改
             </a>
@@ -209,7 +126,8 @@ const Token = props => {
     });
   };
 
-  const changeToken = id => {
+  const changeToken = (id, record) => {
+    setTokenInfo(record);
     setTokenId(id);
     setUpdate(true);
     setCreateToken(true);
@@ -255,6 +173,7 @@ const Token = props => {
         refresh={refresh}
         update={update}
         tokenId={tokenId}
+        tokenInfo={tokenInfo}
       />
       {showDetail && (
         <TokenDetail
