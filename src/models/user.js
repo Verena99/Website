@@ -1,10 +1,10 @@
-import { query, queryCurrent, login } from '@/services/user';
+import { query, queryCurrent, login, register } from '@/services/user';
 const UserModel = {
   namespace: 'user',
   state: {
     currentUser: {
-      name: '',
-      caller_id: '',
+      name: 'test',
+      caller_id: '0',
     },
     userInfo: {
       name: 'LYF',
@@ -19,6 +19,7 @@ const UserModel = {
   effects: {
     *fetchUser({ payload }, { call }) {
       const response = yield call(query, payload);
+      return response;
     },
 
     *fetchCurrent({ payload }, { call, put }) {
@@ -35,6 +36,20 @@ const UserModel = {
         const current = {};
         current.name = payload.sso_name;
         current.caller_id = response.caller_id;
+        yield put({
+          type: 'saveCurrentUser',
+          payload: payload,
+        });
+      }
+      return response;
+    },
+
+    *register({ payload }, { call, put }) {
+      const response = yield call(register, payload);
+      if (response) {
+        const current = {};
+        current.name = payload.sso_name;
+        current.caller_id = response.id;
         yield put({
           type: 'saveCurrentUser',
           payload: payload,
