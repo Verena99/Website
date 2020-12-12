@@ -137,11 +137,11 @@ const allToken = props => {
         onChange={searchByClass}
         value={searchClass}
       >
-        <Option value={0}>技术交流</Option>
-        <Option value={1}>学业探讨</Option>
-        <Option value={2}>社会实践</Option>
-        <Option value={3}>公益志愿者</Option>
-        <Option value={4}>游玩</Option>
+        <Option value={1}>技术交流</Option>
+        <Option value={2}>学业探讨</Option>
+        <Option value={3}>社会实践</Option>
+        <Option value={4}>公益志愿者</Option>
+        <Option value={5}>游玩</Option>
       </Select>
       <Table
         className={styles.showList}
