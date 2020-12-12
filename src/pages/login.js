@@ -13,37 +13,31 @@ const LogIn = props => {
     form
       .validateFields(['username', 'password'])
       .then(() => {
-        // dispatch({
-        //   type: 'user/login',
-        //   payload: { sso_name: form.getFieldValue('username'), password: md5(form.getFieldValue('password'))},
-        // }).then((res)=>{
-        //   if(res){
-        //     dispatch({
-        //       type: 'user/saveCurrentUser',
-        //       payload: { name:form.getFieldValue('username'), user_id: res.user_id}
-        //     })
-        //     if(res.admin_type===2)
-        //       history.push(`/admin/allUser?userId=${res.user_id}`);
-        //     else if(res.admin_type===1)
-        //       history.push(`/system/tokenHolder?userId=${res.user_id}`);
-        //     else
-        //       message.error('用户名或密码错误');
-        //   }
-        // })
-        console.log(md5(form.getFieldValue('password')));
         dispatch({
-          type: 'user/saveCurrentUser',
+          type: 'user/login',
           payload: {
-            name: form.getFieldValue('username'),
-            caller_id: form.getFieldValue('username'),
+            sso_name: form.getFieldValue('username'),
+            password: md5(form.getFieldValue('password')),
           },
+        }).then(res => {
+          if (res) {
+            dispatch({
+              type: 'user/saveCurrentUser',
+              payload: {
+                name: form.getFieldValue('username'),
+                user_id: res.user_id,
+              },
+            });
+            if (res.admin_type === 2)
+              history.push(`/admin/allUser?userId=${res.user_id}`);
+            else if (res.admin_type === 1)
+              history.push(`/system/tokenHolder?userId=${res.user_id}`);
+            else {
+              history.push(`/system/tokenHolder?userId=${res.user_id}`);
+              message.error('用户名或密码错误');
+            }
+          }
         });
-        let userId = document.getElementById('userId').value;
-        if (userId === 'admin') {
-          history.push(`/admin/allUser?userId=${userId}`);
-        } else {
-          history.push(`/system/tokenHolder?userId=${userId}`);
-        }
       })
       .catch(error => {});
   };

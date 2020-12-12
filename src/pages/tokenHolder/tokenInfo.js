@@ -2,18 +2,18 @@ import React, { useState, useEffect } from 'react';
 import { Descriptions, Badge } from 'antd';
 
 const TokenInfo = props => {
-  const { tokenId, dispatch } = props;
-  const [tokenInfo, setTokenInfo] = useState({
-    name: 'xxx',
-    type: '公益志愿者',
-    success_num: 5,
-    quota: 10,
-    // startTime: '2020/9/1',
-    end_time: '2020/10/1',
-    status: '待响应',
-    picture: '../../assets/ZJL.png',
-    desc: 'bala bala',
-  });
+  const { tokenId, dispatch, tokenInfo } = props;
+  // const [tokenInfo, setTokenInfo] = useState({
+  //   name: 'xxx',
+  //   type: '公益志愿者',
+  //   success_num: 5,
+  //   quota: 10,
+  //   // startTime: '2020/9/1',
+  //   end_time: '2020/10/1',
+  //   status: '待响应',
+  //   picture: '../../assets/ZJL.png',
+  //   desc: 'bala bala',
+  // });
 
   // useEffect(() => {
   //   dispatch({
@@ -32,9 +32,9 @@ const TokenInfo = props => {
         <Descriptions.Item label="召集人数">
           {`${tokenInfo.success_num}/${tokenInfo.quota}`}
         </Descriptions.Item>
-        <Descriptions.Item label="创建时间">
+        {/* <Descriptions.Item label="创建时间">
           {tokenInfo.startTime}
-        </Descriptions.Item>
+        </Descriptions.Item> */}
         <Descriptions.Item label="结束日期">
           {tokenInfo.end_time}
         </Descriptions.Item>
