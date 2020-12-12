@@ -184,6 +184,7 @@ const incomeInfo = props => {
         onChange={searchByClass}
         value={searchClass}
       >
+        <Option value={0}>全部</Option>
         <Option value={1}>技术交流</Option>
         <Option value={2}>学业探讨</Option>
         <Option value={3}>社会实践</Option>
