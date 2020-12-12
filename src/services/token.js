@@ -5,14 +5,15 @@ const tokenUrl = '/api/v1/callup';
 const dealApplyUrl = '/api/v1/caller/action';
 const queryApplicationUrl = '/api/v1/application';
 
+// 获取召集令列表
 export async function tokenList(params) {
-  console.log(stringfy(params));
   return request(`${tokenUrl}?${stringfy(params)}`, {
     method: `GET`,
-    data: params,
+    params: params,
   });
 }
 
+// 删除召集令
 export async function deleteToken(params) {
   return request(`${tokenUrl}`, {
     method: `DELETE`,
@@ -20,6 +21,7 @@ export async function deleteToken(params) {
   });
 }
 
+// 创建召集令
 export async function createToken(params) {
   return request(`${tokenUrl}`, {
     method: `POST`,
@@ -27,6 +29,7 @@ export async function createToken(params) {
   });
 }
 
+// 更新召集令
 export async function updateToken(params) {
   return request(`${tokenUrl}/${params.callup_id}`, {
     method: `PATCH`,
@@ -34,6 +37,7 @@ export async function updateToken(params) {
   });
 }
 
+// 接受、拒绝召集令
 export async function dealApply(params) {
   return request(`${dealApplyUrl}`, {
     method: `PATCH`,

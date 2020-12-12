@@ -1,5 +1,4 @@
 import request from '@/utils/request';
-import { stringfy } from '@/utils/utils';
 
 export async function query(params) {
   return request(`/api/v1/user?${stringfy(params)}`, {
@@ -15,9 +14,10 @@ export async function queryNotices() {
   return request('/api/notices');
 }
 
+// 登陆
 export async function login(params) {
-  return request('/api/v1/user/login', {
+  return request(`/api/v1/user/login`, {
     method: `POST`,
-    data: params,
+    params: params,
   });
 }
