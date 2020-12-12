@@ -10,6 +10,13 @@ const allApplication = props => {
   const [appList, setAppList] = useState();
   const [currentPage, setCurrentPage] = useState(1);
   const [total, setTotal] = useState(1);
+  const appStatus = {
+    0: '未知',
+    1: '待处理',
+    2: '同意',
+    3: '拒绝',
+    4: '取消',
+  };
   const {
     location: { query },
   } = props;
@@ -64,7 +71,7 @@ const allApplication = props => {
         <Column
           title="请求状态"
           key="status"
-          render={(text, record) => <span>{'待批准'}</span>}
+          render={(text, record) => <span>{appStatus[record.status]}</span>}
         />
         <Column
           title="操作"
