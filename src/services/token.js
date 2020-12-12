@@ -6,7 +6,7 @@ const queryApplicationUrl = '/api/v1/application';
 
 // 获取召集令列表
 export async function tokenList(params) {
-  return request(`${tokenUrl}?${stringfy(params)}`, {
+  return request(`${tokenUrl}`, {
     method: `GET`,
     params: params,
   });

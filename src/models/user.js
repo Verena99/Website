@@ -3,7 +3,7 @@ const UserModel = {
   namespace: 'user',
   state: {
     currentUser: {
-      name: '',
+      name: 'testttt',
       caller_id: '',
     },
     userInfo: {
