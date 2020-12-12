@@ -15,6 +15,8 @@ import { PlusOutlined } from '@ant-design/icons';
 import { connect } from 'umi';
 import { provinceData } from '@/utils/utils';
 import TokenDetail from './tokenDetail';
+import Dropzone from 'react-dropzone';
+import request from 'superagent';
 
 const { TextArea } = Input;
 const { Option } = Select;
@@ -247,6 +249,12 @@ const NewToken = props => {
           </div>
         </Form.Item>
       </Form>
+      {/* <Dropzone
+              multiple={false}
+              accept="image/*"
+              >
+              <p>Drop an image or click to select a file to upload.</p>
+            </Dropzone> */}
     </Modal>
   );
 };

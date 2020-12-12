@@ -37,7 +37,9 @@ const PersonInfo = props => {
       payload: { page: 1, page_size: 1, user_id: user_id },
     }).then(res => {
       if ('total' in res) {
-        setUserInfo(res.user_list);
+        setUserInfo(res.user_list[0]);
+        console.log(res.user_list[0]);
+        message.success('请求成功');
         form.setFieldsValue({
           name: res.user_list.name,
           phone: res.user_list.phone,
