@@ -3,6 +3,7 @@ import { Input, Form, Button, message, Select } from 'antd';
 import { EyeInvisibleOutlined, EyeTwoTone } from '@ant-design/icons';
 import styles from './index.less';
 import { history, connect } from 'umi';
+import { provinceData } from '@/utils/utils';
 import md5 from 'js-md5';
 
 const Register = props => {
@@ -87,7 +88,13 @@ const Register = props => {
           name="city"
           rules={[{ required: true, message: '请输入城市' }]}
         >
-          <Input className={styles.login} />
+          <Select>
+            {Object.keys(provinceData).map(province => (
+              <Option key={province} value={province}>
+                {provinceData[province]}
+              </Option>
+            ))}
+          </Select>
         </Form.Item>
         <Form.Item
           id="userId"

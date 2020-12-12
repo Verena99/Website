@@ -14,6 +14,7 @@ import {
 import { PlusOutlined } from '@ant-design/icons';
 import { connect } from 'umi';
 import { provinceData } from '@/utils/utils';
+import TokenDetail from './tokenDetail';
 
 const { TextArea } = Input;
 const { Option } = Select;
@@ -26,10 +27,13 @@ const NewToken = props => {
     setRefresh,
     dispatch,
     caller_id,
+    tokenId,
+    update,
   } = props;
   const [form] = Form.useForm();
   const [previewImage, setPreviewImage] = useState();
   const [picture, setPicture] = useState();
+  const [tokenInfo, setTokenInfo] = useState();
 
   const getBase64 = file => {
     return new Promise((resolve, reject) => {
@@ -99,6 +103,19 @@ const NewToken = props => {
       });
   };
 
+  useEffect(() => {
+    if (update) {
+      dispatch({
+        type: 'token/tokenList',
+        payload: { page: 1, page_size: 1, callup_id: tokenId },
+      }).then(res => {
+        if ('callup_list' in res) {
+          setTokenInfo(res.callup_list);
+        }
+      });
+    }
+  }, []);
+
   return (
     <Modal
       centered
@@ -119,7 +136,10 @@ const NewToken = props => {
               name="tokenName"
               rules={[{ required: true, message: '请输入召集令名称称' }]}
             >
-              <Input placeholder="请输入召集令名称" />
+              <Input
+                placeholder={update ? tokenInfo.name : '请输入召集令名称'}
+                disabled={update}
+              />
             </Form.Item>
           </Col>
           <Col span={12}>
@@ -128,7 +148,10 @@ const NewToken = props => {
               name="tokenType"
               rules={[{ required: true, message: '请选择召集令类别' }]}
             >
-              <Select>
+              <Select
+                defaultValue={update ? tokenInfo.type : undefined}
+                disabled={update}
+              >
                 <Select.Option value={1}>技术交流</Select.Option>
                 <Select.Option value={2}>学业讨论</Select.Option>
                 <Select.Option value={3}>社会实践</Select.Option>
@@ -143,7 +166,10 @@ const NewToken = props => {
           name="tokenDes"
           rules={[{ required: true, message: '请输入描述信息' }]}
         >
-          <TextArea rows={5} placeholder="描述信息" />
+          <TextArea
+            rows={5}
+            placeholder={update ? tokenInfo.desc : '描述信息'}
+          />
         </Form.Item>
         <Row gutter={32}>
           <Col span={12}>
@@ -152,7 +178,9 @@ const NewToken = props => {
               name="tokenNum"
               rules={[{ required: true, message: '请输入召集人数' }]}
             >
-              <InputNumber placeholder="请输入召集人数" />
+              <InputNumber
+                placeholder={update ? tokenInfo.quota : '请输入召集人数'}
+              />
             </Form.Item>
           </Col>
           <Col span={12}>
@@ -168,9 +196,12 @@ const NewToken = props => {
         <Form.Item
           label="召集的城市"
           name="city"
-          rules={[{ required: true, message: '请输入截止日期' }]}
+          rules={[{ required: true, message: '请输入城市' }]}
         >
-          <Select>
+          <Select
+            defaultValue={update ? tokenInfo.city : undefined}
+            disabled={update}
+          >
             {Object.keys(provinceData).map(province => (
               <Option key={province} value={province}>
                 {provinceData[province]}
