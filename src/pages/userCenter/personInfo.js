@@ -3,7 +3,7 @@ import { Form, Select, Input, Button, message } from 'antd';
 import { EyeInvisibleOutlined, EyeTwoTone } from '@ant-design/icons';
 import styles from './index.less';
 import { connect, history } from 'umi';
-import { provinceData } from '@/utils/utils';
+import { provinceData } from '@/global';
 import md5 from 'js-md5';
 
 const PersonInfo = props => {
@@ -41,11 +41,11 @@ const PersonInfo = props => {
         console.log(res.user_list[0]);
         message.success('请求成功');
         form.setFieldsValue({
-          name: res.user_list.name,
-          phone: res.user_list.phone,
-          credential_number: res.user_list.credential_number,
-          city: res.user_list.city,
-          username: res.user_list.username,
+          name: res.user_list[0].name,
+          phone: res.user_list[0].phone,
+          credential_number: res.user_list[0].credential_number,
+          city: provinceData[res.user_list[0].city],
+          sso_name: res.user_list[0].sso_name,
         });
       } else message.error('Error');
     });
@@ -58,18 +58,9 @@ const PersonInfo = props => {
           <div className={styles.content}>
             <Form form={form} {...layout}>
               <Form.Item label="姓名" name="name" key="name">
-                <Input
-                  className={styles.login}
-                  defaultValue={userInfo.name}
-                  disabled
-                />
+                <Input className={styles.login} defaultValue={userInfo.name} />
               </Form.Item>
-              <Form.Item
-                label="手机号"
-                name="phone"
-                key="phone"
-                rules={[{ required: true, message: '请输入手机号' }]}
-              >
+              <Form.Item label="手机号" name="phone" key="phone">
                 <Input className={styles.login} defaultValue={userInfo.phone} />
               </Form.Item>
               <Form.Item label="证件类型" name="idType">
@@ -88,13 +79,13 @@ const PersonInfo = props => {
                 key="credential_number"
               >
                 <Input
+                  disabled
                   className={styles.login}
                   defaultValue={userInfo.credential_number}
-                  disabled
                 />
               </Form.Item>
               <Form.Item label="城市" name="city" key="city">
-                <Select disabled defaultValue={provinceData[userInfo.city]}>
+                <Select defaultValue={provinceData[userInfo.city]}>
                   {Object.keys(provinceData).map(province => (
                     <Option key={province} value={province}>
                       {provinceData[province]}
@@ -111,15 +102,12 @@ const PersonInfo = props => {
                 <Input
                   className={styles.login}
                   defaultValue={userInfo.sso_name}
-                  disabled
                 />
               </Form.Item>
               <Form.Item
                 label="密码"
                 name="password"
-                rules={[
-                  { required: true, message: '请输入密码(不少于6位)', min: 6 },
-                ]}
+                rules={[{ message: '请输入密码(不少于6位)', min: 6 }]}
               >
                 <Input.Password
                   className={styles.login}

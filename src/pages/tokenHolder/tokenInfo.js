@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Descriptions, Badge } from 'antd';
+import { tokenType, tokenStatus } from '@/global';
 
 const TokenInfo = props => {
   const { tokenId, dispatch, tokenInfo } = props;
@@ -9,7 +10,9 @@ const TokenInfo = props => {
       {tokenInfo && (
         <Descriptions style={{ margin: '10px' }} bordered>
           <Descriptions.Item label="名称">{tokenInfo.name}</Descriptions.Item>
-          <Descriptions.Item label="类型">{tokenInfo.type}</Descriptions.Item>
+          <Descriptions.Item label="类型">
+            {tokenType[tokenInfo.type]}
+          </Descriptions.Item>
           <Descriptions.Item label="召集人数">
             {`${tokenInfo.success_num}/${tokenInfo.quota}`}
           </Descriptions.Item>
@@ -17,14 +20,14 @@ const TokenInfo = props => {
           {tokenInfo.startTime}
         </Descriptions.Item> */}
           <Descriptions.Item label="结束日期">
-            {tokenInfo.end_time}
+            {new Date(tokenInfo.end_time * 1000).toLocaleDateString()}
           </Descriptions.Item>
           <Descriptions.Item label="当前状态">
-            {tokenInfo.status === '待响应' && <Badge status="processing" />}
-            {tokenInfo.status === '已完成' && <Badge status="success" />}
-            {tokenInfo.status === '已取消' && <Badge status="Default" />}
-            {tokenInfo.status === '到期未达成' && <Badge status="Error" />}
-            {tokenInfo.status}
+            {tokenInfo.status === 1 && <Badge status="processing" />}
+            {tokenInfo.status === 2 && <Badge status="success" />}
+            {tokenInfo.status === 3 && <Badge status="Default" />}
+            {tokenInfo.status === 4 && <Badge status="Error" />}
+            {tokenStatus[tokenInfo.status]}
           </Descriptions.Item>
           <Descriptions.Item label="具体描述" span={24}>
             {tokenInfo.desc}

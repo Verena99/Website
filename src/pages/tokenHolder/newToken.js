@@ -13,10 +13,7 @@ import {
 } from 'antd';
 import { PlusOutlined } from '@ant-design/icons';
 import { connect } from 'umi';
-import { provinceData } from '@/utils/utils';
-import TokenDetail from './tokenDetail';
-import Dropzone from 'react-dropzone';
-import request from 'superagent';
+import { provinceData } from '@/global';
 
 const { TextArea } = Input;
 const { Option } = Select;
@@ -36,6 +33,11 @@ const NewToken = props => {
   const [form] = Form.useForm();
   const [previewImage, setPreviewImage] = useState();
   const [picture, setPicture] = useState();
+  const QINIU_SERVER = 'http://up.qiniu.com';
+  const TENCENT_CLOUD = 'web-develop-1304507938.cos.ap-beijing.myqcloud.com';
+  const CLOUDINARY_UPLOAD_PRESET = 'z1ve1mry';
+  const CLOUDINARY_UPLOAD_URL =
+    'https://api.cloudinary.com/v1_1/chocooo/upload';
 
   const getBase64 = file => {
     return new Promise((resolve, reject) => {
@@ -86,16 +88,17 @@ const NewToken = props => {
           const params = {};
           params.caller_id = caller_id;
           const token = {};
-          const time = new Date(form.getFieldValue('deadline'));
+          const time = new Date(form.getFieldValue('end_time'));
           token.end_time = parseInt(time.getTime() / 1000);
-          token.quota = form.getFieldValue('tokenNum');
-          token.desc = form.getFieldValue('tokenDes');
+          token.quota = form.getFieldValue('quota');
+          token.desc = form.getFieldValue('desc');
           params.data = token;
           dispatch({
             type: 'token/createToken',
             payload: params,
           }).then(res => {
             if (!'code' in res) {
+              setRefresh(!refresh);
               setCreateToken(false);
               message.success('召集令修改成功');
             } else {
@@ -105,12 +108,12 @@ const NewToken = props => {
         } else {
           const params = {};
           params.caller_id = caller_id;
-          params.desc = form.getFieldValue('tokenDes');
-          const time = new Date(form.getFieldValue('deadline'));
+          params.desc = form.getFieldValue('desc');
+          const time = new Date(form.getFieldValue('end_time'));
           params.end_time = parseInt(time.getTime() / 1000);
-          params.name = form.getFieldValue('tokenName');
-          params.quota = form.getFieldValue('tokenNum');
-          params.type = form.getFieldValue('tokenType');
+          params.name = form.getFieldValue('name');
+          params.quota = form.getFieldValue('quota');
+          params.type = form.getFieldValue('type');
           params.city = Number(form.getFieldValue('city'));
           dispatch({
             type: 'token/createToken',
@@ -130,12 +133,11 @@ const NewToken = props => {
 
   useEffect(() => {
     if (update && createToken) {
-      console.log('here');
       form.setFieldsValue({
         name: tokenInfo.name,
-        tokenType: tokenInfo.tokenType,
-        tokenDes: tokenInfo.tokenDes,
-        tokenNum: tokenInfo.tokenNum,
+        type: tokenInfo.type,
+        desc: tokenInfo.desc,
+        quota: tokenInfo.quota,
         city: provinceData[tokenInfo.city],
       });
     }
@@ -148,39 +150,39 @@ const NewToken = props => {
       title="新建召集令"
       width="600px"
       maskClosable={false}
+      destroyOnClose
       cancelText="取消"
       okText="确认"
       onOk={() => createCallup()}
       onCancel={() => setCreateToken(false)}
     >
-      <Form form={form}>
+      <Form form={form} preserve={false}>
         <Row gutter={32}>
           <Col span={12}>
             <Form.Item
               label="召集令名称"
-              name="tokenName"
+              name="name"
               rules={[{ required: true, message: '请输入召集令名称' }]}
             >
               <Input
-                // placeholder={update ? tokenInfo.name : '请输入召集令名称'}
-                disabled={update}
+                placeholder={update ? tokenInfo.name : '请输入召集令名称'}
               />
             </Form.Item>
           </Col>
           <Col span={12}>
             <Form.Item
               label="召集令类别"
-              name="tokenType"
+              name="type"
               rules={[{ required: true, message: '请选择召集令类别' }]}
             >
               <Select
-                // defaultValue={update ? tokenInfo.type : undefined}
-                disabled={update}
+                placeholder="请选择召集令类别"
+                defaultValue={update ? tokenInfo.type : undefined}
               >
                 <Select.Option value={1}>技术交流</Select.Option>
                 <Select.Option value={2}>学业讨论</Select.Option>
                 <Select.Option value={3}>社会实践</Select.Option>
-                <Select.Option value={4}>公益志愿者</Select.Option>
+                <Select.Option value={4}>公益志愿</Select.Option>
                 <Select.Option value={5}>游玩</Select.Option>
               </Select>
             </Form.Item>
@@ -188,23 +190,23 @@ const NewToken = props => {
         </Row>
         <Form.Item
           label="召集令描述"
-          name="tokenDes"
+          name="desc"
           rules={[{ required: true, message: '请输入描述信息' }]}
         >
           <TextArea
             rows={5}
-            // placeholder={update ? tokenInfo.desc : '描述信息'}
+            placeholder={update ? tokenInfo.desc : '描述信息'}
           />
         </Form.Item>
         <Row gutter={32}>
           <Col span={12}>
             <Form.Item
               label="召集的人数"
-              name="tokenNum"
+              name="quota"
               rules={[{ required: true, message: '请输入召集人数' }]}
             >
               <InputNumber
-              // placeholder={update ? tokenInfo.quota : '请输入召集人数'}
+                placeholder={update ? tokenInfo.quota : '请输入召集人数'}
               />
             </Form.Item>
           </Col>
@@ -214,7 +216,7 @@ const NewToken = props => {
               name="end_time"
               rules={[{ required: true, message: '请输入截止日期' }]}
             >
-              <DatePicker />
+              <DatePicker placeholder="请选择截止日期" />
             </Form.Item>
           </Col>
         </Row>
@@ -223,10 +225,7 @@ const NewToken = props => {
           name="city"
           rules={[{ required: true, message: '请输入城市' }]}
         >
-          <Select
-            // defaultValue={update ? tokenInfo.city : undefined}
-            disabled={update}
-          >
+          <Select defaultValue={update ? tokenInfo.city : undefined}>
             {Object.keys(provinceData).map(province => (
               <Option key={province} value={province}>
                 {provinceData[province]}
@@ -234,9 +233,12 @@ const NewToken = props => {
             ))}
           </Select>
         </Form.Item>
-        <Form.Item label="召集令介绍照片" name="tokenPicture">
+        <Form.Item label="召集令介绍照片" name="photo_url">
           <div style={{ border: '1px' }}>
             <Upload
+              accept=".png,.jpg,.jpeg"
+              action={`https://${TENCENT_CLOUD}`}
+              // data={{token: ''}}
               listType="picture-card"
               onPreview={file => handlePreview(file)}
               onChange={info => handleChange(info)}
@@ -249,12 +251,6 @@ const NewToken = props => {
           </div>
         </Form.Item>
       </Form>
-      {/* <Dropzone
-              multiple={false}
-              accept="image/*"
-              >
-              <p>Drop an image or click to select a file to upload.</p>
-            </Dropzone> */}
     </Modal>
   );
 };
