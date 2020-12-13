@@ -149,7 +149,7 @@ const NewToken = props => {
     <Modal
       centered
       visible={createToken}
-      title="新建召集令"
+      title={update ? '修改召集令' : '新建召集令'}
       width="600px"
       maskClosable={false}
       destroyOnClose

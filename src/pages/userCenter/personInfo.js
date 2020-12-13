@@ -58,7 +58,11 @@ const PersonInfo = props => {
           <div className={styles.content}>
             <Form form={form} {...layout}>
               <Form.Item label="姓名" name="name" key="name">
-                <Input className={styles.login} defaultValue={userInfo.name} />
+                <Input
+                  className={styles.login}
+                  defaultValue={userInfo.name}
+                  disabled
+                />
               </Form.Item>
               <Form.Item label="手机号" name="phone" key="phone">
                 <Input className={styles.login} defaultValue={userInfo.phone} />
@@ -85,7 +89,7 @@ const PersonInfo = props => {
                 />
               </Form.Item>
               <Form.Item label="城市" name="city" key="city">
-                <Select defaultValue={provinceData[userInfo.city]}>
+                <Select defaultValue={provinceData[userInfo.city]} disabled>
                   {Object.keys(provinceData).map(province => (
                     <Option key={province} value={province}>
                       {provinceData[province]}
@@ -100,6 +104,7 @@ const PersonInfo = props => {
                 key="sso_name"
               >
                 <Input
+                  disabled
                   className={styles.login}
                   defaultValue={userInfo.sso_name}
                 />
