@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Table, Button, Modal, Descriptions, message } from 'antd';
 import { connect } from 'umi';
+import { provinceData } from '@/global';
 
 const Appliers = props => {
   const { dispatch, caller_id, tokenId } = props;
@@ -62,41 +63,6 @@ const Appliers = props => {
       ),
     },
   ];
-
-  const data = [
-    {
-      key: '1',
-      applyName: '马云',
-      descriptor: '阿里集团创始人',
-      applyTime: '2020-11-26 09:23:44',
-    },
-    {
-      key: '2',
-      applyName: '马化腾',
-      descriptor: '腾讯集团创始人',
-      applyTime: '2020-11-26 22:20:00',
-    },
-    {
-      key: '3',
-      applyName: '刘强东',
-      descriptor: '京东集团创始人',
-      applyTime: '2020-11-21 12:00:00',
-    },
-    {
-      key: '4',
-      applyName: '雷军',
-      descriptor: '小米集团创始人',
-      applyTime: '2020-09-06 16:56:00',
-    },
-  ];
-
-  const sample = {
-    applyName: '雷军',
-    city: '湖北',
-    phone: '18866668888',
-    descriptor: '小米集团创始人',
-    applyTime: '2020-09-06 16:56:00',
-  };
 
   // 获取申请人列表
   useEffect(() => {
@@ -175,7 +141,7 @@ const Appliers = props => {
               {applierInfo.name}
             </Descriptions.Item>
             <Descriptions.Item label="所在城市">
-              {applierInfo.city}
+              {provinceData[applierInfo.city]}
             </Descriptions.Item>
             <Descriptions.Item label="电话号码" span={3}>
               {applierInfo.phone}

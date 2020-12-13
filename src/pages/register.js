@@ -88,7 +88,7 @@ const Register = props => {
           name="city"
           rules={[{ required: true, message: '请输入城市' }]}
         >
-          <Select>
+          <Select style={{ width: '260px' }}>
             {Object.keys(provinceData).map(province => (
               <Option key={province} value={province}>
                 {provinceData[province]}

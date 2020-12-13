@@ -40,7 +40,8 @@ export default {
         end_time: 0,
         id: 0,
         name: '开会',
-        photo_url: 'string0',
+        photo_url:
+          'web-develop-1304507938.cos.ap-beijing.myqcloud.com/%E5%8F%AC%E9%9B%86%E4%BB%A4.jpg',
         quota: 3,
         status: 1,
         success_num: 2,
@@ -62,7 +63,7 @@ export default {
         end_time: 0,
         id: 1,
         name: '秋游',
-        photo_url: 'string1',
+        photo_url: 'web-develop-1304507938.cos.ap-beijing.myqcloud.com/09.jpg',
         quota: 5,
         status: 1,
         success_num: 0,
@@ -84,7 +85,8 @@ export default {
         end_time: 0,
         id: 2,
         name: '公园',
-        photo_url: 'string2',
+        photo_url:
+          'web-develop-1304507938.cos.ap-beijing.myqcloud.com/%E5%8F%AC%E9%9B%86%E4%BB%A4.jpg',
         quota: 6,
         status: 2,
         success_num: 6,

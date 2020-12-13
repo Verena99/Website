@@ -50,7 +50,7 @@ const LogIn = props => {
 
   return (
     <div type="flex" align="middle">
-      <Form form={form} style={{ verticalAlign: 'middle' }}>
+      <Form form={form} style={{ verticalAlign: 'middle', marginTop: '100px' }}>
         <Form.Item
           name="username"
           rules={[{ required: true, message: '请输入用户名' }]}

@@ -16,7 +16,7 @@ const TokenDetail = props => {
   const [menuKey, setMenuKey] = useState('1');
 
   return (
-    <Layout>
+    <Layout style={{ height: 'calc(100vh - 129px' }}>
       <Sider style={{ width: '120px' }} theme="light">
         <div style={{ marginTop: '5px' }}>
           <Button
@@ -29,7 +29,7 @@ const TokenDetail = props => {
         <Menu
           mode="inline"
           defaultSelectedKeys={[menuKey]}
-          style={{ height: '100%' }}
+          style={{ height: 'calc(100% - 37px)' }}
         >
           <Menu.Item
             icon={<FileTextOutlined />}
@@ -51,7 +51,7 @@ const TokenDetail = props => {
           </Menu.Item>
         </Menu>
       </Sider>
-      <Content style={{ backgroundColor: '#ffffff' }}>
+      <Content style={{ backgroundColor: '#ffffff', overflow: 'auto' }}>
         {menuKey === '1' && <TokenInfo tokenInfo={data} tokenId={tokenId} />}
         {menuKey === '2' && (
           <Appliers tokenId={tokenId} appliersList={data.application_list} />
