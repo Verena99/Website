@@ -4,7 +4,7 @@ import style1 from '@/css/showToken.css';
 import Button from 'antd/es/button';
 import { history } from 'umi';
 import axios from 'axios';
-import { provinceData } from '@/utils/utils';
+import { provinceData } from '@/global';
 const userType = { 0: '未知', 1: '普通用户', 2: '系统管理员' };
 const userLevel = { 0: '未知', 1: '一般', 2: '重要', 3: '钻石级' };
 

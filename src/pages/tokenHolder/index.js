@@ -1,8 +1,9 @@
 import React, { useEffect, useState } from 'react';
-import { Card, Table, Button, message } from 'antd';
+import { Card, Table, Button, message, Badge } from 'antd';
 import NewToken from './newToken';
 import TokenDetail from './tokenDetail';
 import { connect } from 'umi';
+import { tokenType, tokenStatus } from '@/global';
 
 const Token = props => {
   const { caller_id, dispatch } = props;
@@ -11,7 +12,7 @@ const Token = props => {
   const [tokenName, setTokenName] = useState();
   const [showDetail, setShowDetail] = useState(false);
   const [page, setPage] = useState(1);
-  const [pageSize, setPageSize] = useState(10);
+  const [pageSize] = useState(10);
   const [data, setData] = useState();
   const [tokenInfo, setTokenInfo] = useState();
   const [totalPage, setTotalPage] = useState(12);
@@ -28,6 +29,21 @@ const Token = props => {
       title: '类别',
       dataIndex: 'type',
       key: 'type',
+      render: text => <>{tokenType[text]}</>,
+    },
+    {
+      title: '状态',
+      dataIndex: 'status',
+      key: 'status',
+      render: text => (
+        <>
+          {text === 1 && <Badge status="processing" />}
+          {text === 2 && <Badge status="success" />}
+          {text === 3 && <Badge status="Default" />}
+          {text === 4 && <Badge status="Error" />}
+          {tokenStatus[text]}
+        </>
+      ),
     },
     {
       title: '已召集人数',
@@ -40,10 +56,10 @@ const Token = props => {
       key: 'quota',
     },
     {
-      title: '截止时间',
+      title: '截止日期',
       dataIndex: 'end_time',
       key: 'end_time',
-      render: text => <>{new Date(text * 1000).toLocaleString()}</>,
+      render: text => <>{new Date(text * 1000).toLocaleDateString()}</>,
     },
     {
       title: '操作',
@@ -128,8 +144,8 @@ const Token = props => {
 
   const changeToken = (id, record) => {
     setTokenInfo(record);
-    setTokenId(id);
     setUpdate(true);
+    setTokenId(id);
     setCreateToken(true);
   };
 

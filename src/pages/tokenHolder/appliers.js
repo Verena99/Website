@@ -1,15 +1,17 @@
 import React, { useState, useEffect } from 'react';
 import { Table, Button, Modal, Descriptions, message } from 'antd';
 import { connect } from 'umi';
+import { provinceData } from '@/global';
 
 const Appliers = props => {
-  const { dispatch, caller_id, tokenId, appliersList } = props;
+  const { dispatch, caller_id, tokenId } = props;
   const [applierVisible, setApplierVisible] = useState(false);
   const [pageSize] = useState(10);
+  const [appliersList, setApplierList] = useState();
   const [current, setCurrent] = useState(1);
-  const [totalPage, setTotalPage] = useState();
+  const [total, setTotal] = useState();
   const [applierInfo, setApplierInfo] = useState();
-  const [refresh, setRefresh] = useState();
+  const [refresh, setRefresh] = useState(true);
   const accept = 1;
   const reject = 2;
   const column = [
@@ -62,53 +64,18 @@ const Appliers = props => {
     },
   ];
 
-  const data = [
-    {
-      key: '1',
-      applyName: '马云',
-      descriptor: '阿里集团创始人',
-      applyTime: '2020-11-26 09:23:44',
-    },
-    {
-      key: '2',
-      applyName: '马化腾',
-      descriptor: '腾讯集团创始人',
-      applyTime: '2020-11-26 22:20:00',
-    },
-    {
-      key: '3',
-      applyName: '刘强东',
-      descriptor: '京东集团创始人',
-      applyTime: '2020-11-21 12:00:00',
-    },
-    {
-      key: '4',
-      applyName: '雷军',
-      descriptor: '小米集团创始人',
-      applyTime: '2020-09-06 16:56:00',
-    },
-  ];
-
-  const sample = {
-    applyName: '雷军',
-    city: '湖北',
-    phone: '18866668888',
-    descriptor: '小米集团创始人',
-    applyTime: '2020-09-06 16:56:00',
-  };
-
-  // // 获取申请人列表
-  // useEffect(() => {
-  //   dispatch({
-  //     type: 'token/fetchApplications',
-  //     payload: { page_size: pageSize, page: current, callup_id: tokenId },
-  //   }).then(res => {
-  //     if (res) {
-  //       setApplierList(res.application_list);
-  //       setTotalPage(res.total);
-  //     }
-  //   });
-  // }, []);
+  // 获取申请人列表
+  useEffect(() => {
+    dispatch({
+      type: 'token/fetchApplications',
+      payload: { page_size: pageSize, page: current, callup_id: tokenId },
+    }).then(res => {
+      if (res) {
+        setApplierList(res.application_list);
+        setTotal(res.total);
+      }
+    });
+  }, [refresh]);
 
   // 获取申请人信息
   const showApplier = (id, text) => {
@@ -119,17 +86,13 @@ const Appliers = props => {
     }).then(res => {
       if (res) {
         res.user_list.applierName = text;
-        setApplierInfo(res.user_list);
+        setApplierInfo(res.user_list[0]);
       }
     });
   };
 
   // 处理申请 接受：1 拒绝：2
   const dealApply = (id, action, index) => {
-    if (action === 1) appliersList[index].status = '2';
-    if (action === 2) {
-      appliersList[index].status = '3';
-    }
     dispatch({
       type: 'token/dealApply',
       payload: { action_type: action, application_id: id, caller_id },
@@ -138,6 +101,8 @@ const Appliers = props => {
         message.error(res.message);
       } else {
         message.success('处理成功');
+        if (action === 1) appliersList[index].status = '2';
+        if (action === 2) appliersList[index].status = '3';
         setRefresh(!refresh);
       }
     });
@@ -145,18 +110,20 @@ const Appliers = props => {
 
   return (
     <>
-      <Table
-        columns={column}
-        dataSource={appliersList.filter(item => item.status === 1)}
-        style={{ margin: '15px' }}
-        pagination={{
-          current: current,
-          pageSize: pageSize,
-          total: totalPage,
-          onChange: page => setCurrent(page),
-        }}
-      />
-      {applierVisible && (
+      {appliersList && (
+        <Table
+          columns={column}
+          dataSource={appliersList.filter(item => item.status === 1)}
+          style={{ margin: '15px' }}
+          pagination={{
+            current: current,
+            pageSize: pageSize,
+            total: total,
+            onChange: page => setCurrent(page),
+          }}
+        />
+      )}
+      {applierInfo && (
         <Modal
           centered
           maskClosable={false}
@@ -171,10 +138,10 @@ const Appliers = props => {
         >
           <Descriptions title="申请人信息" bordered>
             <Descriptions.Item label="申请人" span={2}>
-              {applierInfo.applierName}
+              {applierInfo.name}
             </Descriptions.Item>
             <Descriptions.Item label="所在城市">
-              {applierInfo.city}
+              {provinceData[applierInfo.city]}
             </Descriptions.Item>
             <Descriptions.Item label="电话号码" span={3}>
               {applierInfo.phone}

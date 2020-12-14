@@ -22,7 +22,7 @@ import 'echarts/lib/component/legend';
 import 'echarts/lib/component/markPoint';
 import ReactEcharts from 'echarts-for-react';
 import style1 from '@/css/incomeInfo.css';
-import { provinceData } from '@/utils/utils';
+import { provinceData } from '@/global';
 
 const { Column } = Table;
 const { RangePicker } = DatePicker;

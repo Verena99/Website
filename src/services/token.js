@@ -45,9 +45,8 @@ export async function dealApply(params) {
 }
 
 export async function getApplications(params) {
-  console.log(stringfy(params));
-  return request(`${queryApplicationUrl}?${stringfy(params)}`, {
+  return request(`${queryApplicationUrl}`, {
     method: `GET`,
-    data: params,
+    params: params,
   });
 }
