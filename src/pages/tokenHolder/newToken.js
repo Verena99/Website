@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import {
   Modal,
   Form,
@@ -13,8 +13,13 @@ import {
 } from 'antd';
 import { PlusOutlined } from '@ant-design/icons';
 import { connect } from 'umi';
+import { provinceData } from '@/utils/utils';
+import TokenDetail from './tokenDetail';
+import Dropzone from 'react-dropzone';
+import request from 'superagent';
 
 const { TextArea } = Input;
+const { Option } = Select;
 
 const NewToken = props => {
   const {
@@ -24,6 +29,9 @@ const NewToken = props => {
     setRefresh,
     dispatch,
     caller_id,
+    tokenId,
+    update,
+    tokenInfo,
   } = props;
   const [form] = Form.useForm();
   const [previewImage, setPreviewImage] = useState();
@@ -70,29 +78,68 @@ const NewToken = props => {
         'tokenDes',
         'tokenNum',
         'tokenPicture',
-        'deadline',
+        'end_time',
+        'city',
       ])
       .then(() => {
-        const params = {};
-        params.caller_id = caller_id;
-        params.desc = form.getFieldValue('tokenDes');
-        params.end_time = form.getFieldValue('deadline');
-        params.name = form.getFieldValue('tokenName');
-        params.quota = form.getFieldValue('tokenNum');
-        params.type = form.getFieldValue('tokenType');
-        dispatch({
-          type: 'token/createToken',
-          payload: { caller_id },
-        }).then(res => {
-          if (res && res.code === 0) {
-            setRefresh(!refresh);
-            setCreateToken(false);
-          } else {
-            message.error('召集令创建失败');
-          }
-        });
+        if (update) {
+          const params = {};
+          params.caller_id = caller_id;
+          const token = {};
+          const time = new Date(form.getFieldValue('deadline'));
+          token.end_time = parseInt(time.getTime() / 1000);
+          token.quota = form.getFieldValue('tokenNum');
+          token.desc = form.getFieldValue('tokenDes');
+          params.data = token;
+          dispatch({
+            type: 'token/createToken',
+            payload: params,
+          }).then(res => {
+            if (!'code' in res) {
+              setCreateToken(false);
+              message.success('召集令修改成功');
+            } else {
+              message.error('召集令修改失败');
+            }
+          });
+        } else {
+          const params = {};
+          params.caller_id = caller_id;
+          params.desc = form.getFieldValue('tokenDes');
+          const time = new Date(form.getFieldValue('deadline'));
+          params.end_time = parseInt(time.getTime() / 1000);
+          params.name = form.getFieldValue('tokenName');
+          params.quota = form.getFieldValue('tokenNum');
+          params.type = form.getFieldValue('tokenType');
+          params.city = Number(form.getFieldValue('city'));
+          dispatch({
+            type: 'token/createToken',
+            payload: params,
+          }).then(res => {
+            if ('callup_id' in res) {
+              setCreateToken(false);
+              setRefresh(!refresh);
+              message.success('召集令创建成功');
+            } else {
+              message.error('召集令创建失败');
+            }
+          });
+        }
       });
   };
+
+  useEffect(() => {
+    if (update && createToken) {
+      console.log('here');
+      form.setFieldsValue({
+        name: tokenInfo.name,
+        tokenType: tokenInfo.tokenType,
+        tokenDes: tokenInfo.tokenDes,
+        tokenNum: tokenInfo.tokenNum,
+        city: provinceData[tokenInfo.city],
+      });
+    }
+  }, [createToken]);
 
   return (
     <Modal
@@ -112,9 +159,12 @@ const NewToken = props => {
             <Form.Item
               label="召集令名称"
               name="tokenName"
-              rules={[{ required: true, message: '请输入召集令名称称' }]}
+              rules={[{ required: true, message: '请输入召集令名称' }]}
             >
-              <Input placeholder="请输入召集令名称" />
+              <Input
+                // placeholder={update ? tokenInfo.name : '请输入召集令名称'}
+                disabled={update}
+              />
             </Form.Item>
           </Col>
           <Col span={12}>
@@ -123,12 +173,15 @@ const NewToken = props => {
               name="tokenType"
               rules={[{ required: true, message: '请选择召集令类别' }]}
             >
-              <Select defaultValue="技术交流">
-                <Select.Option value="技术交流">技术交流</Select.Option>
-                <Select.Option value="学业讨论">学业讨论</Select.Option>
-                <Select.Option value="社会实践">社会实践</Select.Option>
-                <Select.Option value="公益志愿者">公益志愿者</Select.Option>
-                <Select.Option value="游玩">游玩</Select.Option>
+              <Select
+                // defaultValue={update ? tokenInfo.type : undefined}
+                disabled={update}
+              >
+                <Select.Option value={1}>技术交流</Select.Option>
+                <Select.Option value={2}>学业讨论</Select.Option>
+                <Select.Option value={3}>社会实践</Select.Option>
+                <Select.Option value={4}>公益志愿者</Select.Option>
+                <Select.Option value={5}>游玩</Select.Option>
               </Select>
             </Form.Item>
           </Col>
@@ -138,7 +191,10 @@ const NewToken = props => {
           name="tokenDes"
           rules={[{ required: true, message: '请输入描述信息' }]}
         >
-          <TextArea rows={5} placeholder="描述信息" />
+          <TextArea
+            rows={5}
+            // placeholder={update ? tokenInfo.desc : '描述信息'}
+          />
         </Form.Item>
         <Row gutter={32}>
           <Col span={12}>
@@ -147,19 +203,37 @@ const NewToken = props => {
               name="tokenNum"
               rules={[{ required: true, message: '请输入召集人数' }]}
             >
-              <InputNumber placeholder="请输入召集人数" />
+              <InputNumber
+              // placeholder={update ? tokenInfo.quota : '请输入召集人数'}
+              />
             </Form.Item>
           </Col>
           <Col span={12}>
             <Form.Item
               label="截止日期"
-              name="deadline"
+              name="end_time"
               rules={[{ required: true, message: '请输入截止日期' }]}
             >
               <DatePicker />
             </Form.Item>
           </Col>
         </Row>
+        <Form.Item
+          label="召集的城市"
+          name="city"
+          rules={[{ required: true, message: '请输入城市' }]}
+        >
+          <Select
+            // defaultValue={update ? tokenInfo.city : undefined}
+            disabled={update}
+          >
+            {Object.keys(provinceData).map(province => (
+              <Option key={province} value={province}>
+                {provinceData[province]}
+              </Option>
+            ))}
+          </Select>
+        </Form.Item>
         <Form.Item label="召集令介绍照片" name="tokenPicture">
           <div style={{ border: '1px' }}>
             <Upload
@@ -175,11 +249,17 @@ const NewToken = props => {
           </div>
         </Form.Item>
       </Form>
+      {/* <Dropzone
+              multiple={false}
+              accept="image/*"
+              >
+              <p>Drop an image or click to select a file to upload.</p>
+            </Dropzone> */}
     </Modal>
   );
 };
 
 export default connect(({ token, user }) => ({
   token,
-  caller_id: user.currentUser.caller_id,
+  caller_id: user.currentUser.user_id,
 }))(NewToken);

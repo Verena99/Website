@@ -35,7 +35,7 @@ const allUser = props => {
     axios({
       method: 'get',
       url: '/api/v1/user',
-      page: page,
+      page,
       page_size,
     })
       .then(response => {

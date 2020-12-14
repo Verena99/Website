@@ -28,8 +28,8 @@ const myApplication = props => {
       params: {
         page: currentPage,
         page_size,
-        callee_id: query.userId,
-        status: 0,
+        callee_id: Number(query.userId),
+        status: 1,
       },
     })
       .then(response => {
@@ -47,7 +47,7 @@ const myApplication = props => {
       method: 'delete',
       url: '/api/v1/application',
       data: {
-        application_id: id,
+        application_id: Number(id),
       },
     })
       .then(response => {
@@ -62,8 +62,8 @@ const myApplication = props => {
       params: {
         page: currentPage,
         page_size,
-        callee_id: query.userId,
-        status: 0,
+        callee_id: Number(query.userId),
+        status: 1,
       },
     })
       .then(response => {
@@ -83,8 +83,8 @@ const myApplication = props => {
       params: {
         page: page,
         page_size,
-        callee_id: query.userId,
-        status: 0,
+        callee_id: Number(query.userId),
+        status: 1,
       },
     })
       .then(response => {

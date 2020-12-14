@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Input, Descriptions, Button } from 'antd';
+import { Input, Descriptions, Button, message } from 'antd';
 import style1 from '@/css/showToken.css';
 import { history } from 'umi';
 import axios from 'axios';
@@ -31,39 +31,25 @@ const applyToken = props => {
   });
 
   useEffect(() => {
-    /*请求tokenInfo
+    //请求tokenInfo
     axios({
       method: 'get',
       url: '/api/v1/callup',
       params: {
         page: 1,
         page_size: 1,
-        callup_id,
-      }
+        callup_id: Number(callup_id),
+      },
     })
-      .then((res) => {
+      .then(res => {
         if (res.status === 200) {
           console.log(res);
-          setTokenInfo(response.data.callup_list[0]);
-        }
-        else
-          throw Error('error status:', response.status);
+          setTokenInfo(res.data.callup_list[0]);
+        } else throw Error('error status:', res.status);
       })
-      .catch((error) => {
-        console.log(error)
-      })*/
-    let temp = {
-      name: 'xxx',
-      type: 0, //类型
-      caller_id: 123,
-      success_num: 10,
-      end_time: 123323456,
-      status: 0,
-      desc: 'bala bala',
-      city: 0,
-      photo_url: '../../assets/ZJL.png',
-    };
-    setTokenInfo(temp);
+      .catch(error => {
+        console.log(error);
+      });
   }, []);
   const onChange = e => {
     setApply(e.target.value);
@@ -74,8 +60,8 @@ const applyToken = props => {
       method: 'post',
       url: '/api/v1/application',
       data: {
-        callee_id,
-        callup_id,
+        callee_id: Number(callee_id),
+        callup_id: Number(callup_id),
         desc: applyInfo,
       },
       headers: {
@@ -84,7 +70,13 @@ const applyToken = props => {
     })
       .then(res => {
         if (res.status === 200) {
-          console.log('请求成功');
+          console.log(res);
+          if (res.data.hasOwnProperty('code')) {
+            message.error(res.data.message);
+          } else {
+            message.success('请求成功');
+            history.goBack();
+          }
         } else throw Error('error status:', response.status);
       })
       .catch(error => {
@@ -104,7 +96,7 @@ const applyToken = props => {
           {tokenInfo.success_num}
         </Descriptions.Item>
         <Descriptions.Item label="结束日期">
-          {new Date(tokenInfo.end_time).toLocaleString()}
+          {new Date(tokenInfo.end_time * 1000).toLocaleString()}
         </Descriptions.Item>
         <Descriptions.Item label="当前状态">
           {statusList[tokenInfo.status]}

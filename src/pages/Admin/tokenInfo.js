@@ -55,7 +55,7 @@ const tokenInfo = props => {
           {tokenInfo.success_num}
         </Descriptions.Item>
         <Descriptions.Item label="结束日期">
-          {new Date(tokenInfo.end_time).toLocaleString()}
+          {new Date(tokenInfo.end_time * 1000).toLocaleString()}
         </Descriptions.Item>
         <Descriptions.Item label="当前状态">
           {statusList[tokenInfo.status]}

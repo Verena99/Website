@@ -38,7 +38,7 @@ const changeApplication = props => {
       params: {
         page: 1,
         page_size: 1,
-        callup_id,
+        callup_id: Number(callup_id),
       },
     })
       .then(response => {
@@ -49,7 +49,7 @@ const changeApplication = props => {
             params: {
               page: 1,
               page_size: 1,
-              application_id,
+              application_id: Number(application_id),
             },
           })
             .then(res => {
@@ -84,6 +84,7 @@ const changeApplication = props => {
       .then(res => {
         if (res.status == 200) {
           console.log('已更新请求');
+          history.goBack();
         }
       })
       .catch(error => {
@@ -103,7 +104,7 @@ const changeApplication = props => {
           {tokenInfo.success_num}
         </Descriptions.Item>
         <Descriptions.Item label="结束日期">
-          {new Date(tokenInfo.end_time).toLocaleString()}
+          {new Date(tokenInfo.end_time * 1000).toLocaleString()}
         </Descriptions.Item>
         <Descriptions.Item label="当前状态">
           {statusList[tokenInfo.status]}

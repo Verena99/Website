@@ -139,6 +139,7 @@ const searchToken = props => {
         onChange={searchByClass}
         value={searchClass}
       >
+        <Option value={0}>全部</Option>
         <Option value={1}>技术交流</Option>
         <Option value={2}>学业探讨</Option>
         <Option value={3}>社会实践</Option>
@@ -171,7 +172,7 @@ const searchToken = props => {
           key="end_time"
           render={(text, record) => (
             <Space size="middle">
-              {new Date(record.end_time).toLocaleString()}
+              {new Date(record.end_time * 1000).toLocaleString()}
             </Space>
           )}
         />

@@ -2,14 +2,18 @@ import React, { useState } from 'react';
 import { Input, Form, Button, message, Select } from 'antd';
 import { EyeInvisibleOutlined, EyeTwoTone } from '@ant-design/icons';
 import styles from './index.less';
-import { history } from 'umi';
+import { history, connect } from 'umi';
+import { provinceData } from '@/utils/utils';
+import md5 from 'js-md5';
 
 const Register = props => {
+  const { dispatch } = props;
   const [form] = Form.useForm();
   const layout = {
     labelCol: { span: 10 },
-    wrapperCol: { span: 6 },
+    wrapperCol: { span: 7 },
   };
+  const { TextArea } = Input;
 
   const validateForm = () => {
     form
@@ -18,12 +22,27 @@ const Register = props => {
         'phone',
         'idType',
         'idNumber',
+        'credential_number',
         'city',
         'username',
         'password',
+        'desc',
+        'sso_name',
       ])
       .then(() => {
-        history.push('/login');
+        const userInfo = form.getFieldsValue();
+        userInfo.city = Number(userInfo.city);
+        userInfo.password = md5(userInfo.password);
+        let { idType, ...params } = userInfo;
+        dispatch({
+          type: 'user/register',
+          payload: params,
+        }).then(res => {
+          if ('id' in res) {
+            message.success('注册成功！');
+            history.push('/login');
+          } else message.error('注册失败');
+        });
       })
       .catch(error => {});
   };
@@ -34,7 +53,6 @@ const Register = props => {
         <Form.Item
           label="姓名"
           name="name"
-          // className={styles.itemWidth}
           rules={[{ required: true, message: '请输入姓名' }]}
         >
           <Input className={styles.login} />
@@ -42,7 +60,6 @@ const Register = props => {
         <Form.Item
           label="手机号"
           name="phone"
-          // className={styles.itemWidth}
           rules={[{ required: true, message: '请输入手机号' }]}
         >
           <Input className={styles.login} />
@@ -50,7 +67,6 @@ const Register = props => {
         <Form.Item
           label="证件类型"
           name="idType"
-          // className={styles.itemWidth}
           rules={[{ required: true, message: '请选择证件类型' }]}
         >
           <Select style={{ width: '260px' }}>
@@ -62,7 +78,7 @@ const Register = props => {
         </Form.Item>
         <Form.Item
           label="证件编号"
-          name="idNumber"
+          name="credential_number"
           rules={[{ required: true, message: '请输入证件编号' }]}
         >
           <Input className={styles.login} />
@@ -72,12 +88,18 @@ const Register = props => {
           name="city"
           rules={[{ required: true, message: '请输入城市' }]}
         >
-          <Input className={styles.login} />
+          <Select>
+            {Object.keys(provinceData).map(province => (
+              <Option key={province} value={province}>
+                {provinceData[province]}
+              </Option>
+            ))}
+          </Select>
         </Form.Item>
         <Form.Item
           id="userId"
           label="用户名"
-          name="username"
+          name="sso_name"
           rules={[{ required: true, message: '请输入用户名' }]}
         >
           <Input className={styles.login} />
@@ -95,6 +117,13 @@ const Register = props => {
             }
           />
         </Form.Item>
+        <Form.Item
+          label="简介"
+          name="desc"
+          rules={[{ required: true, message: '请输入简介!' }]}
+        >
+          <TextArea className={styles.login} />
+        </Form.Item>
       </Form>
       <Button
         type="primary"
@@ -107,4 +136,6 @@ const Register = props => {
   );
 };
 
-export default Register;
+export default connect(({ user }) => ({
+  user,
+}))(Register);

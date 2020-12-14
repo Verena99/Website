@@ -4,97 +4,16 @@ import NewToken from './newToken';
 import TokenDetail from './tokenDetail';
 import { connect } from 'umi';
 
-const tempdata = [
-  {
-    key: '1',
-    name: '秋游',
-    type: '游玩',
-    success_num: 2,
-    quota: 10,
-    end_time: '2020/11/22 11:23:02',
-  },
-  {
-    key: '2',
-    name: '冬奥会志愿者',
-    type: '公益志愿者',
-    success_num: 3,
-    quota: 9,
-    end_time: '2020/11/02 9:00:00',
-  },
-  {
-    key: '3',
-    name: '人工智能学术交流大会',
-    type: '学业探讨',
-    success_num: 1,
-    quota: 10,
-    end_time: '2020/9/5 08:10:40',
-  },
-  {
-    key: '4',
-    name: '人工智能学术交流大会',
-    type: '学业探讨',
-    success_num: 0,
-    quota: 10,
-    end_time: '2020/9/5 08:10:40',
-  },
-  {
-    key: '5',
-    name: '人工智能学术交流大会',
-    type: '学业探讨',
-    success_num: '1',
-    quota: 10,
-    end_time: '2020/9/5 08:10:40',
-  },
-  {
-    key: '6',
-    name: '人工智能学术交流大会',
-    type: '学业探讨',
-    success_num: '1',
-    quota: 10,
-    end_time: '2020/9/5 08:10:40',
-  },
-  {
-    key: '7',
-    name: '人工智能学术交流大会',
-    type: '学业探讨',
-    success_num: '1',
-    quota: 10,
-    end_time: '2020/9/5 08:10:40',
-  },
-  {
-    key: '8',
-    name: '人工智能学术交流大会',
-    type: '学业探讨',
-    success_num: '1',
-    quota: 10,
-    end_time: '2020/9/5 08:10:40',
-  },
-  {
-    key: '9',
-    name: '人工智能学术交流大会',
-    type: '学业探讨',
-    success_num: '1',
-    quota: 10,
-    end_time: '2020/9/5 08:10:40',
-  },
-  {
-    key: '10',
-    name: '人工智能学术交流大会',
-    type: '学业探讨',
-    success_num: '1',
-    quota: 10,
-    end_time: '2020/9/5 08:10:40',
-  },
-];
-
 const Token = props => {
   const { caller_id, dispatch } = props;
   const [createToken, setCreateToken] = useState(false);
+  const [update, setUpdate] = useState();
   const [tokenName, setTokenName] = useState();
   const [showDetail, setShowDetail] = useState(false);
   const [page, setPage] = useState(1);
-  const [pageSize, setPageSize] = useState(6);
-  const [data, setData] = useState(tempdata);
+  const [pageSize, setPageSize] = useState(10);
+  const [data, setData] = useState();
+  const [tokenInfo, setTokenInfo] = useState();
   const [totalPage, setTotalPage] = useState(12);
   const [refresh, setRefresh] = useState(false);
   const [tokenId, setTokenId] = useState();
@@ -124,6 +43,7 @@ const Token = props => {
       title: '截止时间',
       dataIndex: 'end_time',
       key: 'end_time',
+      render: text => <>{new Date(text * 1000).toLocaleString()}</>,
     },
     {
       title: '操作',
@@ -134,15 +54,21 @@ const Token = props => {
           <div>
             <a
               onClick={() => {
-                setTokenName(record.name);
-                setShowDetail(true);
+                setTokenInfo(record);
+                clickDetail(record.name, record.id);
               }}
             >
               详情
             </a>
             <a
               style={{ marginLeft: '10px' }}
-              onClick={() => deleteToken(record.callup_id)}
+              onClick={() => changeToken(record.id, record)}
+            >
+              修改
+            </a>
+            <a
+              style={{ marginLeft: '10px' }}
+              onClick={() => deleteToken(record.id)}
             >
               删除
             </a>
@@ -150,6 +76,7 @@ const Token = props => {
         ) : (
           <a
             onClick={() => {
+              setTokenInfo(record);
               clickDetail(record.name, record.id);
             }}
           >
@@ -162,9 +89,21 @@ const Token = props => {
   useEffect(() => {
     dispatch({
       type: 'token/tokenList',
-      payload: { page, pageSize, caller_id },
+      payload: { page, page_size: pageSize, caller_id },
     }).then(res => {
-      if (res && res.data) {
+      if (res) {
+        setData(res.callup_list);
+        setTotalPage(res.total);
+      }
+    });
+  }, []);
+
+  useEffect(() => {
+    dispatch({
+      type: 'token/tokenList',
+      payload: { page, page_size: pageSize, caller_id },
+    }).then(res => {
+      if (res) {
         setData(res.callup_list);
         setTotalPage(res.total);
       }
@@ -187,13 +126,27 @@ const Token = props => {
     });
   };
 
+  const changeToken = (id, record) => {
+    setTokenInfo(record);
+    setTokenId(id);
+    setUpdate(true);
+    setCreateToken(true);
+  };
+
   return (
-    <div>
+    <>
       {!showDetail && (
         <Card
           title="召集令列表"
+          style={{ height: '100%' }}
           extra={
-            <Button type="primary" onClick={() => setCreateToken(true)}>
+            <Button
+              type="primary"
+              onClick={() => {
+                setUpdate(false);
+                setCreateToken(true);
+              }}
+            >
               新建召集令
             </Button>
           }
@@ -202,31 +155,40 @@ const Token = props => {
             dataSource={data}
             columns={columns}
             pagination={{
-              defaultCurrent: page,
+              current: page,
               total: totalPage,
               pageSize: pageSize,
-              onchange: page => {
+              onChange: page => {
+                console.log(page);
                 setPage(page);
               },
             }}
           />
         </Card>
       )}
-      <NewToken createToken={createToken} setCreateToken={setCreateToken} />
+      <NewToken
+        createToken={createToken}
+        setCreateToken={setCreateToken}
+        setRefresh={setRefresh}
+        refresh={refresh}
+        update={update}
+        tokenId={tokenId}
+        tokenInfo={tokenInfo}
+      />
       {showDetail && (
         <TokenDetail
           tokenName={tokenName}
-          data={data}
+          data={tokenInfo}
           tokenId={tokenId}
           setShowDetail={setShowDetail}
           refresh={refresh}
           setRefresh={setRefresh}
         />
       )}
-    </div>
+    </>
   );
 };
 
 export default connect(({ user }) => ({
-  caller_id: user.currentUser.caller_id,
+  caller_id: user.currentUser.user_id,
 }))(Token);

@@ -41,7 +41,24 @@ const allApplication = props => {
       });
   }, []);
   function handleChangePage(page) {
-    setCurrentPage(page);
+    axios({
+      method: 'get',
+      url: '/api/v1/application',
+      params: {
+        page,
+        page_size,
+      },
+    })
+      .then(response => {
+        if (response.status === 200) {
+          setAppList(response.data.application_list);
+          setTotal(response.data.total);
+          setCurrentPage(page);
+        } else throw Error('error status:', response.status);
+      })
+      .catch(error => {
+        console.log(error);
+      });
   }
   return (
     <>
