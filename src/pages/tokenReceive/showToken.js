@@ -11,6 +11,14 @@ const statusList = {
   3: '取消',
   4: '到期未达成',
 };
+const typleList = {
+  0: '未知',
+  1: '技术交流',
+  2: '学业探讨',
+  3: '社会实践',
+  4: '公益志愿者',
+  5: '游玩',
+};
 const showToken = props => {
   const { match } = props;
   const callup_id = match.params.tokenId;
@@ -48,7 +56,9 @@ const showToken = props => {
     <>
       <Descriptions title="召集令信息" className={style1.info} bordered>
         <Descriptions.Item label="名称">{tokenInfo.name}</Descriptions.Item>
-        <Descriptions.Item label="类型">{tokenInfo.type}</Descriptions.Item>
+        <Descriptions.Item label="类型">
+          {typleList[tokenInfo.type]}
+        </Descriptions.Item>
         <Descriptions.Item label="所属令主">
           {tokenInfo.caller_id}
         </Descriptions.Item>
@@ -62,7 +72,11 @@ const showToken = props => {
           {statusList[tokenInfo.status]}
         </Descriptions.Item>
         <Descriptions.Item label="介绍照片">
-          <img alt="logo" src={require('../../assets/ZJL.png')} />
+          <img
+            alt="logo"
+            src={`http://${tokenInfo.photo_url}`}
+            style={{ height: '400px', width: 'auto' }}
+          />
         </Descriptions.Item>
         <Descriptions.Item label="具体描述" span={3}>
           {tokenInfo.desc}

@@ -1,6 +1,7 @@
 import styles from './index.less';
 import { Layout, Menu } from 'antd';
 import { Link } from 'umi';
+import RightContent from '@/components/GlobalHEader/RightContent';
 const { Header, Content, Footer } = Layout;
 const menuData = [
   { route: '/admin/allUser', name: '当前用户' },
@@ -18,6 +19,7 @@ const BasicLayout = props => {
     <Layout style={{ background: '#fff' }}>
       <Header>
         <div className={styles.logo2}>召集令</div>
+        <RightContent style={{ float: 'right' }} />
         <Menu
           theme="dark"
           mode="horizontal"
