@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import axios from 'axios';
-import { Input, Select, Table, Space, Popconfirm, message } from 'antd';
+import { Input, Select, Table, Space, Popconfirm, message, Badge } from 'antd';
 import styles from '@/css/searchToken.css';
 
 const { Search } = Input;
@@ -180,7 +180,13 @@ const searchToken = props => {
           title="状态"
           key="status"
           render={(text, record) => (
-            <Space size="middle">{statusList[record.status]}</Space>
+            <>
+              {text === 1 && <Badge status="processing" />}
+              {text === 2 && <Badge status="success" />}
+              {text === 3 && <Badge status="default" />}
+              {text === 4 && <Badge status="error" />}
+              {statusList[text]}
+            </>
           )}
         />
         <Column

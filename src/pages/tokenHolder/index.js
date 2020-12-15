@@ -39,8 +39,8 @@ const Token = props => {
         <>
           {text === 1 && <Badge status="processing" />}
           {text === 2 && <Badge status="success" />}
-          {text === 3 && <Badge status="Default" />}
-          {text === 4 && <Badge status="Error" />}
+          {text === 3 && <Badge status="default" />}
+          {text === 4 && <Badge status="error" />}
           {tokenStatus[text]}
         </>
       ),
