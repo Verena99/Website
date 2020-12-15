@@ -18,7 +18,7 @@ const BasicLayout = props => {
   return (
     <Layout style={{ background: '#fff' }}>
       <Header>
-        <div RightContentclassName={styles.logo2}>召集令</div>
+        <div className={styles.logo2}>召集令</div>
         <RightContent style={{ float: 'right' }} />
         <Menu
           theme="dark"

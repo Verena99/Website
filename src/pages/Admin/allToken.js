@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom';
 import axios from 'axios';
 import { Input, Select, Table, Space, Popconfirm, message } from 'antd';
 import styles from '@/css/searchToken.css';
+import { provinceData } from '@/global';
 
 const { Search } = Input;
 const { Option } = Select;
@@ -162,7 +163,13 @@ const allToken = props => {
             <Space size="middle">{typleList[record.type]}</Space>
           )}
         />
-        <Column title="地点" dataIndex="city" key="city" />
+        <Column
+          title="地点"
+          key="city"
+          render={(text, record) => (
+            <Space size="middle">{provinceData[record.city]}</Space>
+          )}
+        />
         <Column title="目标人数" dataIndex="quota" key="quota" />
         <Column
           title="令主id"

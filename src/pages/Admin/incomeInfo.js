@@ -123,6 +123,7 @@ const incomeInfo = props => {
     })
       .then(response => {
         setFlag(true);
+        console.log(response.data.record_list);
         setRecordList(response.data.record_list);
         let tempstart = new Date(startTime * 1000);
         let arry = [];

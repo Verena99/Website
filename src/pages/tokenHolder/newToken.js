@@ -41,27 +41,29 @@ const NewToken = props => {
   });
 
   // 上传文件
-  const uploadPic = () => {
-    cos.putObject(
-      {
-        Bucket: 'web-develop-1304507938',
-        Region: 'ap-beijing',
-        Key: uploadFile.name,
-        StorageClass: 'STANDARD',
-        Body: uploadFile, // 上传文件对象
-        onProgress: function(progressData) {
-          console.log(JSON.stringify(progressData));
-        },
-      },
-      function(err, data) {
-        console.log(err || data);
-        if ('statusCode' in data) {
-          console.log(data.Location);
-          setPicLoc(data.Location);
-        }
-      },
-    );
-  };
+  // const uploadPic = () => {
+  //   cos.putObject(
+  //     {
+  //       Bucket: 'web-develop-1304507938',
+  //       Region: 'ap-beijing',
+  //       Key: uploadFile.name,
+  //       StorageClass: 'STANDARD',
+  //       Body: uploadFile, // 上传文件对象
+  //       onProgress: function(progressData) {
+  //         console.log(JSON.stringify(progressData));
+  //       },
+  //     },
+  //     function(err, data) {
+  //       console.log(err || data);
+  //       if ('statusCode' in data) {
+  //         console.log(data.Location);
+  //         setPicLoc(data.Location);
+  //         return data.Location;
+  //       }
+  //     },
+  //   );
+  //   return undefined;
+  // };
 
   const upLoadButton = (
     <div>
@@ -79,56 +81,79 @@ const NewToken = props => {
     }
   };
 
+  const createOrChangeToken = url => {
+    if (update) {
+      const params = {};
+      params.callup_id = tokenId;
+      const token = {};
+      const time = new Date(form.getFieldValue('end_time'));
+      token.end_time = parseInt(time.getTime() / 1000);
+      token.type = form.getFieldValue('type');
+      token.name = form.getFieldValue('name');
+      token.quota = form.getFieldValue('quota');
+      token.desc = form.getFieldValue('desc');
+      token.city = Number(form.getFieldValue('city'));
+      token.photo_url = url;
+      params.data = token;
+      dispatch({
+        type: 'token/updateToken',
+        payload: params,
+      }).then(res => {
+        setRefresh(!refresh);
+        setCreateToken(false);
+        message.success('召集令修改成功');
+      });
+    } else {
+      const params = {};
+      params.caller_id = caller_id;
+      params.desc = form.getFieldValue('desc');
+      const time = new Date(form.getFieldValue('end_time'));
+      params.end_time = parseInt(time.getTime() / 1000);
+      params.name = form.getFieldValue('name');
+      params.quota = form.getFieldValue('quota');
+      params.type = form.getFieldValue('type');
+      params.city = Number(form.getFieldValue('city'));
+      params.photo_url = url;
+      dispatch({
+        type: 'token/createToken',
+        payload: params,
+      }).then(res => {
+        if ('callup_id' in res) {
+          setCreateToken(false);
+          setRefresh(!refresh);
+          message.success('召集令创建成功');
+        } else {
+          message.error('召集令创建失败');
+        }
+      });
+    }
+  };
+
   const createCallup = () => {
     form
       .validateFields(['name', 'type', 'desc', 'quota', 'end_time', 'city'])
       .then(() => {
-        if (uploadFile) uploadPic();
-        if (update) {
-          const params = {};
-          params.callup_id = tokenId;
-          const token = {};
-          const time = new Date(form.getFieldValue('end_time'));
-          token.end_time = parseInt(time.getTime() / 1000);
-          token.quota = form.getFieldValue('quota');
-          token.desc = form.getFieldValue('desc');
-          token.photo_url = picLoc;
-          params.data = token;
-          dispatch({
-            type: 'token/updateToken',
-            payload: params,
-          }).then(res => {
-            if (!'code' in res) {
-              setRefresh(!refresh);
-              setCreateToken(false);
-              message.success('召集令修改成功');
-            } else {
-              message.error('召集令修改失败');
-            }
-          });
+        if (uploadFile) {
+          cos.putObject(
+            {
+              Bucket: 'web-develop-1304507938',
+              Region: 'ap-beijing',
+              Key: uploadFile.name,
+              StorageClass: 'STANDARD',
+              Body: uploadFile, // 上传文件对象
+              onProgress: function(progressData) {
+                console.log(JSON.stringify(progressData));
+              },
+            },
+            function(err, data) {
+              console.log(err || data);
+              if ('statusCode' in data) {
+                createOrChangeToken(data.Location);
+              }
+            },
+          );
         } else {
-          const params = {};
-          params.caller_id = caller_id;
-          params.desc = form.getFieldValue('desc');
-          const time = new Date(form.getFieldValue('end_time'));
-          params.end_time = parseInt(time.getTime() / 1000);
-          params.name = form.getFieldValue('name');
-          params.quota = form.getFieldValue('quota');
-          params.type = form.getFieldValue('type');
-          params.city = Number(form.getFieldValue('city'));
-          params.photo_url = picLoc;
-          dispatch({
-            type: 'token/createToken',
-            payload: params,
-          }).then(res => {
-            if ('callup_id' in res) {
-              setCreateToken(false);
-              setRefresh(!refresh);
-              message.success('召集令创建成功');
-            } else {
-              message.error('召集令创建失败');
-            }
-          });
+          createOrChangeToken(undefined);
         }
       });
   };

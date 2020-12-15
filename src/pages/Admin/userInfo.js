@@ -21,7 +21,7 @@ const userInfo = props => {
     credentialType: '身份证',
     credentialNumber: '511002199806127632',
     phone: '18810224693',
-    city: '北京',
+    city: 0,
     registrationTime: '2019/8/21',
     changeTime: '2019/9/22',
     introduction: 'bala bala bala',
@@ -31,9 +31,11 @@ const userInfo = props => {
     axios({
       method: 'get',
       url: '/api/v1/user',
-      page: 1,
-      page_size: 1,
-      user_id: userId,
+      params: {
+        page: 1,
+        page_size: 1,
+        user_id: userId,
+      },
     })
       .then(response => {
         if (response.status === 200) {
