@@ -32,7 +32,7 @@ export async function createToken(params) {
 export async function updateToken(params) {
   return request(`${tokenUrl}/${params.callup_id}`, {
     method: `PATCH`,
-    data: params,
+    data: params.data,
   });
 }
 

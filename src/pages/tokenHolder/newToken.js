@@ -100,6 +100,7 @@ const NewToken = props => {
         payload: params,
       }).then(res => {
         setRefresh(!refresh);
+        setPicture(undefined);
         setCreateToken(false);
         message.success('召集令修改成功');
       });
@@ -121,6 +122,7 @@ const NewToken = props => {
         if ('callup_id' in res) {
           setCreateToken(false);
           setRefresh(!refresh);
+          setPicture(undefined);
           message.success('召集令创建成功');
         } else {
           message.error('召集令创建失败');
@@ -133,6 +135,7 @@ const NewToken = props => {
     form
       .validateFields(['name', 'type', 'desc', 'quota', 'end_time', 'city'])
       .then(() => {
+        setPicture(undefined);
         if (uploadFile) {
           cos.putObject(
             {
@@ -181,7 +184,10 @@ const NewToken = props => {
       cancelText="取消"
       okText="确认"
       onOk={() => createCallup()}
-      onCancel={() => setCreateToken(false)}
+      onCancel={() => {
+        setCreateToken(false);
+        setPicture(undefined);
+      }}
     >
       <Form form={form} preserve={false}>
         <Row gutter={32}>
