@@ -30,8 +30,8 @@ const TokenInfo = props => {
           <Descriptions.Item label="当前状态">
             {tokenInfo.status === 1 && <Badge status="processing" />}
             {tokenInfo.status === 2 && <Badge status="success" />}
-            {tokenInfo.status === 3 && <Badge status="Default" />}
-            {tokenInfo.status === 4 && <Badge status="Error" />}
+            {tokenInfo.status === 3 && <Badge status="default" />}
+            {tokenInfo.status === 4 && <Badge status="error" />}
             {tokenStatus[tokenInfo.status]}
           </Descriptions.Item>
           <Descriptions.Item label="具体描述" span={3}>

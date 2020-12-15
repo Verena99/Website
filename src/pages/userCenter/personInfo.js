@@ -6,6 +6,8 @@ import { connect, history } from 'umi';
 import { provinceData } from '@/global';
 import md5 from 'js-md5';
 
+const { TextArea } = Input;
+
 const PersonInfo = props => {
   const { dispatch, user_id, userInfoExam } = props;
   const [form] = Form.useForm();
@@ -17,6 +19,7 @@ const PersonInfo = props => {
 
   const backToPage = () => {
     const data = form.getFieldsValue();
+    data.city = userInfo.city;
     data.password = md5(data.password);
     dispatch({
       type: 'user/changeUserInfo',
@@ -46,6 +49,7 @@ const PersonInfo = props => {
           credential_number: res.user_list[0].credential_number,
           city: provinceData[res.user_list[0].city],
           sso_name: res.user_list[0].sso_name,
+          des: res.user_list[0].desc,
         });
       } else message.error('Error');
     });
@@ -119,6 +123,16 @@ const PersonInfo = props => {
                   iconRender={visible =>
                     visible ? <EyeTwoTone /> : <EyeInvisibleOutlined />
                   }
+                />
+              </Form.Item>
+              <Form.Item
+                label="简介"
+                name="desc"
+                rules={[{ required: true, message: '请输入简介!' }]}
+              >
+                <TextArea
+                  defaultValue={userInfo.desc}
+                  className={styles.login}
                 />
               </Form.Item>
             </Form>

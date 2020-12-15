@@ -47,6 +47,10 @@ const Register = props => {
       .catch(error => {});
   };
 
+  const backPage = () => {
+    history.goBack();
+  };
+
   return (
     <div type="flex" align="middle">
       <Form form={form} {...layout}>
@@ -131,6 +135,13 @@ const Register = props => {
         onClick={() => validateForm()}
       >
         注册
+      </Button>
+      <Button
+        type="primary"
+        style={{ marginTop: '16px', marginLeft: '20px' }}
+        onClick={() => backPage()}
+      >
+        返回
       </Button>
     </div>
   );
