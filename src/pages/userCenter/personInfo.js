@@ -25,11 +25,11 @@ const PersonInfo = props => {
       type: 'user/changeUserInfo',
       payload: { user_id, data },
     }).then(res => {
-      if (!'code' in res) {
+      if ('code' in res) {
+        message.error('修改失败！');
+      } else {
         message.success('修改成功!');
         history.goBack();
-      } else {
-        message.error('修改失败！');
       }
     });
   };

@@ -33,7 +33,7 @@ const LogIn = props => {
             else if (res.admin_type === 1)
               history.push(`/system/tokenHolder?userId=${res.user_id}`);
             else {
-              history.push(`/system/tokenHolder?userId=${res.user_id}`);
+              // history.push(`/system/tokenHolder?userId=${res.user_id}`);
               message.error('用户名或密码错误');
             }
           }
