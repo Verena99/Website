@@ -14,12 +14,12 @@ const UserLayout = props => {
         <div className={styles.content}>
           <div className={styles.top}>
             <div className={styles.header}>
-              <Link to="/">
+              {/* <Link to="/">
                 <img alt="logo" className={styles.logo} src={logo} />
                 <span className={styles.title}>召集令系统</span>
-              </Link>
+              </Link> */}
             </div>
-            <div className={styles.desc}>Web开发技术实践作业</div>
+            {/* <div className={styles.desc}>Web开发技术实践作业</div> */}
           </div>
           {children}
         </div>
