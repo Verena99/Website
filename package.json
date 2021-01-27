@@ -39,7 +39,7 @@
     "react-dropzone": "^11.2.4",
     "react-helmet-async": "^1.0.4",
     "superagent": "^6.1.0",
-    "umi": "^3.2.28",
+    "umi": "^3.3.7",
     "umi-request": "^1.0.8",
     "yorkie": "^2.0.0"
   }

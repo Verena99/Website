@@ -18,31 +18,24 @@ const Register = props => {
   const validateForm = () => {
     form
       .validateFields([
-        'name',
-        'phone',
-        'idType',
-        'idNumber',
-        'credential_number',
-        'city',
         'username',
         'password',
-        'desc',
-        'sso_name',
       ])
       .then(() => {
-        const userInfo = form.getFieldsValue();
-        userInfo.city = Number(userInfo.city);
-        userInfo.password = md5(userInfo.password);
-        let { idType, ...params } = userInfo;
-        dispatch({
-          type: 'user/register',
-          payload: params,
-        }).then(res => {
-          if ('id' in res) {
-            message.success('注册成功！');
-            history.push('/login');
-          } else message.error('注册失败');
-        });
+        // const userInfo = form.getFieldsValue();
+        // userInfo.city = Number(userInfo.city);
+        // userInfo.password = md5(userInfo.password);
+        // let { idType, ...params } = userInfo;
+        // dispatch({
+        //   type: 'user/register',
+        //   payload: params,
+        // }).then(res => {
+        //   if ('id' in res) {
+        //     message.success('注册成功！');
+        //     history.push('/login');
+        //   } else message.error('注册失败');
+        // });
+        history.push('/login');
       })
       .catch(error => {});
   };
@@ -54,7 +47,7 @@ const Register = props => {
   return (
     <div type="flex" align="middle">
       <Form form={form} {...layout}>
-        <Form.Item
+        {/* <Form.Item
           label="姓名"
           name="name"
           rules={[{ required: true, message: '请输入姓名' }]}
@@ -86,20 +79,7 @@ const Register = props => {
           rules={[{ required: true, message: '请输入证件编号' }]}
         >
           <Input className={styles.login} />
-        </Form.Item>
-        <Form.Item
-          label="城市"
-          name="city"
-          rules={[{ required: true, message: '请输入城市' }]}
-        >
-          <Select style={{ width: '260px' }}>
-            {Object.keys(provinceData).map(province => (
-              <Option key={province} value={province}>
-                {provinceData[province]}
-              </Option>
-            ))}
-          </Select>
-        </Form.Item>
+        </Form.Item> */}
         <Form.Item
           id="userId"
           label="用户名"
@@ -120,13 +100,6 @@ const Register = props => {
               visible ? <EyeTwoTone /> : <EyeInvisibleOutlined />
             }
           />
-        </Form.Item>
-        <Form.Item
-          label="简介"
-          name="desc"
-          rules={[{ required: true, message: '请输入简介!' }]}
-        >
-          <TextArea className={styles.login} />
         </Form.Item>
       </Form>
       <Button
