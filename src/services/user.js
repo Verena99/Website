@@ -24,7 +24,7 @@ export async function login(params) {
 
 // 注册
 export async function register(params) {
-  return request(`/api/v1/user`, {
+  return request(`/api/v1/user/register`, {
     method: `POST`,
     data: params,
   });

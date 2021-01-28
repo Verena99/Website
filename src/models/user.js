@@ -9,17 +9,8 @@ const UserModel = {
   namespace: 'user',
   state: {
     currentUser: {
-      name: 'user2',
-      user_id: 2,
-    },
-    userInfo: {
-      name: 'LYF',
-      phone: '18888888888',
-      idType: '1',
-      credential_number: '123456789',
-      city: 2,
-      sso_name: 'BALABALA',
-      password: 888888,
+      username: 'default',
+      user_id: 'default',
     },
   },
   effects: {
@@ -35,13 +26,17 @@ const UserModel = {
 
     *login({ payload }, { call, put }) {
       const response = yield call(login, payload);
-      if (response) {
+      if (
+        response &&
+        response.status == 200 &&
+        response.data.message == 'success'
+      ) {
         const current = {};
-        current.name = payload.sso_name;
-        current.caller_id = response.caller_id;
+        current.username = payload.username;
+        current.user_id = response.data.user_id;
         yield put({
           type: 'saveCurrentUser',
-          payload: payload,
+          payload: current,
         });
       }
       return response;
@@ -49,15 +44,6 @@ const UserModel = {
 
     *register({ payload }, { call, put }) {
       const response = yield call(register, payload);
-      if (response) {
-        const current = {};
-        current.name = payload.sso_name;
-        current.caller_id = response.id;
-        yield put({
-          type: 'saveCurrentUser',
-          payload: payload,
-        });
-      }
       return response;
     },
 
@@ -68,6 +54,7 @@ const UserModel = {
   },
   reducers: {
     saveCurrentUser(state, action) {
+      console.log(action);
       return { ...state, currentUser: action.payload || {} };
     },
 
