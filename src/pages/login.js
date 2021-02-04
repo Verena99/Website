@@ -14,33 +14,26 @@ const LogIn = props => {
       .validateFields(['username', 'password'])
       .then(() => {
         history.push('/system');
-        // dispatch({
-        //   type: 'user/login',
-        //   payload: {
-        //     sso_name: form.getFieldValue('username'),
-        //     password: md5(form.getFieldValue('password')),
-        //   },
-        // }).then(res => {
-          // if (res) {
-          //   dispatch({
-          //     type: 'user/saveCurrentUser',
-          //     payload: {
-          //       name: form.getFieldValue('username'),
-          //       user_id: res.user_id,
-          //     },
-          //   });
-          //   if (res.admin_type === 2)
-          //     history.push(`/admin/allUser?userId=${res.user_id}`);
-          //   else if (res.admin_type === 1)
-          //     history.push(`/system/tokenHolder?userId=${res.user_id}`);
-          //   else {
-          //     // history.push(`/system/tokenHolder?userId=${res.user_id}`);
-          //     message.error('用户名或密码错误');
-          //   }
-          // }
-        // });
+        dispatch({
+          type: 'user/login',
+          payload: {
+            affair: 'login',
+            userName: form.getFieldValue('username'),
+            password: md5(form.getFieldValue('password')),
+          },
+        }).then(res => {
+          if (res && res.msg === 'ok') {
+            dispatch({
+              type: 'user/saveCurrentUser',
+              payload: {
+                name: form.getFieldValue('username'),
+              },
+            });
+            history.push('/system');
+          }
+        });
       })
-      .catch(error => {});
+      .catch(error => {console.log(error)});
   };
 
   const goToRegister = () => {

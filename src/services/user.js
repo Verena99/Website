@@ -16,15 +16,15 @@ export async function queryCurrent(params) {
 
 // 登陆
 export async function login(params) {
-  return request(`/api/v1/user/login`, {
-    method: `GET`,
-    params: params,
+  return request(`/login`, {
+    method: `POST`,
+    data: params,
   });
 }
 
 // 注册
 export async function register(params) {
-  return request(`/api/v1/user`, {
+  return request(`/register`, {
     method: `POST`,
     data: params,
   });

@@ -44,6 +44,11 @@ export default [
         component: './index',
       },
       {
+        path: '/system/secondPage',
+        name: 'secondPage',
+        component: './index',
+      },
+      {
         component: './404',
       },
     ],
