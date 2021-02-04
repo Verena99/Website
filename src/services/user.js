@@ -18,7 +18,7 @@ export async function queryCurrent(params) {
 export async function login(params) {
   return request(`/api/v1/user/login`, {
     method: `GET`,
-    params: params,
+    data: params,
   });
 }
 

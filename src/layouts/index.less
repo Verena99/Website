@@ -7,7 +7,6 @@
   overflow: auto;
   background: @layout-body-background;
 }
-
 .logo2 {
   color: white;
   margin: 10px 20px 10px 0;
@@ -15,7 +14,6 @@
   font-size: 18px;
   line-height: 20px;
 }
-
 .logo3 {
   color: white;
   margin: 16px 20px 16px 0;
@@ -23,12 +21,10 @@
   font-size: 18px;
   line-height: 30px;
 }
-
 .content {
   flex: 1;
   padding: 32px 0;
 }
-
 @media (min-width: @screen-md-min) {
   .container {
     background-image: url('https://gw.alipayobjects.com/zos/rmsportal/TVYTbAXWheQpRcWDaDMu.svg');
@@ -41,12 +37,10 @@
     padding: 32px 0 24px;
   }
 }
-
 .top {
   margin-top: 5%;
   text-align: center;
 }
-
 .header {
   height: 44px;
   line-height: 44px;
@@ -54,13 +48,11 @@
     text-decoration: none;
   }
 }
-
 .logo {
   height: 44px;
   margin-right: 16px;
   vertical-align: top;
 }
-
 .title {
   position: relative;
   top: 2px;
@@ -69,14 +61,12 @@
   font-size: 33px;
   font-family: Avenir, 'Helvetica Neue', Arial, Helvetica, sans-serif;
 }
-
 .desc {
   margin-top: 12px;
   margin-bottom: 40px;
   color: @text-color-secondary;
   font-size: @font-size-base;
 }
-
 .layoutHeader {
   height: 100%;
   width: 100%;
@@ -84,7 +74,7 @@
   position: absolute;
   :global {
     .ant-layout-header {
-      height: 48px;
+      line-height: 52px;
     }
     .ant-layout-footer {
       padding: 0px 50px 20px 50px;
@@ -93,4 +83,32 @@
       min-height: auto;
     }
   }
+}
+.basicLayoutHeader {
+  height: auto !important;
+  padding: 0 30px !important;
+}
+
+.searchCombo {
+  margin-top: 15px;
+}
+
+.search {
+  width: 500px !important;
+  display: inline-block;
+  background-color: #ffffff;
+  border: 1px solid white;
+}
+.searchMenu {
+  margin: 0 5px;
+  line-height: 36px;
+}
+.advancedSearch {
+  margin-top: 5px;
+  margin-left: 5px;
+}
+.searchHead {
+  width: 500px;
+  border-bottom: 0 !important;
+  line-height: 20px !important;
 }
