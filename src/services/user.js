@@ -16,9 +16,9 @@ export async function queryCurrent(params) {
 
 // 登陆
 export async function login(params) {
-  return request(`/api/v1/user/login`, {
-    method: `GET`,
-    params: params,
+  return request(`/login`, {
+    method: `POST`,
+    data: params,
   });
 }
 
