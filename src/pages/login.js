@@ -26,7 +26,7 @@ const LogIn = props => {
                 // 尚无system
                 message
                   .success('登录成功', 0.5)
-                  .then(() => history.push('/system'));
+                  .then(() => history.push('/home'));
               } else {
                 message.error('用户名或密码错误');
               }
@@ -36,7 +36,9 @@ const LogIn = props => {
           }
         });
       })
-      .catch(error => {console.log(error)});
+      .catch(error => {
+        console.log(error);
+      });
   };
 
   const goToRegister = () => {
