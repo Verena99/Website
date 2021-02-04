@@ -75,7 +75,6 @@ const BasicLayout = props => {
       <Content style={{ padding: '20px 30px' }}>
         <div style={{ background: '#fff', height: '100%' }}>{children}</div>
       </Content>
-      <Footer style={{ textAlign: 'center' }}>Created by LYF、XF、CYN</Footer>
     </Layout>
   );
 };
