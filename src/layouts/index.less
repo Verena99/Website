@@ -74,7 +74,9 @@
   position: absolute;
   :global {
     .ant-layout-header {
-      line-height: 20px;
+      line-height: 52px;
+      height: 90px;
+      background: white;
     }
     .ant-layout-footer {
       padding: 0px 50px 20px 50px;
@@ -85,12 +87,18 @@
   }
 }
 .basicLayoutHeader {
-  height: 115px;
+  height: 130px;
   padding: 0 20px;
   background: white;
 }
+.searchHead {
+  margin-left: 200px !important;
+  margin-top: 10px !important;
+  border-bottom: 0 !important;
+  line-height: 20px !important;
+}
 .search {
-  width: 550px;
+  width: 500px;
   display: inline-block;
   margin-left: 200px;
   height: 36px;
@@ -102,10 +110,4 @@
 .advancedSearch {
   margin-top: 5px;
   margin-left: 5px;
-}
-.searchHead {
-  margin-left: 200px;
-  margin-top: 10px;
-  border-bottom: 0;
-  line-height: 20px !important;
 }

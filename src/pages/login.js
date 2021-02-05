@@ -1,9 +1,8 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect } from 'react';
 import { Input, Form, Button, message } from 'antd';
 import { UserOutlined, LockOutlined } from '@ant-design/icons';
 import styles from './index.less';
 import { history, connect } from 'umi';
-import md5 from 'js-md5';
 
 const LogIn = props => {
   const { dispatch } = props;
@@ -13,27 +12,33 @@ const LogIn = props => {
     form
       .validateFields(['username', 'password'])
       .then(() => {
-        history.push('/system');
         dispatch({
           type: 'user/login',
           payload: {
-            affair: 'login',
-            userName: form.getFieldValue('username'),
-            password: md5(form.getFieldValue('password')),
+            username: form.getFieldValue('username'),
+            password: form.getFieldValue('password'),
           },
         }).then(res => {
-          if (res && res.msg === 'ok') {
-            dispatch({
-              type: 'user/saveCurrentUser',
-              payload: {
-                name: form.getFieldValue('username'),
-              },
-            });
-            history.push('/system');
+          if (res) {
+            const { status, data } = res;
+            if (status == 200) {
+              if (data.message == 'success') {
+                // 尚无system
+                message
+                  .success('登录成功', 0.5)
+                  .then(() => history.push('/home'));
+              } else {
+                message.error('用户名或密码错误');
+              }
+            } else {
+              message.error('server error');
+            }
           }
         });
       })
-      .catch(error => {console.log(error)});
+      .catch(error => {
+        console.log(error);
+      });
   };
 
   const goToRegister = () => {

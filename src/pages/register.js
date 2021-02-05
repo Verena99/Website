@@ -1,10 +1,8 @@
-import React, { useState } from 'react';
-import { Input, Form, Button, message, Select } from 'antd';
+import React from 'react';
+import { Input, Form, Button, message } from 'antd';
 import { EyeInvisibleOutlined, EyeTwoTone } from '@ant-design/icons';
 import styles from './index.less';
 import { history, connect } from 'umi';
-import { provinceData } from '@/global';
-import md5 from 'js-md5';
 
 const Register = props => {
   const { dispatch } = props;
@@ -13,28 +11,26 @@ const Register = props => {
     labelCol: { span: 10 },
     wrapperCol: { span: 7 },
   };
-  const { TextArea } = Input;
 
   const validateForm = () => {
     form
-      .validateFields([
-        'username',
-        'password',
-      ])
+      .validateFields(['username', 'password'])
       .then(() => {
-        const userInfo = form.getFieldsValue();
-        userInfo.affair = 'register';
-        // userInfo.password = md5(userInfo.password);
         dispatch({
           type: 'user/register',
-          payload: userInfo,
+          payload: form.getFieldsValue(),
         }).then(res => {
-          if (res && res.msg === 'ok') {
-            message.success('注册成功！');
-            history.push('/login');
-          } else message.error('注册失败');
+          if (res) {
+            const { status, data } = res;
+            if (status == 200 && data.message == 'success') {
+              message
+                .success('注册成功', 0.5)
+                .then(() => history.push('/login'));
+            } else {
+              message.error('server error');
+            }
+          }
         });
-        history.push('/login');
       })
       .catch(error => {});
   };
@@ -46,43 +42,10 @@ const Register = props => {
   return (
     <div type="flex" align="middle">
       <Form form={form} {...layout}>
-        {/* <Form.Item
-          label="姓名"
-          name="name"
-          rules={[{ required: true, message: '请输入姓名' }]}
-        >
-          <Input className={styles.login} />
-        </Form.Item>
-        <Form.Item
-          label="手机号"
-          name="phone"
-          rules={[{ required: true, message: '请输入手机号' }]}
-        >
-          <Input className={styles.login} />
-        </Form.Item>
-        <Form.Item
-          label="证件类型"
-          name="idType"
-          rules={[{ required: true, message: '请选择证件类型' }]}
-        >
-          <Select style={{ width: '260px' }}>
-            <Select.Option value="1">中华人民共和国居民身份证</Select.Option>
-            <Select.Option value="2">港澳台居民居住证</Select.Option>
-            <Select.Option value="3">香港居民身份证</Select.Option>
-            <Select.Option value="4">澳门居民身份证</Select.Option>
-          </Select>
-        </Form.Item>
-        <Form.Item
-          label="证件编号"
-          name="credential_number"
-          rules={[{ required: true, message: '请输入证件编号' }]}
-        >
-          <Input className={styles.login} />
-        </Form.Item> */}
         <Form.Item
           id="userId"
           label="用户名"
-          name="userName"
+          name="username"
           rules={[{ required: true, message: '请输入用户名' }]}
         >
           <Input className={styles.login} />

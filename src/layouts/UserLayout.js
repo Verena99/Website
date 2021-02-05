@@ -1,7 +1,4 @@
-import { getMenuData, getPageTitle } from '@ant-design/pro-layout';
-import { Helmet, HelmetProvider } from 'react-helmet-async';
-import { Link } from 'umi';
-import { Layout } from 'antd';
+import { HelmetProvider } from 'react-helmet-async';
 import React from 'react';
 import styles from './index.less';
 
@@ -12,8 +9,7 @@ const UserLayout = props => {
       <div className={styles.container}>
         <div className={styles.content}>
           <div className={styles.top}>
-            <div className={styles.header}>
-            </div>
+            <div className={styles.header}></div>
           </div>
           {children}
         </div>

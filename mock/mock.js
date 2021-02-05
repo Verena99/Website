@@ -1,116 +1,193 @@
 export default {
-  'POST /login': {
-    code: 200,
-	  msg :"ok",
+  'GET /api/v1/user/login': {
+    status: 200,
+    data: {
+      message: 'success',
+      user_id: 'someone',
+    },
   },
-  'POST /register': {
-    code: 200,
-	  msg :"ok",
+
+  'POST /api/v1/user/register': {
+    status: 200,
+    data: {
+      message: 'success',
+    },
   },
-  'GET /api/v1/callup': {
-    callup_list: [
-      {
-        application_list: [
-          {
-            callee_id: 2,
-            callup_id: 1,
-            desc: '申请者1',
-            id: 1,
-            status: 1,
-          },
-          {
-            callee_id: 3,
-            callup_id: 1,
-            desc: '申请者2',
-            id: 2,
-            status: 1,
-          },
+
+  'POST /api/v1/graph': {
+    status: 200,
+    data: {
+      message: 'success',
+      graph: {
+        center: '中心节点',
+        nodes: [
+          '节点0',
+          '节点1',
+          '节点2',
+          '节点3',
+          '节点4',
+          '节点5',
+          '节点6',
+          '节点7',
+          '节点8',
+          '节点9',
+          '节点10',
+          '节点11',
+          '节点12',
+          '节点13',
+          '节点14',
+          '节点15',
+          '节点16',
+          '节点17',
+          '18',
+          '19',
+          '20',
+          '21',
+          '22',
+          '23',
+          '24',
+          '25',
+          '26',
+          '27',
+          '28',
+          '29',
+          '30',
+          '31',
+          '32',
+          '33',
+          '34',
         ],
-        caller_id: 15,
-        city: 3,
-        desc: 'string0',
-        end_time: 0,
-        id: 0,
-        name: '开会',
-        photo_url:
-          'web-develop-1304507938.cos.ap-beijing.myqcloud.com/%E5%8F%AC%E9%9B%86%E4%BB%A4.jpg',
-        quota: 3,
-        status: 1,
-        success_num: 2,
-        type: 0,
       },
-      {
-        application_list: [
-          {
-            callee_id: 0,
-            callup_id: 0,
-            desc: 'string',
-            id: 0,
-            status: 1,
-          },
-        ],
-        caller_id: 15,
-        city: 2,
-        desc: 'string1',
-        end_time: 0,
-        id: 1,
-        name: '秋游',
-        photo_url: 'web-develop-1304507938.cos.ap-beijing.myqcloud.com/09.jpg',
-        quota: 5,
-        status: 1,
-        success_num: 0,
-        type: 1,
-      },
-      {
-        application_list: [
-          {
-            callee_id: 0,
-            callup_id: 0,
-            desc: 'string',
-            id: 0,
-            status: 0,
-          },
-        ],
-        caller_id: 15,
-        city: 2,
-        desc: 'string2',
-        end_time: 0,
-        id: 2,
-        name: '公园',
-        photo_url:
-          'web-develop-1304507938.cos.ap-beijing.myqcloud.com/%E5%8F%AC%E9%9B%86%E4%BB%A4.jpg',
-        quota: 6,
-        status: 2,
-        success_num: 6,
-        type: 0,
-      },
-    ],
-    total: 3,
+    },
   },
-  'GET /api/v1/application': {
-    application_list: [
-      {
-        callee_id: 3,
-        callup_id: 2,
-        desc: 'string1',
-        id: 1,
-        status: 1,
-      },
-      {
-        callee_id: 2,
-        callup_id: 2,
-        desc: 'string2',
-        id: 2,
-        status: 1,
-      },
-      {
-        callee_id: 1,
-        callup_id: 2,
-        desc: 'string3',
-        id: 3,
-        status: 1,
-      },
-    ],
-    total: 3,
+
+  'POST /api/v1/list': {
+    status: 200,
+    data: {
+      message: 'success',
+      total: 100,
+      list: [
+        {
+          title: 'f-22-0',
+          description:
+            'F-22战斗机（英文：F-22 Fighter，\
+          编号：F-22，代号：Raptor，译文：猛禽，通称：\
+          洛克希德·马丁F-22“猛禽”），是美国一型单座双发\
+          高隐身性第五代战斗机，是世界上第一种进入服役的\
+          第五代战斗机。',
+          author: '百度百科',
+          journal: '百度百科',
+          origin: 'http://www.baidu.com',
+        },
+        {
+          title: 'f-22-1',
+          description:
+            'F-22战斗机（英文：F-22 Fighter，\
+          编号：F-22，代号：Raptor，译文：猛禽，通称：\
+          洛克希德·马丁F-22“猛禽”），是美国一型单座双发\
+          高隐身性第五代战斗机，是世界上第一种进入服役的\
+          第五代战斗机。',
+          author: '百度百科',
+          journal: '百度百科',
+          origin: 'http://www.baidu.com',
+        },
+        {
+          title: 'f-22-2',
+          description:
+            'F-22战斗机（英文：F-22 Fighter，\
+          编号：F-22，代号：Raptor，译文：猛禽，通称：\
+          洛克希德·马丁F-22“猛禽”），是美国一型单座双发\
+          高隐身性第五代战斗机，是世界上第一种进入服役的\
+          第五代战斗机。',
+          author: '百度百科',
+          journal: '百度百科',
+          origin: 'http://www.baidu.com',
+        },
+        {
+          title: 'f-22-3',
+          description:
+            'F-22战斗机（英文：F-22 Fighter，\
+          编号：F-22，代号：Raptor，译文：猛禽，通称：\
+          洛克希德·马丁F-22“猛禽”），是美国一型单座双发\
+          高隐身性第五代战斗机，是世界上第一种进入服役的\
+          第五代战斗机。',
+          author: '百度百科',
+          journal: '百度百科',
+          origin: 'http://www.baidu.com',
+        },
+        {
+          title: 'f-22-4',
+          description:
+            'F-22战斗机（英文：F-22 Fighter，\
+          编号：F-22，代号：Raptor，译文：猛禽，通称：\
+          洛克希德·马丁F-22“猛禽”），是美国一型单座双发\
+          高隐身性第五代战斗机，是世界上第一种进入服役的\
+          第五代战斗机。',
+          author: '百度百科',
+          journal: '百度百科',
+          origin: 'http://www.baidu.com',
+        },
+        {
+          title: 'f-22-5',
+          description:
+            'F-22战斗机（英文：F-22 Fighter，\
+          编号：F-22，代号：Raptor，译文：猛禽，通称：\
+          洛克希德·马丁F-22“猛禽”），是美国一型单座双发\
+          高隐身性第五代战斗机，是世界上第一种进入服役的\
+          第五代战斗机。',
+          author: '百度百科',
+          journal: '百度百科',
+          origin: 'http://www.baidu.com',
+        },
+        {
+          title: 'f-22-6',
+          description:
+            'F-22战斗机（英文：F-22 Fighter，\
+          编号：F-22，代号：Raptor，译文：猛禽，通称：\
+          洛克希德·马丁F-22“猛禽”），是美国一型单座双发\
+          高隐身性第五代战斗机，是世界上第一种进入服役的\
+          第五代战斗机。',
+          author: '百度百科',
+          journal: '百度百科',
+          origin: 'http://www.baidu.com',
+        },
+        {
+          title: 'f-22-7',
+          description:
+            'F-22战斗机（英文：F-22 Fighter，\
+          编号：F-22，代号：Raptor，译文：猛禽，通称：\
+          洛克希德·马丁F-22“猛禽”），是美国一型单座双发\
+          高隐身性第五代战斗机，是世界上第一种进入服役的\
+          第五代战斗机。',
+          author: '百度百科',
+          journal: '百度百科',
+          origin: 'http://www.baidu.com',
+        },
+        {
+          title: 'f-22-8',
+          description:
+            'F-22战斗机（英文：F-22 Fighter，\
+          编号：F-22，代号：Raptor，译文：猛禽，通称：\
+          洛克希德·马丁F-22“猛禽”），是美国一型单座双发\
+          高隐身性第五代战斗机，是世界上第一种进入服役的\
+          第五代战斗机。',
+          author: '百度百科',
+          journal: '百度百科',
+          origin: 'http://www.baidu.com',
+        },
+        {
+          title: 'f-22-9',
+          description:
+            'F-22战斗机（英文：F-22 Fighter，\
+          编号：F-22，代号：Raptor，译文：猛禽，通称：\
+          洛克希德·马丁F-22“猛禽”），是美国一型单座双发\
+          高隐身性第五代战斗机，是世界上第一种进入服役的\
+          第五代战斗机。',
+          author: '百度百科',
+          journal: '百度百科',
+          origin: 'http://www.baidu.com',
+        },
+      ],
+    },
   },
 };

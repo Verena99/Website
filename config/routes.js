@@ -26,30 +26,13 @@ export default [
     ],
   },
   {
-    path: '/userCenter',
-    name: 'userCenter',
-    component: './userCenter/personInfo',
-  },
-  {
-    path: '/system',
+    path: '/home',
     component: '../layouts/BasicLayout',
     routes: [
       {
-        path: '/system',
-        redirect: '/system/firstPage',
-      },
-      {
-        path: '/system/firstPage',
-        name: 'firstPage',
-        component: './index',
-      },
-      {
-        path: '/system/secondPage',
-        name: 'secondPage',
-        component: './index',
-      },
-      {
-        component: './404',
+        path: '/home',
+        name: 'home',
+        component: 'Home',
       },
     ],
   },
