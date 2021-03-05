@@ -50,7 +50,12 @@ class Home extends Component {
         );
 
       case 1:
-        return <ReactEcharts option={option} style={{ height: '100%', overflow: 'scroll' }} />;
+        return (
+          <ReactEcharts
+            option={option}
+            style={{ height: '100%', overflow: 'scroll' }}
+          />
+        );
 
       default:
         return <h1>待定</h1>;
