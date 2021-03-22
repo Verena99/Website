@@ -4,6 +4,10 @@ import ReactEcharts from 'echarts-for-react';
 import { List, Space, Typography } from 'antd';
 
 class Home extends Component {
+  onKgClick = (param, echarts) => {
+    console.log(param);
+  };
+
   render() {
     const { type } = this.props.home.search;
     const { option, list } = this.props.home;
@@ -54,6 +58,9 @@ class Home extends Component {
           <ReactEcharts
             option={option}
             style={{ height: '100%', overflow: 'scroll' }}
+            onEvents={{
+              click: this.onKgClick,
+            }}
           />
         );
 

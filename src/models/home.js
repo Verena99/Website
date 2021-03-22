@@ -76,8 +76,6 @@ const HomeModel = {
         categories.push(categories.length);
       }
 
-      console.log(data, links);
-
       const newOption = {
         tooltip: { show: false },
         series: [
