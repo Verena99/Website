@@ -8,6 +8,14 @@ class Home extends Component {
     const { type } = this.props.home.search;
     const { option, list } = this.props.home;
 
+    function onChartClick(e){ 
+      console.log('111111');
+    }
+
+    let onEvents = {
+      'click': onChartClick,
+    }
+
     switch (type) {
       case 0:
         return (
@@ -54,6 +62,7 @@ class Home extends Component {
           <ReactEcharts
             option={option}
             style={{ height: '100%', overflow: 'scroll' }}
+            onEvents={onEvents}
           />
         );
 
