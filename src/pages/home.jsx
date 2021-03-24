@@ -9,7 +9,7 @@ class Home extends Component {
     const { option, list } = this.props.home;
 
     function onChartClick(e){ 
-      console.log('111111');
+      console.log(e.name)
     }
 
     let onEvents = {
