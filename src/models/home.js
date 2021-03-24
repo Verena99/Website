@@ -48,12 +48,18 @@ const HomeModel = {
       }
       return response;
     },
+    *saveSearchType({ payload }, { put }){
+      yield put({
+        type: 'changeSearchType',
+        payload: payload.currentType,
+      });
+    },
   },
   reducers: {
-    saveSearchType(prevState, action) {
+    changeSearchType(prevState, action) {
       return {
         search: {
-          type: action.payload,
+          type:  action.payload,
           content: '',
         },
         option: {},

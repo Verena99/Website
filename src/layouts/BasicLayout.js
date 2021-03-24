@@ -30,21 +30,28 @@ const BasicLayout = props => {
   const searchInput = useRef();
 
   const saveSearchType = ({ key }) => {
-    searchInput.current.state.value = '';
-    searchInput.current.focus();
+    // searchInput.current.state.value = '';
+    // searchInput.current.focus();
     dispatch({
       type: 'home/saveSearchType',
-      payload: Number(key),
+      payload: { currentType: Number(key) },
+    }).then(res => {
+      // console.log(searchInput);
+      search(Number(key), searchInput.current.state.value);
     });
   };
 
-  const search = value => {
+  const clickSearch = value => {
+    search(type, value);
+  }
+
+  const search = (currentType, value) => {
     if (!value) return;
     dispatch({
       type: 'home/query',
       payload: {
-        type: type,
-        content: value,
+        type: currentType,
+        content: value, 
       },
     }).then(res => {
       if (res) {
@@ -122,7 +129,7 @@ const BasicLayout = props => {
                 allowClear
                 enterButton="搜索"
                 size="middle"
-                onSearch={search}
+                onSearch={clickSearch}
                 ref={searchInput}
               />
             </div>
