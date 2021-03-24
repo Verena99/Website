@@ -30,13 +30,10 @@ const BasicLayout = props => {
   const searchInput = useRef();
 
   const saveSearchType = ({ key }) => {
-    // searchInput.current.state.value = '';
-    // searchInput.current.focus();
     dispatch({
       type: 'home/saveSearchType',
       payload: { currentType: Number(key) },
     }).then(res => {
-      // console.log(searchInput);
       search(Number(key), searchInput.current.state.value);
     });
   };
