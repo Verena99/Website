@@ -4,7 +4,7 @@ const HomeModel = {
   namespace: 'home',
   state: {
     search: {
-      type: 0,
+      searchType: 0,
       content: '',
     },
     option: {},
@@ -14,11 +14,13 @@ const HomeModel = {
     },
   },
   effects: {
-    *query({ payload }, { call, put }) {
-      const { type, content } = payload;
+    *query({ payload }, { call, put, select }) {
+      const { content } = payload;
+      const currentType = yield select(state => state.home.search.searchType);
+      console.log('currentType: ', currentType);
       let api = '';
       let putType = '';
-      switch (type) {
+      switch (currentType) {
         case 0:
           api = `/api/key`;
           putType = 'setList';
@@ -54,20 +56,32 @@ const HomeModel = {
         payload: payload.currentType,
       });
     },
+    *saveSearchContent({ payload }, { put }){
+      yield put({
+        type: 'changeSearchContent',
+        payload: payload.content,
+      })
+    }
   },
   reducers: {
     changeSearchType(prevState, action) {
-      return {
+      console.log('change type:', action.payload);
+      return {...prevState,
         search: {
-          type:  action.payload,
-          content: '',
+          searchType: action.payload,
+          content: prevState.search.content, 
         },
-        option: {},
-        list: {
-          total: 0,
-          current: [],
-        },
+        // option: {},
+        // list: {
+        //   total: 0,
+        //   current: [],
+        // },
       };
+    },
+
+    changeSearchContent(prevState, action) {
+      console.log('change content: ', action.payload);
+      return {...prevState, search: { content: action.payload, searchType: prevState.search.searchType}}
     },
 
     setOption(prevState, action) {
@@ -82,7 +96,7 @@ const HomeModel = {
         categories.push(categories.length);
       }
 
-      console.log(data, links);
+      // console.log(data, links);
 
       const newOption = {
         tooltip: { show: false },//鼠标放上去会有显示

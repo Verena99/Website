@@ -1,7 +1,7 @@
 import styles from './index.less';
 import { Layout, Menu, Input, message, Space } from 'antd';
 import { connect } from 'umi';
-import { useRef } from 'react';
+import { useEffect, useRef } from 'react';
 const { Header, Content } = Layout;
 const { Search } = Input;
 const menuData = [
@@ -22,9 +22,8 @@ const BasicLayout = props => {
   const {
     dispatch,
     children,
-    home: {
-      search: { type },
-    },
+    searchType,
+    content,
   } = props;
 
   const searchInput = useRef();
@@ -33,28 +32,35 @@ const BasicLayout = props => {
     dispatch({
       type: 'home/saveSearchType',
       payload: { currentType: Number(key) },
-    }).then(res => {
-      search(Number(key), searchInput.current.state.value);
-    });
+    })
   };
 
+  useEffect(() => {
+    search(content);
+  }, [searchType]);
+
+  useEffect(()=>{
+    searchInput.current.state.value = content;
+  },[content])
+
   const clickSearch = value => {
-    search(type, value);
+    dispatch({
+      type: 'home/saveSearchContent',
+      payload: { content: value },
+    })
+    search( value );
   }
 
-  const search = (currentType, value) => {
+  const search = (value) => {
     if (!value) return;
     dispatch({
       type: 'home/query',
-      payload: {
-        type: currentType,
-        content: value, 
-      },
+      payload: { content: value },
     }).then(res => {
       if (res) {
         const { status, data } = res;
         if (!(status == 200 && data.message == 'success')) {
-          message.error(data.message, 2);
+          // message.error(data.message, 2);
         }
       }
     });
@@ -68,7 +74,7 @@ const BasicLayout = props => {
             mode="horizontal"
             className={styles.searchHead}
             onSelect={saveSearchType}
-            defaultSelectedKeys={[String(type)]}
+            selectedKeys={[String(searchType)]}
           >
             <Menu.Item
               key={'0'}
@@ -154,4 +160,8 @@ const BasicLayout = props => {
   );
 };
 
-export default connect(({ home }) => ({ home }))(BasicLayout);
+export default connect(({ home }) => ({ 
+  home,
+  searchType: home.search.searchType,
+  content: home.search.content,
+ }))(BasicLayout);
