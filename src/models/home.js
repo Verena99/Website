@@ -71,11 +71,11 @@ const HomeModel = {
           searchType: action.payload,
           content: prevState.search.content, 
         },
-        // option: {},
-        // list: {
-        //   total: 0,
-        //   current: [],
-        // },
+        option: {},
+        list: {
+          total: 0,
+          current: [],
+        },
       };
     },
 
@@ -141,7 +141,7 @@ const HomeModel = {
 
       return { ...prevState, option: newOption };//把prevState展开，若逗号后东西的键有跟前面重复的会覆盖
     },
-    
+
     setList(prevState, action) {
       const newList = {
         total: action.payload.total,
