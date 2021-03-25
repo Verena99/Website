@@ -1,4 +1,4 @@
-export default {
+/*export default {
   'GET /api/v1/user/login': {
     status: 200,
     data: {
@@ -191,3 +191,4 @@ export default {
     },
   },
 };
+*/
