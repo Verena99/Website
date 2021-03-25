@@ -6,18 +6,16 @@ import { List, Space } from 'antd';
 const Home = props => {
   const { dispatch, searchType, option, list } = props;
 
-  useEffect(()=>{
-    if(searchType === 0)
-      console.log('list:',list);
-    else
-     console.log('option', option);
-  },[searchType])
-
   const onChartClick = (e) =>{ 
     console.log(e.name);
     dispatch({
-      type: 'home/saveSearchType',
-      payload: { currentType: Number(0) },
+      type: 'home/saveSearchContent',
+      payload: { content: e.name },
+    }).then(()=>{
+      dispatch({
+        type: 'home/saveSearchType',
+        payload: { currentType: Number(0) },
+      })
     })
   }
 
