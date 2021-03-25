@@ -54,7 +54,7 @@ const BasicLayout = props => {
       if (res) {
         const { status, data } = res;
         if (!(status == 200 && data.message == 'success')) {
-          message.error('server error', 2);
+          message.error(data.message, 2);
         }
       }
     });

@@ -26,7 +26,10 @@ const Register = props => {
               message
                 .success('注册成功', 0.5)
                 .then(() => history.push('/login'));
-            } else {
+            } else if (status == 200 && data.message == "failure") {
+              message.error('用户名已注册');
+            }
+            else {
               message.error('server error');
             }
           }
