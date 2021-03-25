@@ -20,11 +20,11 @@ const HomeModel = {
       let putType = '';
       switch (type) {
         case 0:
-          api = `/api/v1/list`;
+          api = `/api/key`;
           putType = 'setList';
           break;
         case 1:
-          api = `/api/v1/graph`;
+          api = `/api/graph`;
           putType = 'setOption';
           break;
         default:
@@ -33,7 +33,7 @@ const HomeModel = {
 
       const response = yield call(request, api, {
         method: `POST`,
-        data: content,
+        data: {search: content},
       });
 
       if (
@@ -71,41 +71,53 @@ const HomeModel = {
     },
 
     setOption(prevState, action) {
-      const { center, nodes } = action.payload.graph;
-      let data = [{ name: center, category: 0 }];
+      const { fromId, nodes } = action.payload.graph;
+      let data = [{ name: fromId, category: 0 }];
       let links = [];
       let categories = [0];
 
       for (let i in nodes) {
-        links.push({ source: center, target: nodes[i] });
-        data.push({ name: nodes[i], category: data.length });
+        links.push({ source: fromId, target: nodes[i].toId, name: nodes[i].rel });
+        data.push({ name: nodes[i].toId, category: data.length });//节点分类, 数字代表categories中的索引
         categories.push(categories.length);
       }
 
       console.log(data, links);
 
       const newOption = {
-        tooltip: { show: false },
+        tooltip: { show: false },//鼠标放上去会有显示
         series: [
           {
             type: 'graph',
             layout: 'force',
-            roam: false,
+            roam: true,//漫游
+            scale:true,
+            //move:true,
+            edgeSymbol: ['none', 'arrow'],
+            edgeLabel: {
+              normal: {
+                  show: true,
+                  formatter: function (x) {
+                      return x.data.name;
+                  }
+              }
+          },
+
             force: {
-              edgeLength: 200,
-              repulsion: 300,
+              edgeLength: [100, 200],
+              repulsion: 2000,
             },
-            draggable: false,
+            draggable: true,//可拖拽
             label: {
               normal: {
                 show: true,
-                position: 'top',
+
                 textStyle: {
                   fontSize: '12rem',
                 },
               },
             },
-            symbolSize: 20,
+            symbolSize: 60,//球大小
             links,
             data,
             categories,
@@ -113,9 +125,9 @@ const HomeModel = {
         ],
       };
 
-      return { ...prevState, option: newOption };
+      return { ...prevState, option: newOption };//把prevState展开，若逗号后东西的键有跟前面重复的会覆盖
     },
-
+    
     setList(prevState, action) {
       const newList = {
         total: action.payload.total,
