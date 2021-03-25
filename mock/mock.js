@@ -1,5 +1,5 @@
-/*export default {
-  'GET /api/v1/user/login': {
+export default {
+  'GET /api/login': {
     status: 200,
     data: {
       message: 'success',
@@ -7,14 +7,14 @@
     },
   },
 
-  'POST /api/v1/user/register': {
+  'POST /api/register': {
     status: 200,
     data: {
       message: 'success',
     },
   },
 
-  'POST /api/v1/graph': {
+  'POST /api/graph': {
     status: 200,
     data: {
       message: 'success',
@@ -61,7 +61,7 @@
     },
   },
 
-  'POST /api/v1/list': {
+  'POST /api/key': {
     status: 200,
     data: {
       message: 'success',
@@ -191,4 +191,3 @@
     },
   },
 };
-*/

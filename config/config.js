@@ -11,7 +11,8 @@ export default defineConfig({
   // Theme for antd: https://ant.design/docs/react/customize-theme-cn
   proxy: {
     '/api': {
-      target: 'http://127.0.0.1:8000/',
+      // target: 'http://127.0.0.1:8000/',
+      target: 'http://127.0.0.1:3000/',
       pathRewrite: { '^/api': '' },
       changeOrigin: true,
     },
