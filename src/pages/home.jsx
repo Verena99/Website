@@ -9,7 +9,7 @@ class Home extends Component {
     const { option, list } = this.props.home;
 
     function onChartClick(e){ 
-      console.log('111111');
+      console.log(e.name)
     }
 
     let onEvents = {
@@ -22,18 +22,6 @@ class Home extends Component {
           <List
             itemLayout="vertical"
             size="large"
-            pagination={
-              list.current.length
-                ? {
-                    onChange: page => {
-                      console.log(page);
-                    },
-                    pageSize: 10,
-                    total: list.total,
-                    showSizeChanger: false,
-                  }
-                : false
-            }
             dataSource={list.current}
             renderItem={item => (
               <List.Item key={item.title}>

@@ -34,7 +34,6 @@ const BasicLayout = props => {
       type: 'home/saveSearchType',
       payload: { currentType: Number(key) },
     }).then(res => {
-      // console.log(searchInput);
       search(Number(key), searchInput.current.state.value);
     });
   };
@@ -55,7 +54,7 @@ const BasicLayout = props => {
       if (res) {
         const { status, data } = res;
         if (!(status == 200 && data.message == 'success')) {
-          message.error('server error', 2);
+          message.error(data.message, 2);
         }
       }
     });
