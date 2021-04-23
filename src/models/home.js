@@ -1,4 +1,5 @@
 import request from '@/utils/request';
+import { getSearchOption } from '@/services/graph';
 
 const HomeModel = {
   namespace: 'home',
@@ -61,6 +62,11 @@ const HomeModel = {
         type: 'changeSearchContent',
         payload: payload.content,
       })
+    },
+    *getSearchOption({ payload }, { call }){
+      console.log(payload)
+      const response = yield call(getSearchOption, payload);
+      return response;
     }
   },
   reducers: {

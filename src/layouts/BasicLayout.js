@@ -1,9 +1,9 @@
 import styles from './index.less';
-import { Layout, Menu, Input, message, Space } from 'antd';
+import { Layout, Menu, Input, Select, Space, Button } from 'antd';
 import { connect } from 'umi';
-import { useEffect, useRef } from 'react';
+import { useEffect, useState } from 'react';
 const { Header, Content } = Layout;
-const { Search } = Input;
+const { Option } = Select;
 const menuData = [
   { key: '0', name: '推荐' },
   { key: '1', name: '知识图谱' },
@@ -19,14 +19,9 @@ const menuData = [
 const msgNum = 0;
 
 const BasicLayout = props => {
-  const {
-    dispatch,
-    children,
-    searchType,
-    content,
-  } = props;
-
-  const searchInput = useRef();
+  const { dispatch, children, searchType, content } = props;
+  const [searchValue, setSearchValue] = useState();
+  const [options, setOption] = useState();
 
   const saveSearchType = ({ key }) => {
     dispatch({
@@ -39,23 +34,22 @@ const BasicLayout = props => {
     search(content);
   }, [searchType]);
 
-  useEffect(()=>{
-    searchInput.current.state.value = content;
-  },[content])
+  // useEffect(()=>{
+  //   searchInput.current.state.value = content;
+  // },[content])
 
-  const clickSearch = value => {
+  const clickSearch = () => {
     dispatch({
       type: 'home/saveSearchContent',
-      payload: { content: value },
+      payload: { content: searchValue },
     })
-    search( value );
+    search();
   }
 
-  const search = (value) => {
-    if (!value) return;
+  const search = () => {
     dispatch({
       type: 'home/query',
-      payload: { content: value },
+      payload: { content: searchValue },
     }).then(res => {
       if (res) {
         const { status, data } = res;
@@ -64,6 +58,26 @@ const BasicLayout = props => {
         }
       }
     });
+  };
+
+  const handleSearch = value => {
+    if (value) {
+      // fetch(value, data => setData(data));
+      dispatch({
+        type: 'home/getSearchOption',
+        payload: value,
+      }).then(res =>{
+          setOption(res.data);
+        }
+      )
+    } 
+    else {
+      setOption();
+    }
+  };
+
+  const handleChange = value => {
+    setSearchValue(value);
   };
 
   return (
@@ -126,32 +140,28 @@ const BasicLayout = props => {
             </Menu.Item>
           </Menu>
           <Space>
-            <div className={styles.search}>
-              <Search
-                placeholder="请输入"
-                allowClear
-                enterButton="搜索"
-                size="middle"
-                onSearch={clickSearch}
-                ref={searchInput}
-              />
+            <div>
+              <Select
+                style={{width: '520px', top: '-10px', marginLeft: '200px', marginRight: '10px'}}
+                showSearch
+                value={searchValue}
+                defaultActiveFirstOption={false}
+                showArrow={false}
+                filterOption={false}
+                onSearch={handleSearch}
+                onChange={handleChange}
+                notFoundContent={null}
+              >
+                {options && options.map(item => (<Option key={item.value}>{item.text}</Option>))}
+              </Select>
+              <Button type='primary' style={{float: 'right'}} onClick={clickSearch}>搜索</Button>
             </div>
-            {/* <a>高级搜索</a> */}
           </Space>
           {/* <Space align="center" style={{ position: 'fixed', right: '30px' }}>
             <span>消息({msgNum})</span>
             <span>帮助</span>
           </Space> */}
         </div>
-        {/* <Menu
-          theme="light"
-          mode="horizontal"
-          style={{ lineHeight: '36px', width: '100%' }}
-        >
-          {menuData.map(menu => (
-            <Menu.Item key={`${menu.key}`}>{menu.name}</Menu.Item>
-          ))}
-        </Menu> */}
       </Header>
       <Content style={{ padding: '20px 30px' }}>
         <div style={{ background: '#fff', height: '100%' }}>{children}</div>
