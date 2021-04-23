@@ -23,6 +23,11 @@ const Home = props => {
     'click': onChartClick,
   }
 
+  const handleLink = (url) => {
+    const w=window.open('about:blank');
+    w.location.href=url;
+  }
+
   return (
     <>
     {
@@ -37,15 +42,22 @@ const Home = props => {
               <p>{item.description}</p>
               <div>
                 <Space>
-                  <span>{item.author}</span>
-                  <span>{item.journal}</span>
+                  <span>{item.keywords}</span>
+                 {/* <span>{item.journal}</span> */}
                 </Space>
               </div>
 
               <div>
                 <Space>
                   <span>来源:</span>
-                  <a href={item.origin}>{item.origin}</a>
+                  <a href={item.origin} target="_Blank">{item.origin}</a>
+                  {/* <a href="http://127.0.0.1:8080/神舟七号--科技--人民网.html" target="_Blank">tett</a> */}
+                  {/* <a href="http://127.0.0.1:8000/static/AC-130J Ghostrider   U S  Air Force   Fact Sheet Display.html" target="_Blank">test</a> */}
+                  {/* <a href="http://127.0.0.1:8000/static/神舟五号飞船_360百科.html"target="_Blank">test2</a> */}
+                  {/* <a href="http://127.0.0.1:8000/static/神舟五号_百度百科.html"target="_Blank">test23</a> */}
+                  {/* <a href="http://scitech.people.com.cn/GB/25509/28166/index.html">test</a> */}
+                  {/* <a href={item.origin}>链接</a> */}
+                  {/* <a href = "https://www.baidu.com/">test</a> */}
                 </Space>
               </div>
             </List.Item>

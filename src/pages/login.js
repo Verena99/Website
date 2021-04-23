@@ -79,7 +79,7 @@ const LogIn = props => {
         </Form.Item>
         <Form.Item>
           <Button type="primary" onClick={() => validateForm()}>
-            登陆
+            登录
           </Button>
         </Form.Item>
       </Form>
