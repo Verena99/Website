@@ -138,10 +138,10 @@ const BasicLayout = props => {
             </div>
             {/* <a>高级搜索</a> */}
           </Space>
-          <Space align="center" style={{ position: 'fixed', right: '30px' }}>
-            {/* <span>消息({msgNum})</span> */}
+          {/* <Space align="center" style={{ position: 'fixed', right: '30px' }}>
+            <span>消息({msgNum})</span>
             <span>帮助</span>
-          </Space>
+          </Space> */}
         </div>
         {/* <Menu
           theme="light"
